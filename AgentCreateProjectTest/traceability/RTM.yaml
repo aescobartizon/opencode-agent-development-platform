@@ -1,0 +1,16 @@
+# traceability/RTM.yaml
+# Requirements Traceability Matrix — AgentCreateProjectTest
+project: "AgentCreateProjectTest"
+version: "1.0.0"
+enlaces: []
+# Estructura de cada enlace:
+#   - id: LINK-001
+#     requisito: FRS-001
+#     caso_uso: UC-001
+#     historia: US-001
+#     test_case: TC-001
+#     servicio: SVC-001
+#     repo_url: ""
+#     pr_url: ""
+#     commit_sha: ""
+#     estado: pendiente

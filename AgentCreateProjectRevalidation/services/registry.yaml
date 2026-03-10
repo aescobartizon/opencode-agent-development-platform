@@ -1,0 +1,13 @@
+# Registro de repositorios de microservicios — AgentCreateProjectRevalidation
+# Añadir una entrada por cada repositorio de servicio creado.
+project: "AgentCreateProjectRevalidation"
+services: []
+# Estructura de cada entrada:
+#   - id: SVC-001
+#     name: ""
+#     repo_url: ""
+#     branch_default: main
+#     language: ""
+#     status: planned
+#     owned_by: ""
+#     linked_epics: []

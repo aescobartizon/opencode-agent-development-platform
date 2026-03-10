@@ -56,6 +56,17 @@ Este repositorio de plataforma usa assets en raiz (`agents/`, `skills/`, `templa
 
 Los proyectos generados por el agente pueden incluir una zona `.opencode/` propia para alojar agentes, skills y comandos del proyecto destino. Esa estructura no sustituye los assets fuente de esta plataforma; los complementa.
 
+## Garantias del agente actual
+
+El agente `agents/AgentCreateProjectFromScratch.md` esta endurecido para:
+
+- resolver plantillas primero desde `templates/` y despues desde `~/.config/opencode/templates/`,
+- conservar placeholders solo en archivos plantilla y no en documentos instanciados,
+- generar contenido semilla minimo en areas clave del repositorio,
+- persistir carpetas vacias importantes con `.gitkeep` o `README.md`,
+- generar `PROJECT_REPORT.html` y su copia en `docs/executive-reports/INF-EJE-001.html`,
+- usar `python3` como fallback cuando `python` no exista en el entorno.
+
 ## Uso esperado
 
 Este repositorio esta pensado como base de desarrollo y mantenimiento para evolucionar:

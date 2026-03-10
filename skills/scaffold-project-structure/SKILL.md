@@ -149,14 +149,22 @@ Crear como minimo:
 - `README.md`
 - `INDEX.md`
 - `AGENTS.md`
+- `docs/project/README.md`
+- `docs/project/vision.md`
+- `docs/project/scope.md`
+- `docs/project/stakeholders.md`
+- `docs/project/glossary.md`
+- `docs/requirements/technical/README.md`
 - `traceability/requirements_trace.md`
 - `traceability/end_to_end_traceability.csv`
 - `traceability/epics_to_use_cases.md`
 - `traceability/RTM.yaml`
 - `traceability/use_cases_to_openapi.md`
 - `services/registry.yaml`
+- `docs/refinement/pending-questions.md`
 - `docs/refinement/sessions/INDEX.md`
 - `PROJECT_REPORT.html`
+- `docs/executive-reports/INF-EJE-001.html`
 
 Crear tambien placeholders vacios donde aplique:
 
@@ -165,6 +173,10 @@ Crear tambien placeholders vacios donde aplique:
 - `src/.gitkeep`
 - `tests/.gitkeep`
 - `ops/.gitkeep`
+- `docs/refinement/evidence/.gitkeep`
+- `backlog/epics/.gitkeep`
+- `backlog/use-cases/.gitkeep`
+- `docs/requirements/functional/.gitkeep`
 
 ### Paso 4 - Copiar plantillas
 
@@ -214,21 +226,41 @@ Crear `services/registry.yaml` con estructura completa y `services: []`.
 
 No inventar servicios.
 
-### Paso 7 - Generar informe ejecutivo
+### Paso 7 - Persistir carpetas vacias para Git
+
+Si una carpeta importante no tiene contenido real todavia, asegurar su persistencia con `.gitkeep` o un `README.md` minimo.
+
+Como minimo:
+
+- `services/contracts/.gitkeep`
+- `spec/open-api/.gitkeep`
+- `src/.gitkeep`
+- `tests/.gitkeep`
+- `ops/.gitkeep`
+- `docs/refinement/evidence/.gitkeep`
+- `backlog/epics/.gitkeep`
+- `backlog/use-cases/.gitkeep`
+- `docs/requirements/functional/.gitkeep`
+
+### Paso 8 - Generar informe ejecutivo
 
 Usar `docs/templates/executive-report.template.html` para generar `PROJECT_REPORT.html`.
 
 - Sustituir placeholders por valores reales.
 - Copiar tambien el resultado a `docs/executive-reports/INF-EJE-001.html`.
+- Si se necesita Python para generar o validar, usar `python3` si `python` no existe.
 
-### Paso 8 - Validar coherencia final
+### Paso 9 - Validar coherencia final
 
 Confirmar que:
 
 - existen todos los ficheros obligatorios,
 - las plantillas fueron copiadas,
-- no hay placeholders sin sustituir en documentos instanciados,
-- `services/registry.yaml` y `traceability/RTM.yaml` tienen estructura valida,
+- no hay placeholders sin sustituir en documentos instanciados fuera de `docs/templates/` y `docs/requirements/templates/`,
+- `services/registry.yaml` contiene `services: []`,
+- `traceability/RTM.yaml` contiene `enlaces: []`,
+- existen `PROJECT_REPORT.html` y `docs/executive-reports/INF-EJE-001.html`,
+- las carpetas criticas vacias siguen siendo rastreables por Git,
 - el repositorio queda listo para evolucionar con agentes y equipos humanos.
 
 ## Lo que esta skill no hace
@@ -247,4 +279,5 @@ La skill queda bien aplicada si el repositorio generado:
 - usa modelo multi-repo con repositorio central de gobernanza,
 - deja trazabilidad lista desde el inicio,
 - reutiliza plantillas versionadas desde `templates/` o su fallback global,
+- persiste en Git las carpetas criticas aunque esten vacias,
 - no depende exclusivamente de rutas hardcodeadas fuera del repo.

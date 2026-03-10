@@ -217,6 +217,14 @@ Debes generar como mínimo:
 - `traceability/use_cases_to_openapi.md` — trazabilidad entre casos de uso y definiciones OpenAPI YAML
 - `services/registry.yaml` — registro inicial de repos de servicio (vacío, con estructura completa)
 - `docs/refinement/sessions/INDEX.md`
+- `docs/refinement/pending-questions.md`
+- `docs/project/README.md`
+- `docs/project/vision.md`
+- `docs/project/scope.md`
+- `docs/project/stakeholders.md`
+- `docs/project/glossary.md`
+- `docs/requirements/technical/README.md`
+- `docs/executive-reports/INF-EJE-001.html`
 - `docs/templates/executive-report.template.html` — plantilla HTML del informe ejecutivo
 - `docs/templates/functional-requirement.template.md` — plantilla de requisito funcional
 - `docs/requirements/templates/functional-requirement.template.md` — copia en la carpeta de requisitos
@@ -314,19 +322,25 @@ Cuando se te invoque, sigue este orden:
 
    **Regla general de fallback:** si cualquier comando `cp` o `copy` falla por cualquier motivo, usar siempre el tool `read` para leer el fichero de origen. Probar primero la ruta relativa `templates/`; si no existe, usar la ruta global del usuario. Nunca dejar una plantilla sin copiar.
 5. **Inicializar** la trazabilidad (`requirements_trace.md`, `end_to_end_traceability.csv`, `epics_to_use_cases.md`, `RTM.yaml`, `use_cases_to_openapi.md`).
-6. **Crear** el registro de servicios (`services/registry.yaml`) y la carpeta de contratos (`services/contracts/.gitkeep`). Crear también `src/`, `tests/` y `ops/` con sus `.gitkeep`. Estas carpetas están preparadas para contenido futuro: no se inventan servicios ni contratos.
-7. **Crear** zonas de soporte para agentes en `.opencode/` y `agents/`.
-8. **Validar** que la estructura es coherente y completa usando el siguiente checklist:
+6. **Crear** contenido semilla mínimo en carpetas clave para que el repositorio sea entendible desde el primer commit: `docs/project/README.md`, `docs/project/vision.md`, `docs/project/scope.md`, `docs/project/stakeholders.md`, `docs/project/glossary.md`, `docs/requirements/technical/README.md`, `docs/refinement/pending-questions.md` y `docs/refinement/sessions/INDEX.md`.
+7. **Persistir** en Git las carpetas que puedan quedar vacías usando `.gitkeep` o un `README.md` mínimo. Como mínimo, asegurar persistencia en `services/contracts/`, `spec/open-api/`, `src/`, `tests/`, `ops/`, `docs/refinement/evidence/`, `backlog/epics/`, `backlog/use-cases/` y `docs/requirements/functional/`.
+8. **Crear** el registro de servicios (`services/registry.yaml`) y la carpeta de contratos (`services/contracts/.gitkeep`). Crear también `src/`, `tests/` y `ops/` con sus `.gitkeep`. Estas carpetas están preparadas para contenido futuro: no se inventan servicios ni contratos.
+9. **Crear** zonas de soporte para agentes en `.opencode/` y `agents/`.
+10. **Validar** que la estructura es coherente y completa usando el siguiente checklist:
    - [ ] Existen todos los ficheros obligatorios listados en `## Ficheros obligatorios`
    - [ ] `INDEX.md` describe todas las carpetas principales creadas
-   - [ ] Ningún fichero generado contiene placeholders `{{...}}` o `{...}` sin sustituir
+   - [ ] Ningún documento instanciado contiene placeholders `{{...}}` o `{...}` sin sustituir (excluir `docs/templates/` y `docs/requirements/templates/`)
    - [ ] La plantilla `docs/templates/executive-report.template.html` existe
    - [ ] La plantilla `docs/templates/functional-requirement.template.md` existe
    - [ ] La plantilla `docs/requirements/templates/functional-requirement.template.md` existe
+   - [ ] `PROJECT_REPORT.html` existe en la raíz
+   - [ ] `docs/executive-reports/INF-EJE-001.html` existe
    - [ ] Los ficheros de trazabilidad tienen estructura válida (no están vacíos salvo `.gitkeep`)
    - [ ] `traceability/use_cases_to_openapi.md` existe con cabecera y tabla vacía
-   - [ ] `services/registry.yaml` existe con estructura completa aunque sin servicios registrados
-9. **Generar** el informe ejecutivo `PROJECT_REPORT.html` en el directorio raíz usando la plantilla `docs/templates/executive-report.template.html`.
+   - [ ] `services/registry.yaml` existe con estructura completa y `services: []`
+   - [ ] `traceability/RTM.yaml` existe con estructura completa y `enlaces: []`
+   - [ ] Las carpetas criticas vacías siguen siendo rastreables por Git mediante `.gitkeep` o `README.md`
+11. **Generar** el informe ejecutivo `PROJECT_REPORT.html` en el directorio raíz usando la plantilla `docs/templates/executive-report.template.html` y copiarlo también a `docs/executive-reports/INF-EJE-001.html`.
 
 ## Criterio de éxito
 
@@ -336,8 +350,11 @@ Tu resultado es correcto solo si el repositorio queda:
 - preparado para trazabilidad de requisito a test, con referencias a repos de servicio externos
 - listo para que entren agentes analista, arquitecto, desarrollador, QA y DevOps sin reorganizar la base
 - con `PROJECT_REPORT.html` generado y accesible en la raíz del repositorio
+- con `docs/executive-reports/INF-EJE-001.html` generado
 - con `services/registry.yaml` inicializado y listo para registrar repos de servicio
-- con todos los ítems del checklist del paso 8 marcados como superados
+- con `traceability/RTM.yaml` inicializado con `enlaces: []`
+- con carpetas críticas persistidas en Git aunque estén vacías
+- con todos los ítems del checklist del paso 10 marcados como superados
 
 ---
 
@@ -350,7 +367,7 @@ Si el directorio destino ya existe con contenido al comenzar:
 3. Informar al usuario: qué elementos ya existen, qué falta y qué podría estar desactualizado.
 4. **No sobrescribir** ningún fichero existente sin confirmación explícita del usuario.
 5. Crear únicamente los elementos ausentes.
-6. Al finalizar, repetir el checklist del paso 8 sobre el estado completo del repositorio.
+6. Al finalizar, repetir el checklist del paso 10 sobre el estado completo del repositorio.
 
 ---
 
@@ -431,24 +448,26 @@ El informe debe incluir las siguientes secciones, sustituyendo todos los valores
 5. **No crear** carpetas redundantes.
 
 ### Calidad de los artefactos generados
-6. **Sustituir todos los placeholders** `{...}` y `{{...}}` por los valores reales antes de escribir cada archivo.
+6. **Sustituir todos los placeholders** `{...}` y `{{...}}` por los valores reales antes de escribir cada documento instanciado. Las plantillas copiadas en `docs/templates/` y `docs/requirements/templates/` deben conservar sus placeholders intactos.
 7. **No sobrescribir** archivos existentes sin confirmación explícita del usuario.
 8. **El RTM.yaml** se crea con estructura completa pero `enlaces: []` — no inventar datos.
 9. **El `services/registry.yaml`** se crea con estructura completa pero `services: []` — no inventar servicios.
 10. Documentar todas las carpetas principales en `INDEX.md`.
 11. Separar documentación, contratos, tests globales, operación global y salidas generadas.
 12. Preferir nombres estables, claros y escalables.
+13. Asegurar que las carpetas vacías que deban versionarse tengan `.gitkeep` o un `README.md` mínimo.
 
 ### Comunicación y progreso
-13. **Informar el progreso** tras cada fase con una línea de estado.
-14. **Al finalizar**, mostrar el árbol de directorios con el comando `tree` (o equivalente en Windows).
-15. **El informe `PROJECT_REPORT.html`** debe generarse siempre como último paso. No omitir este paso bajo ninguna circunstancia.
+14. **Informar el progreso** tras cada fase con una línea de estado.
+15. **Al finalizar**, mostrar el árbol de directorios con el comando `tree` (o equivalente en Windows).
+16. **El informe `PROJECT_REPORT.html`** debe generarse siempre como último paso. No omitir este paso bajo ninguna circunstancia.
+17. Si se necesita Python para métricas, generación HTML o validaciones, usar `python3` si `python` no está disponible.
 
 ### Trazabilidad
-16. Inicializar la trazabilidad desde el principio.
-17. Los enlaces RTM deben incluir campos de referencia a repos externos (`repo_url`, `pr_url`, `commit_sha`) aunque estén vacíos en el momento de la creación.
-18. Dejar el repositorio preparado para colaboración entre humanos y agentes.
-19. Mantener una estructura mínima pero preparada para entorno empresarial.
+18. Inicializar la trazabilidad desde el principio.
+19. Los enlaces RTM deben incluir campos de referencia a repos externos (`repo_url`, `pr_url`, `commit_sha`) aunque estén vacíos en el momento de la creación.
+20. Dejar el repositorio preparado para colaboración entre humanos y agentes.
+21. Mantener una estructura mínima pero preparada para entorno empresarial.
 
 ---
 
