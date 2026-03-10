@@ -92,17 +92,13 @@ Resolver siempre las plantillas con este orden:
 1. `templates/` del repositorio actual
 2. `~/.config/opencode/templates/` como fallback global
 
-Plantillas obligatorias:
+Contenido obligatorio a copiar desde `templates/`:
 
-- `templates/executive-report.template.html`
-- `templates/functional-requirement.template.md`
-- `templates/examples/` cuando exista
+- todo el contenido disponible en `templates/`
 
 Destinos obligatorios en el proyecto generado:
 
-- `docs/templates/executive-report.template.html`
-- `docs/templates/functional-requirement.template.md`
-- `docs/templates/examples/`
+- `docs/templates/` con el contenido completo de `templates/` preservando estructura relativa
 - `docs/requirements/templates/functional-requirement.template.md`
 
 ## Procedimiento
@@ -180,24 +176,20 @@ Crear tambien placeholders vacios donde aplique:
 
 ### Paso 4 - Copiar plantillas
 
-Intentar primero copiar desde rutas relativas del repo actual.
+Intentar primero copiar todo `templates/` desde rutas relativas del repo actual a `docs/templates/`, preservando su estructura completa.
 
 Unix:
 
 ```bash
-cp templates/executive-report.template.html docs/templates/executive-report.template.html
-cp templates/functional-requirement.template.md docs/templates/functional-requirement.template.md
+cp -R templates/. docs/templates/
 cp templates/functional-requirement.template.md docs/requirements/templates/functional-requirement.template.md
-cp -R templates/examples docs/templates/examples
 ```
 
 Windows:
 
 ```cmd
-copy "templates\executive-report.template.html" "docs\templates\executive-report.template.html"
-copy "templates\functional-requirement.template.md" "docs\templates\functional-requirement.template.md"
+xcopy "templates" "docs\templates" /E /I /Y
 copy "templates\functional-requirement.template.md" "docs\requirements\templates\functional-requirement.template.md"
-xcopy "templates\examples" "docs\templates\examples" /E /I /Y
 ```
 
 Si la ruta relativa no existe o falla la copia, usar fallback global:
@@ -205,13 +197,11 @@ Si la ruta relativa no existe o falla la copia, usar fallback global:
 Unix:
 
 ```bash
-cp ~/.config/opencode/templates/executive-report.template.html docs/templates/executive-report.template.html
-cp ~/.config/opencode/templates/functional-requirement.template.md docs/templates/functional-requirement.template.md
+cp -R ~/.config/opencode/templates/. docs/templates/
 cp ~/.config/opencode/templates/functional-requirement.template.md docs/requirements/templates/functional-requirement.template.md
-cp -R ~/.config/opencode/templates/examples docs/templates/examples
 ```
 
-Si ambos metodos fallan, leer el contenido con `read` y escribirlo con `write`, preservando tambien la estructura de `examples/` cuando exista.
+Si ambos metodos fallan, leer el contenido con `read` y escribirlo con `write`, preservando toda la estructura relativa de `templates/` dentro de `docs/templates/`.
 
 ### Paso 5 - Inicializar trazabilidad
 
@@ -257,6 +247,7 @@ Confirmar que:
 
 - existen todos los ficheros obligatorios,
 - las plantillas fueron copiadas,
+- todo el contenido disponible en `templates/` fue copiado a `docs/templates/`,
 - la carpeta `docs/templates/examples/` existe cuando el origen `templates/examples/` esta disponible,
 - no hay placeholders sin sustituir en documentos instanciados fuera de `docs/templates/` y `docs/requirements/templates/`,
 - `services/registry.yaml` contiene `services: []`,

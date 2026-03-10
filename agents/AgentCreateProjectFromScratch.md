@@ -259,12 +259,12 @@ Cuando se te invoque, sigue este orden:
 1. **Leer** nombre del proyecto, contexto y restricciones. Si el directorio destino ya existe con contenido, seguir el protocolo de repositorio parcial (ver sección **Protocolo para repositorios parciales**).
 2. **Crear** la estructura raíz de directorios.
 3. **Generar** `README.md`, `INDEX.md` y `AGENTS.md`.
-4. **Crear** directorios documentales y copiar **todas** las plantillas al proyecto. Resolver siempre el origen con este orden de prioridad:
+4. **Crear** directorios documentales y copiar **todo el contenido** de `templates/` a `docs/templates/`. Resolver siempre el origen con este orden de prioridad:
 
    1. **Origen relativo al repositorio de la plataforma**: `templates/`
    2. **Origen global del usuario**: `~/.config/opencode/templates/` (o `%USERPROFILE%\\.config\\opencode\\templates\\` en Windows)
 
-   Ejecutar los siguientes pasos en orden para cada plantilla:
+   Ejecutar los siguientes pasos en orden, preservando la estructura relativa completa del directorio `templates/`:
 
    **Paso 4a — detectar sistema operativo y origen de plantillas disponible:**
    ```bash
@@ -276,71 +276,47 @@ Cuando se te invoque, sigue este orden:
    - Antes de copiar, comprobar si existe `templates/` en el repositorio actual. Si existe, usarlo como fuente preferente.
    - Si `templates/` no existe, usar `~/.config/opencode/templates/` o `%USERPROFILE%\\.config\\opencode\\templates\\`.
 
-   **Paso 4b — copiar plantilla: informe ejecutivo HTML**
+   **Paso 4b — copiar todo `templates/` a `docs/templates/`**
 
    Git Bash / Unix (preferente, relativo al repo actual):
    ```bash
-   cp templates/executive-report.template.html docs/templates/executive-report.template.html
+   cp -R templates/. docs/templates/
    ```
    Git Bash / Unix (fallback global):
    ```bash
-   cp ~/.config/opencode/templates/executive-report.template.html docs/templates/executive-report.template.html
+   cp -R ~/.config/opencode/templates/. docs/templates/
    ```
    Windows nativo (preferente, relativo al repo actual):
    ```cmd
-   copy "templates\executive-report.template.html" "docs\templates\executive-report.template.html"
+   xcopy "templates" "docs\templates" /E /I /Y
    ```
    Windows nativo (fallback global):
    ```cmd
-   copy "%USERPROFILE%\.config\opencode\templates\executive-report.template.html" "docs\templates\executive-report.template.html"
+   xcopy "%USERPROFILE%\.config\opencode\templates" "docs\templates" /E /I /Y
    ```
-   Fallback si el comando falla: leer primero `templates/executive-report.template.html`; si no existe, leer `~/.config/opencode/templates/executive-report.template.html`; después escribir el contenido en `docs/templates/executive-report.template.html` con el tool `write`.
+   Fallback si el comando falla: leer recursivamente todos los ficheros bajo `templates/`; si no existe, usar `~/.config/opencode/templates/`; después escribirlos en `docs/templates/` preservando la estructura relativa completa.
 
-   **Paso 4c — copiar plantilla: requisito funcional**
+   **Paso 4c — copiar también la plantilla de requisito funcional a `docs/requirements/templates/`**
 
    Git Bash / Unix (preferente, relativo al repo actual):
    ```bash
-   cp templates/functional-requirement.template.md docs/templates/functional-requirement.template.md
    cp templates/functional-requirement.template.md docs/requirements/templates/functional-requirement.template.md
    ```
    Git Bash / Unix (fallback global):
    ```bash
-   cp ~/.config/opencode/templates/functional-requirement.template.md docs/templates/functional-requirement.template.md
    cp ~/.config/opencode/templates/functional-requirement.template.md docs/requirements/templates/functional-requirement.template.md
    ```
    Windows nativo (preferente, relativo al repo actual):
    ```cmd
-   copy "templates\functional-requirement.template.md" "docs\templates\functional-requirement.template.md"
    copy "templates\functional-requirement.template.md" "docs\requirements\templates\functional-requirement.template.md"
    ```
    Windows nativo (fallback global):
    ```cmd
-   copy "%USERPROFILE%\.config\opencode\templates\functional-requirement.template.md" "docs\templates\functional-requirement.template.md"
    copy "%USERPROFILE%\.config\opencode\templates\functional-requirement.template.md" "docs\requirements\templates\functional-requirement.template.md"
    ```
-   Fallback si el comando falla: leer primero `templates/functional-requirement.template.md`; si no existe, leer `~/.config/opencode/templates/functional-requirement.template.md`; después escribir el contenido en ambos destinos con el tool `write`.
+   Fallback si el comando falla: leer primero `templates/functional-requirement.template.md`; si no existe, leer `~/.config/opencode/templates/functional-requirement.template.md`; después escribir el contenido en `docs/requirements/templates/functional-requirement.template.md`.
 
-   **Paso 4d — copiar carpeta de ejemplos de plantillas**
-
-   Git Bash / Unix (preferente, relativo al repo actual):
-   ```bash
-   cp -R templates/examples docs/templates/examples
-   ```
-   Git Bash / Unix (fallback global):
-   ```bash
-   cp -R ~/.config/opencode/templates/examples docs/templates/examples
-   ```
-   Windows nativo (preferente, relativo al repo actual):
-   ```cmd
-   xcopy "templates\examples" "docs\templates\examples" /E /I /Y
-   ```
-   Windows nativo (fallback global):
-   ```cmd
-   xcopy "%USERPROFILE%\.config\opencode\templates\examples" "docs\templates\examples" /E /I /Y
-   ```
-   Fallback si el comando falla: leer todos los ficheros bajo `templates/examples/`; si no existe, usar `~/.config/opencode/templates/examples/`; después escribirlos manteniendo la estructura relativa bajo `docs/templates/examples/`.
-
-   **Regla general de fallback:** si cualquier comando `cp` o `copy` falla por cualquier motivo, usar siempre el tool `read` para leer el fichero de origen. Probar primero la ruta relativa `templates/`; si no existe, usar la ruta global del usuario. Nunca dejar una plantilla sin copiar.
+   **Regla general de fallback:** si cualquier comando de copia falla por cualquier motivo, usar siempre el tool `read` para leer el origen disponible y preservar la estructura relativa en `docs/templates/`. Probar primero la ruta relativa `templates/`; si no existe, usar la ruta global del usuario. Nunca dejar contenido de `templates/` sin copiar.
 5. **Inicializar** la trazabilidad (`requirements_trace.md`, `end_to_end_traceability.csv`, `RTM.yaml`). No crear matrices derivadas que dupliquen relaciones ya mantenidas en `epic`, `FRS`, `user-story` o `RTM.yaml`.
 6. **Crear** contenido semilla mínimo en carpetas clave para que el repositorio sea entendible desde el primer commit: `docs/project/README.md`, `docs/project/vision.md`, `docs/project/scope.md`, `docs/project/stakeholders.md`, `docs/project/glossary.md`, `docs/requirements/technical/README.md`, `docs/refinement/pending-questions.md` y `docs/refinement/sessions/INDEX.md`.
 7. **Persistir** en Git las carpetas que puedan quedar vacías usando `.gitkeep` o un `README.md` mínimo. Como mínimo, asegurar persistencia en `services/contracts/`, `spec/open-api/`, `src/`, `tests/`, `ops/`, `docs/refinement/evidence/`, `backlog/epics/`, `backlog/user-stories/` y `docs/requirements/functional/`.
@@ -350,8 +326,11 @@ Cuando se te invoque, sigue este orden:
    - [ ] Existen todos los ficheros obligatorios listados en `## Ficheros obligatorios`
    - [ ] `INDEX.md` describe todas las carpetas principales creadas
    - [ ] Ningún documento instanciado contiene placeholders `{{...}}` o `{...}` sin sustituir (excluir `docs/templates/` y `docs/requirements/templates/`)
+   - [ ] Todo el contenido disponible en `templates/` fue copiado a `docs/templates/` preservando estructura relativa
    - [ ] La plantilla `docs/templates/executive-report.template.html` existe
    - [ ] La plantilla `docs/templates/functional-requirement.template.md` existe
+   - [ ] La plantilla `docs/templates/user-story.template.md` existe cuando el origen la contiene
+   - [ ] La plantilla `docs/templates/epic.template.md` existe cuando el origen la contiene
    - [ ] La carpeta `docs/templates/examples/` existe cuando el origen `templates/examples/` está disponible
    - [ ] La plantilla `docs/requirements/templates/functional-requirement.template.md` existe
    - [ ] `PROJECT_REPORT.html` existe en la raíz
