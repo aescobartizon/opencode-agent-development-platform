@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Executive Report - Documentation Platform SDD</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: #1b2a3a;
+      background: linear-gradient(180deg, #eef4fb 0%, #f8fbff 100%);
+      line-height: 1.5;
+    }
+    .page {
+      max-width: 1180px;
+      margin: 28px auto;
+      background: #ffffff;
+      border: 1px solid #d9e4f2;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(13, 43, 78, 0.10);
+    }
+    .hero {
+      padding: 40px 44px 30px;
+      background: linear-gradient(135deg, #0d2b4e 0%, #1565a8 55%, #1f8cc9 100%);
+      color: #ffffff;
+    }
+    .badge {
+      display: inline-block;
+      padding: 5px 12px;
+      border: 1px solid rgba(255,255,255,0.32);
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.10);
+      margin-bottom: 14px;
+    }
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 34px;
+      line-height: 1.15;
+    }
+    .hero p {
+      margin: 0;
+      max-width: 900px;
+      color: rgba(255,255,255,0.88);
+      font-size: 15px;
+    }
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .meta-card {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .meta-card .k {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.72);
+    }
+    .meta-card .v {
+      margin-top: 4px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .content {
+      padding: 32px 44px 40px;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    .section h2 {
+      margin: 0 0 14px;
+      font-size: 17px;
+      color: #0d2b4e;
+      border-left: 4px solid #1565a8;
+      padding-left: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .lead-grid,
+    .cards,
+    .compliance-grid,
+    .automation-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+    .card {
+      background: #f7fafe;
+      border: 1px solid #dbe6f3;
+      border-radius: 12px;
+      padding: 16px 18px;
+    }
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      color: #12385f;
+    }
+    .card p,
+    .card li,
+    p,
+    li {
+      font-size: 13px;
+      color: #30465d;
+    }
+    ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+    }
+    .flow {
+      background: #0f2034;
+      color: #dcecff;
+      border-radius: 14px;
+      padding: 22px;
+      font-family: "Cascadia Code", "Courier New", monospace;
+      font-size: 14px;
+      overflow-x: auto;
+      border: 1px solid #1f426c;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      margin-top: 10px;
+      border: 1px solid #d8e3f0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    thead tr {
+      background: #12385f;
+      color: #ffffff;
+    }
+    th, td {
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid #e3ebf5;
+    }
+    tbody tr:nth-child(even) {
+      background: #f8fbfe;
+    }
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-right: 4px;
+      margin-bottom: 4px;
+    }
+    .blue { background: #dbeafe; color: #1d4ed8; }
+    .green { background: #d1fae5; color: #065f46; }
+    .amber { background: #fef3c7; color: #92400e; }
+    .rose { background: #fee2e2; color: #991b1b; }
+    .footer {
+      padding: 18px 44px 26px;
+      font-size: 12px;
+      color: #60748a;
+      border-top: 1px solid #e1eaf4;
+      background: #fbfdff;
+    }
+    .small {
+      font-size: 12px;
+      color: #5c7289;
+    }
+    @media (max-width: 720px) {
+      .hero, .content, .footer { padding-left: 20px; padding-right: 20px; }
+      .hero h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero">
+      <div class="badge">Executive Report · Documentation Platform SDD</div>
+      <h1>Documentation Platform SDD</h1>
+      <p>
+        Informe ejecutivo del modelo documental orientado a SDD, trazabilidad extremo a extremo,
+        alineacion con marcos de calidad y capacidad de automatizacion de tareas de desarrollo a partir de especificaciones.
+      </p>
+      <div class="meta">
+        <div class="meta-card"><div class="k">Version analizada</div><div class="v">SDD workflow actual</div></div>
+        <div class="meta-card"><div class="k">Flujo base</div><div class="v">Epica -> FRS -> US -> OpenAPI</div></div>
+        <div class="meta-card"><div class="k">Fuente principal</div><div class="v">`documentation-platform-sdd.md`</div></div>
+        <div class="meta-card"><div class="k">Objetivo</div><div class="v">Validacion y automatizacion</div></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="section">
+        <h2>Resumen Ejecutivo</h2>
+        <div class="lead-grid">
+          <div class="card">
+            <h3>Capacidad SDD</h3>
+            <p>
+              La plataforma ya soporta un flujo documental consistente desde necesidad de negocio hasta especificacion verificable,
+              con OpenAPI derivada desde User Story y con reglas aptas para agentes validadores.
+            </p>
+          </div>
+          <div class="card">
+            <h3>Trazabilidad soportada</h3>
+            <p>
+              La trazabilidad cubre relaciones jerarquicas, cobertura funcional, riesgos, controles, evidencias y artefactos API,
+              evitando matrices derivadas duplicadas fuera de plantillas fuente y `traceability/RTM.yaml`.
+            </p>
+          </div>
+          <div class="card">
+            <h3>Automatizacion derivable</h3>
+            <p>
+              El modelo permite automatizar generacion de OpenAPI, derivacion de backlog tecnico, plan de pruebas, chequeos de cobertura,
+              preparacion de prompts de desarrollo y validacion de consistencia antes de implementacion.
+            </p>
+          </div>
+          <div class="card">
+            <h3>Alineacion normativa</h3>
+            <p>
+              La estructura es compatible con BABOK v3, IEEE 830, IEEE 1012, OpenAPI 3.x, ISO/IEC 25010, ISO/IEC 27001 y CMMI Dev
+              como base documental y de gobierno. No implica certificacion automatica, pero si una preparacion fuerte para auditoria.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Flujo Soportado</h2>
+        <div class="flow">Epica -> FRS -> US -> OpenAPI -> AC -> GT -> Evidencia
+                 \-> Riesgo -> Control -> GT/Evidencia</div>
+        <p class="small">
+          El agente analista crea o modifica una Epica, descompone a FRS, genera User Stories y, cuando existe impacto API,
+          produce o actualiza especificaciones en `spec/open-api/`. La validacion fina vive en `AC-*`, `GT-*`, `COV-*` y `LINK-NNN`.
+        </p>
+      </div>
+
+      <div class="section">
+        <h2>Capacidades SDD</h2>
+        <div class="cards">
+          <div class="card">
+            <h3>Descomposicion funcional</h3>
+            <ul>
+              <li>Epicas con valor de negocio, riesgos y derivacion a FRS.</li>
+              <li>FRS con alcance, reglas, restricciones, AC, tests de alto nivel y riesgos.</li>
+              <li>US con validacion ejecutable y trazabilidad fina.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Especificacion API derivada</h3>
+            <ul>
+              <li>OpenAPI generada desde la US cuando la historia afecta interfaces.</li>
+              <li>Trazabilidad desde la US hasta `spec/open-api/`.</li>
+              <li>Relacion obligatoria entre OpenAPI, AC y GT cuando aplica.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Validacion y cobertura</h3>
+            <ul>
+              <li>AC cubiertos por TC en FRS y por GT en US.</li>
+              <li>Riesgos altos obligatoriamente cubiertos.</li>
+              <li>Evidencia requerida para coberturas marcadas como completas.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Gobierno de artefactos</h3>
+            <ul>
+              <li>`RTM.yaml` como matriz estructurada principal.</li>
+              <li>No duplicacion de trazabilidad fuera de artefactos fuente.</li>
+              <li>Base lista para validadores, analistas, QA, arquitectura y desarrollo.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Trazabilidad Soportada</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Relacion</th>
+              <th>Artefacto fuente</th>
+              <th>Artefacto destino</th>
+              <th>Soporte actual</th>
+              <th>Fuente de verdad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Jerarquia funcional</td>
+              <td>Epica</td>
+              <td>FRS, US</td>
+              <td><span class="pill green">Completo</span></td>
+              <td>`epic.template.md`, `functional-requirement.template.md`, `user-story.template.md`</td>
+            </tr>
+            <tr>
+              <td>FRS a historias derivadas</td>
+              <td>FRS</td>
+              <td>US</td>
+              <td><span class="pill green">Completo</span></td>
+              <td>`functional-requirement.template.md`</td>
+            </tr>
+            <tr>
+              <td>User Story a OpenAPI</td>
+              <td>US</td>
+              <td>`spec/open-api/`</td>
+              <td><span class="pill green">Completo</span></td>
+              <td>`user-story.template.md` §17</td>
+            </tr>
+            <tr>
+              <td>AC a tests ejecutables</td>
+              <td>US</td>
+              <td>GT</td>
+              <td><span class="pill green">Completo</span></td>
+              <td>`user-story.template.md` §11, §13</td>
+            </tr>
+            <tr>
+              <td>Riesgo a control validado</td>
+              <td>US</td>
+              <td>COV, GT, evidencia</td>
+              <td><span class="pill green">Completo</span></td>
+              <td>`user-story.template.md` §14, §19</td>
+            </tr>
+            <tr>
+              <td>Trazabilidad estructurada global</td>
+              <td>FRS, US, OpenAPI, test</td>
+              <td>RTM</td>
+              <td><span class="pill green">Completo</span></td>
+              <td>`traceability/RTM.yaml`</td>
+            </tr>
+            <tr>
+              <td>Duplicacion de matrices</td>
+              <td>Proyecto</td>
+              <td>Artefactos redundantes</td>
+              <td><span class="pill blue">Controlado</span></td>
+              <td>Regla de no duplicacion en agente y skill</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>Matriz de Cobertura de Trazabilidad</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Nivel</th>
+              <th>ID</th>
+              <th>Debe trazar a</th>
+              <th>Mecanismo</th>
+              <th>Validacion esperada</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Epica</td>
+              <td>`E-NNN`</td>
+              <td>FRS, US, riesgos, `LINK-NNN`</td>
+              <td>listas internas de plantilla</td>
+              <td>toda epica lista FRS o justifica pendiente</td>
+            </tr>
+            <tr>
+              <td>FRS</td>
+              <td>`FRS-NNN`</td>
+              <td>Epica, US, AC, TC, riesgos, `LINK-NNN`</td>
+              <td>metadatos + §17 + §18 + §19 + §21</td>
+              <td>todo AC cubierto por TC; riesgo alto cubierto</td>
+            </tr>
+            <tr>
+              <td>User Story</td>
+              <td>`US-NNN`</td>
+              <td>Epica, FRS, OpenAPI, AC, GT, riesgos, evidencia, `LINK-NNN`</td>
+              <td>§11 + §13 + §14 + §17 + §20</td>
+              <td>todo AC cubierto por GT; OpenAPI trazada cuando aplica</td>
+            </tr>
+            <tr>
+              <td>OpenAPI</td>
+              <td>ruta en `spec/open-api/`</td>
+              <td>US, AC, GT</td>
+              <td>§17 US + RTM</td>
+              <td>cada definicion API con origen funcional verificable</td>
+            </tr>
+            <tr>
+              <td>Riesgo</td>
+              <td>`RSK-*` / `USRSK-*`</td>
+              <td>control, AC, GT, evidencia</td>
+              <td>§14 cobertura + seccion de riesgos</td>
+              <td>todo riesgo alto debe aparecer cubierto</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <h2>Alineacion con Marcos y Certificaciones</h2>
+        <div class="compliance-grid">
+          <div class="card">
+            <h3>BABOK v3</h3>
+            <p><span class="pill green">Alta</span> Gestion de requisitos, trazabilidad, stakeholders, refinamiento y evaluacion de cobertura funcional.</p>
+          </div>
+          <div class="card">
+            <h3>IEEE 830 / SRS</h3>
+            <p><span class="pill green">Alta</span> Las FRS ya estructuran descripcion, alcance, restricciones, reglas, AC y validacion de alto nivel.</p>
+          </div>
+          <div class="card">
+            <h3>IEEE 1012</h3>
+            <p><span class="pill blue">Media-Alta</span> La cadena AC -> GT -> evidencia y la cobertura de riesgos facilitan verificacion y validacion.</p>
+          </div>
+          <div class="card">
+            <h3>OpenAPI 3.x</h3>
+            <p><span class="pill green">Alta</span> La US puede obligar generacion o actualizacion de definiciones bajo `spec/open-api/`.</p>
+          </div>
+          <div class="card">
+            <h3>ISO/IEC 25010</h3>
+            <p><span class="pill blue">Media</span> El modelo soporta requisitos funcionales, calidad, observabilidad y criterios medibles, aunque la implementacion tecnica sigue siendo externa.</p>
+          </div>
+          <div class="card">
+            <h3>ISO/IEC 27001</h3>
+            <p><span class="pill amber">Media</span> Riesgos, controles, trazabilidad y evidencia ayudan a compliance, pero la certificacion requiere controles operativos adicionales.</p>
+          </div>
+          <div class="card">
+            <h3>CMMI Dev</h3>
+            <p><span class="pill blue">Media-Alta</span> El gobierno documental, el control de estados y la trazabilidad estructurada fortalecen gestion y validacion.</p>
+          </div>
+          <div class="card">
+            <h3>SDD readiness</h3>
+            <p><span class="pill blue">Media-Alta</span> La base funcional y de contrato esta lista; faltaria ampliar a plantilla SDD tecnica completa si se quiere cubrir diseno profundo por componente.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Capacidades de Automatizacion</h2>
+        <div class="automation-grid">
+          <div class="card">
+            <h3>Automatizacion desde analisis</h3>
+            <ul>
+              <li>Derivacion automatica Epica -> FRS -> US.</li>
+              <li>Creacion guiada de OpenAPI desde historias con impacto API.</li>
+              <li>Construccion de backlog tecnico a partir de especificaciones trazadas.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Automatizacion para QA</h3>
+            <ul>
+              <li>Chequeo automatico de cobertura `AC -> GT`.</li>
+              <li>Deteccion de riesgos altos sin evidencia.</li>
+              <li>Preparacion de suites de prueba basadas en Gherkin.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Automatizacion para desarrollo</h3>
+            <ul>
+              <li>Preparacion de prompts de implementacion desde US y OpenAPI.</li>
+              <li>Generacion de esqueletos de cliente/servidor desde OpenAPI.</li>
+              <li>Enlace de implementacion externa en `RTM.yaml` mediante `repo_url`, `pr_url`, `commit_sha`.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Automatizacion de validacion</h3>
+            <ul>
+              <li>Reglas `VAL-*` para agentes de validacion documental.</li>
+              <li>Deteccion de incoherencias reciprocas entre Epica, FRS y US.</li>
+              <li>Control de no duplicacion de matrices de trazabilidad.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Conclusiones</h2>
+        <div class="cards">
+          <div class="card">
+            <h3>Fortalezas actuales</h3>
+            <ul>
+              <li>Flujo documental claro y validable.</li>
+              <li>Trazabilidad jerarquica, funcional, de riesgo y de API.</li>
+              <li>Modelo apto para agentes analistas y validadores.</li>
+              <li>Preparacion real para automatizar especificacion y QA.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Limites actuales</h3>
+            <ul>
+              <li>No sustituye una plantilla SDD tecnica completa por componente.</li>
+              <li>No incluye implementacion ni despliegue de microservicios.</li>
+              <li>La certificacion formal requiere controles operativos y evidencias adicionales.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Siguiente evolucion recomendada</h3>
+            <ul>
+              <li>Crear `software-design-description.template.md`.</li>
+              <li>Conectar `OpenAPI -> ADR -> componente tecnico`.</li>
+              <li>Generar un agente validador documental especializado sobre `VAL-*`.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Informe ejecutivo generado para la plataforma documental SDD. Base adecuada para gobierno documental, trazabilidad auditable y automatizacion guiada por especificaciones.
+    </div>
+  </div>
+</body>
+</html>
