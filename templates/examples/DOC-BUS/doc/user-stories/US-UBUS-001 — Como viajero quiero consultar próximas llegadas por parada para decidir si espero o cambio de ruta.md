@@ -21,7 +21,7 @@
 | **Prioridad**               | alta |
 | **Tipo de historia**        | funcional |
 | **Porcentaje de completud** | 100% |
-| **Fuente**                  | analysis/urban-bus-initial-analysis.txt |
+| **Fuente**                  | analysis/Documento inicial de analisis.txt |
 | **Sesión refinamiento**     | REF-UBUS-2026-03-10-01 |
 | **Enlace RTM**              | traceability/RTM.yaml#US-UBUS-001 |
 | **Método verificación**     | test |

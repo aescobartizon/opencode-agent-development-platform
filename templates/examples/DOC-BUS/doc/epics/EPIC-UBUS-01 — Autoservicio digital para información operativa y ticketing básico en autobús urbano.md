@@ -18,7 +18,7 @@
 | **Submódulo Funcional**     | Información Operativa y Ticketing Urbano |
 | **Prioridad**               | crítica |
 | **Porcentaje de completud** | 78% |
-| **Fuente**                  | analysis/urban-bus-initial-analysis.txt |
+| **Fuente**                  | analysis/Documento inicial de analisis.txt |
 | **Sesión refinamiento**     | REF-UBUS-2026-03-10-01 |
 | **Enlace RTM**              | traceability/RTM.yaml#EPIC-UBUS-01 |
 | **Objetivo de negocio**     | BGS-UBUS-01 — Incrementar el autoservicio digital del viajero urbano |

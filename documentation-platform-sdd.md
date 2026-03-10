@@ -27,6 +27,7 @@ El flujo normativo de trabajo es el siguiente:
 6. Cada **US** define uno o mas **escenarios Gherkin** (`GT-*`) que validan los criterios de aceptacion.
 7. Los **riesgos** identificados en FRS y US deben quedar cubiertos por pruebas cuando su impacto lo requiera.
 8. La trazabilidad estructurada se refleja en `traceability/RTM.yaml` mediante `LINK-NNN`.
+9. Cuando sea necesario trazar una épica de forma agregada en `RTM.yaml`, el enlace puede incluir el campo opcional `epica` además de los campos de requisito e historia.
 
 Cadena objetivo de trazabilidad:
 
@@ -159,6 +160,12 @@ La US debe trazar como minimo a:
 | US | Cobertura de riesgo | 0..n | tabla interna | `§14 Trazabilidad de cobertura funcional y riesgo` | si | todo riesgo alto debe tener al menos una fila tipo `riesgo` |
 | US | Evidencia | 0..n | referencia directa | columna `Evidencia` en `§14` | si | toda cobertura `cubierta` debe tener evidencia asociada |
 | US | RTM | 1 | identificador | `LINK-NNN` | si | toda US debe tener enlace RTM |
+
+Nota normativa para `RTM.yaml`:
+
+- el campo `epica` es opcional y se usa cuando se necesita representar una trazabilidad agregada de nivel épica,
+- los campos `requisito` e `historia` siguen siendo los campos estructurados principales para FRS y US,
+- un mismo `LINK-NNN` no debe mezclar varias relaciones ambiguas en una sola entrada.
 
 ---
 

@@ -1,2 +1,0 @@
-link_id,requirement_id,user_story_id,test_case_id,service_id,repo_url,pr_url,commit_sha,status
-LINK-001,FRS-000,US-000,TC-000,SVC-000,,,,pending-template

@@ -89,13 +89,15 @@ Reglas:
 
 Debes trabajar sobre estas rutas del proyecto:
 
-- epicas: `backlog/epics/`
-- FRS: `docs/requirements/functional/`
-- user stories: `backlog/user-stories/`
+- epicas: `docs/requirements/functional/{modulo}/{submodulo}/epics/`
+- FRS: `docs/requirements/functional/{modulo}/{submodulo}/frs/`
+- user stories: `docs/requirements/functional/{modulo}/{submodulo}/us/`
 - OpenAPI derivada: `spec/open-api/`
 - trazabilidad estructurada: `traceability/RTM.yaml`
 
 No usar estructuras alternativas tipo `use-cases/`, `epics_to_use_cases.md` o `use_cases_to_openapi.md`.
+
+Si la ruta `docs/requirements/functional/{modulo}/{submodulo}/` no existe, debes crearla junto con sus subcarpetas `epics/`, `frs/` y `us/` antes de generar artefactos.
 
 ---
 
@@ -156,9 +158,7 @@ Consultar `.processed_documents.log`.
 
 Revisar:
 
-- `backlog/epics/`
 - `docs/requirements/functional/`
-- `backlog/user-stories/`
 - `spec/open-api/`
 - `traceability/RTM.yaml`
 
@@ -189,6 +189,14 @@ Solo preguntar al usuario si la clasificacion es realmente ambigua y cambia mate
 
 Usar `docs/templates/epic.template.md`.
 
+Antes de guardar la epica, debes asegurar que existe la ruta:
+
+```text
+docs/requirements/functional/{modulo}/{submodulo}/epics/
+```
+
+Si no existe, crearla.
+
 Completar como minimo:
 
 - objetivo de negocio
@@ -204,7 +212,7 @@ Completar como minimo:
 Guardar en:
 
 ```text
-backlog/epics/
+docs/requirements/functional/{modulo}/{submodulo}/epics/
 ```
 
 La epica debe trazar a FRS y US agregadas. No debe bajar a detalle de Gherkin individual.
@@ -214,6 +222,14 @@ La epica debe trazar a FRS y US agregadas. No debe bajar a detalle de Gherkin in
 Cada bloque funcional coherente del documento debe convertirse en una FRS.
 
 Usar `docs/templates/functional-requirement.template.md`.
+
+Antes de guardar la FRS, debes asegurar que existe la ruta:
+
+```text
+docs/requirements/functional/{modulo}/{submodulo}/frs/
+```
+
+Si no existe, crearla.
 
 Completar como minimo:
 
@@ -232,7 +248,7 @@ Completar como minimo:
 Guardar en:
 
 ```text
-docs/requirements/functional/
+docs/requirements/functional/{modulo}/{submodulo}/frs/
 ```
 
 Si no hay informacion suficiente en una seccion, usar `pendiente de refinamiento` sin dejar placeholders.
@@ -242,6 +258,14 @@ Si no hay informacion suficiente en una seccion, usar `pendiente de refinamiento
 Cada FRS debe derivar una o varias US cuando el documento permita descomponer comportamiento verificable.
 
 Usar `docs/templates/user-story.template.md`.
+
+Antes de guardar la US, debes asegurar que existe la ruta:
+
+```text
+docs/requirements/functional/{modulo}/{submodulo}/us/
+```
+
+Si no existe, crearla.
 
 Cada US debe contener como minimo:
 
@@ -258,7 +282,7 @@ Cada US debe contener como minimo:
 Guardar en:
 
 ```text
-backlog/user-stories/
+docs/requirements/functional/{modulo}/{submodulo}/us/
 ```
 
 Si algun detalle falta, usar `pendiente de refinamiento`, pero mantener la estructura completa de la plantilla.
@@ -310,6 +334,27 @@ Usar formato:
 ```text
 timestamp | documento | modulo | submodulo | epics | frs | us | openapi
 ```
+
+## Paso 11 - Invocar validacion y remediacion de trazabilidad
+
+Una vez terminada la generacion documental y actualizado el registro de procesamiento, debes invocar al agente `AgentValidateDocFlow` sobre el repositorio actual.
+
+Objetivo de la invocacion:
+
+- validar el flujo `Epica -> FRS -> US -> OpenAPI`
+- validar cobertura `AC -> GT -> COV`
+- validar riesgos, evidencia y `RTM.yaml`
+- corregir automaticamente la trazabilidad cuando exista evidencia documental suficiente
+
+Modo esperado:
+
+- ejecutar `AgentValidateDocFlow` en **modo remediacion**
+
+Reglas:
+
+- si el validador puede corregir automaticamente, debes aceptar esas correcciones como parte del resultado final
+- si el validador detecta decisiones funcionales no inferibles, debes trasladar al usuario una unica pregunta concreta solo despues de haber aplicado todas las correcciones automaticas posibles
+- no des por finalizado el trabajo sin esta validacion final
 
 ---
 
@@ -376,6 +421,8 @@ El resultado es correcto solo si:
 - no se crearon matrices duplicadas de trazabilidad
 - todas las plantillas fueron usadas correctamente
 - las lagunas de informacion quedaron marcadas como `pendiente de refinamiento`
+- `AgentValidateDocFlow` fue ejecutado al final
+- la trazabilidad quedo validada y remediada automaticamente cuando fue posible
 
 ---
 
@@ -422,6 +469,18 @@ lista clara
 ## Trazabilidad actualizada
 
 confirmacion de `traceability/RTM.yaml`
+
+## Validacion final
+
+resultado de `AgentValidateDocFlow`
+
+## Correcciones automaticas aplicadas
+
+lista de remediaciones de trazabilidad aplicadas por `AgentValidateDocFlow`
+
+## Pendientes que requieren decision del usuario
+
+lista corta solo si el validador no pudo cerrar toda la trazabilidad automaticamente
 
 ## Registro actualizado
 

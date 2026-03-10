@@ -19,7 +19,7 @@
 | **Épica**                   | EPIC-UBUS-01 — Autoservicio digital para información operativa y ticketing básico en autobús urbano |
 | **Prioridad**               | alta |
 | **Porcentaje de completud** | 86% |
-| **Fuente**                  | analysis/urban-bus-initial-analysis.txt |
+| **Fuente**                  | analysis/Documento inicial de analisis.txt |
 | **Sesión refinamiento**     | REF-UBUS-2026-03-10-01 |
 | **Enlace RTM**              | traceability/RTM.yaml#FRS-UBUS-001 |
 | **Método verificación**     | test |

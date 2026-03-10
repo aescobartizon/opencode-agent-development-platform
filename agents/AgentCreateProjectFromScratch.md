@@ -43,7 +43,7 @@ Debes crear una estructura de repositorio que soporte como mínimo:
 
 1. Requisitos funcionales.
 2. Requisitos técnicos.
-3. Casos de uso funcionales.
+3. Descomposicion funcional basada en epicas, FRS e historias de usuario.
 4. Registro de servicios y contratos de integración entre microservicios.
 5. Informes ejecutivos.
 6. Trazabilidad entre requisitos, historias de usuario, implementación (refs a repos externos) y test cases.
