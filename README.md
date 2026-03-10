@@ -37,6 +37,25 @@ Este repositorio sirve como plataforma de trabajo para:
 
 El archivo `opencode.jsonc` habilita permisos abiertos y define un endpoint MCP remoto en `http://127.0.0.1:8081/mcp`.
 
+## Convenciones de rutas
+
+- `agents/`: definiciones de agentes versionadas en este repositorio de plataforma.
+- `skills/`: skills versionadas y cargables por OpenCode.
+- `templates/`: plantillas fuente versionadas para ser copiadas a proyectos generados.
+
+Cuando un agente o skill necesite una plantilla, debe resolverla en este orden:
+
+1. `templates/` relativo al repositorio actual
+2. `~/.config/opencode/templates/` como fallback global del usuario
+
+Esto evita depender solo de rutas externas no versionadas.
+
+## Modelo de generacion
+
+Este repositorio de plataforma usa assets en raiz (`agents/`, `skills/`, `templates/`).
+
+Los proyectos generados por el agente pueden incluir una zona `.opencode/` propia para alojar agentes, skills y comandos del proyecto destino. Esa estructura no sustituye los assets fuente de esta plataforma; los complementa.
+
 ## Uso esperado
 
 Este repositorio esta pensado como base de desarrollo y mantenimiento para evolucionar:

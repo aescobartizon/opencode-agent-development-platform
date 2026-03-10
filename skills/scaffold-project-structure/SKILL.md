@@ -1,219 +1,250 @@
 ---
 name: scaffold-project-structure
-description: "Procedimiento paso a paso para crear la estructura de directorios y archivos plantilla de un proyecto microservicios en el momento cero. Solo requiere nombre, descripcion y equipo. No crea servicios, frontends ni infra — eso es responsabilidad de AgentArchitect y AgentDevOps."
+description: "Procedimiento para crear la base estructural de un repositorio de gobernanza para proyectos de microservicios en modelo multi-repo. Usa plantillas relativas del repo y fallback global."
 license: MIT
 compatibility: opencode
 ---
 
 ## Que hace esta skill
 
-Genera mediante comandos bash la estructura base de directorios y archivos plantilla
-de un proyecto microservicios, sustituyendo los placeholders por los valores reales.
+Esta skill describe como crear, desde cero, un **repositorio de gobernanza** para un proyecto con arquitectura de microservicios bajo modelo **multi-repo**.
 
-En este momento cero del proyecto **no se conocen** los microservicios, frontends
-ni el proveedor de nube, por lo que:
-- `services/` se crea con solo un `.gitkeep`
-- `frontend/` se crea con solo un `.gitkeep`
-- `infra/` se crea con solo un `.gitkeep`
-- `.github/workflows/` se crea con solo un `.gitkeep`
+El resultado esperado es un repositorio central de gobierno que contiene:
+
+- documentacion del proyecto,
+- requisitos funcionales y tecnicos,
+- trazabilidad,
+- backlog funcional,
+- registro de servicios y contratos,
+- soporte para QA, ops y agentes,
+- plantillas reutilizables.
+
+No crea microservicios, frontends ni infraestructura de despliegue por servicio.
+
+## Convenciones de rutas
+
+### En la plataforma actual
+
+Los assets versionados viven en estas rutas del repositorio de la plataforma:
+
+- `agents/`
+- `skills/`
+- `templates/`
+
+### En el proyecto generado
+
+El proyecto generado debe incluir, como minimo, esta estructura:
+
+```text
+/
+├── README.md
+├── INDEX.md
+├── AGENTS.md
+├── PROJECT_REPORT.html
+├── .opencode/
+│   ├── agents/
+│   ├── commands/
+│   └── skills/
+├── docs/
+│   ├── project/
+│   ├── requirements/
+│   │   ├── functional/
+│   │   ├── technical/
+│   │   └── templates/
+│   ├── architecture/
+│   ├── adr/
+│   ├── refinement/
+│   │   ├── sessions/
+│   │   ├── evidence/
+│   │   └── pending-questions.md
+│   ├── executive-reports/
+│   ├── qa/
+│   └── templates/
+├── traceability/
+├── backlog/
+│   ├── epics/
+│   └── use-cases/
+├── services/
+│   ├── registry.yaml
+│   └── contracts/
+├── spec/
+│   └── open-api/
+├── src/
+├── tests/
+├── ops/
+├── agents/
+└── artifacts/
+```
 
 ## Variables requeridas
 
 | Variable | Origen |
 |---|---|
-| `PROYECTO` | `nombre_proyecto` del usuario |
-| `BASE_DIR` | `directorio_base` del usuario (o directorio actual) |
-| `FECHA` | Fecha actual en formato `YYYY-MM-DD` |
+| `PROJECT_NAME` | nombre del proyecto |
+| `BASE_DIR` | directorio destino base |
+| `PROJECT_DESCRIPTION` | descripcion breve del proyecto |
+| `DATE` | fecha actual en formato `YYYY-MM-DD` |
+
+## Resolucion de plantillas
+
+Resolver siempre las plantillas con este orden:
+
+1. `templates/` del repositorio actual
+2. `~/.config/opencode/templates/` como fallback global
+
+Plantillas obligatorias:
+
+- `templates/executive-report.template.html`
+- `templates/functional-requirement.template.md`
+
+Destinos obligatorios en el proyecto generado:
+
+- `docs/templates/executive-report.template.html`
+- `docs/templates/functional-requirement.template.md`
+- `docs/requirements/templates/functional-requirement.template.md`
 
 ## Procedimiento
 
-### Paso 1 — Verificar que el directorio destino NO existe
+### Paso 1 - Verificar el directorio destino
 
-```powershell
-# Windows PowerShell
-Test-Path "{BASE_DIR}\{PROYECTO}"
-```
-```bash
-# Unix/macOS
-[ -d "{BASE_DIR}/{PROYECTO}" ] && echo "EXISTE" || echo "LIBRE"
-```
+Comprobar si `{BASE_DIR}/{PROJECT_NAME}` ya existe.
 
-Si el directorio EXISTE: alertar al usuario y detener la ejecucion.
+- Si no existe, continuar.
+- Si existe y esta vacio, continuar.
+- Si existe con contenido, no sobrescribir; comparar contra la estructura objetivo y crear solo los faltantes.
 
----
+### Paso 2 - Crear la estructura base
 
-### Paso 2 — Crear directorios raiz de documentacion
+Crear las carpetas raiz y subcarpetas minimas del repositorio de gobernanza:
 
-```powershell
-$dirs = @(
-  ".opencode\agents",
-  "docs\arquitectura\diagramas",
-  "docs\arquitectura\decisiones",
-  "docs\requisitos\negocio",
-  "docs\requisitos\funcionales",
-  "docs\requisitos\no-funcionales",
-  "docs\historias-usuario",
-  "docs\api-specs\openapi",
-  "docs\api-specs\asyncapi",
-  "docs\api-specs\graphql",
-  "docs\trazabilidad",
-  "docs\refinamientos",
-  "docs\informes-ejecutivos",
-  "docs\runbooks",
-  "tests\e2e",
-  "tests\rendimiento",
-  "tests\planes-de-prueba",
-  "scripts",
-  ".github\workflows"
-)
-foreach ($dir in $dirs) {
-  New-Item -ItemType Directory -Force -Path "{BASE_DIR}\{PROYECTO}\$dir" | Out-Null
-}
-```
+- `.opencode/agents`
+- `.opencode/commands`
+- `.opencode/skills`
+- `docs/project`
+- `docs/requirements/functional`
+- `docs/requirements/technical`
+- `docs/requirements/templates`
+- `docs/architecture`
+- `docs/adr`
+- `docs/refinement/sessions`
+- `docs/refinement/evidence`
+- `docs/executive-reports`
+- `docs/qa`
+- `docs/templates`
+- `traceability`
+- `backlog/epics`
+- `backlog/use-cases`
+- `services/contracts`
+- `spec/open-api`
+- `src`
+- `tests`
+- `ops`
+- `agents`
+- `artifacts`
 
----
+### Paso 3 - Crear ficheros base obligatorios
 
-### Paso 3 — Crear directorios vacios (con .gitkeep) para capas sin definir
+Crear como minimo:
 
-```powershell
-$placeholders = @(
-  "services",
-  "frontend",
-  "shared",
-  "infra",
-  "docs\api-specs\openapi",
-  "docs\api-specs\asyncapi",
-  "docs\api-specs\graphql",
-  "docs\arquitectura\diagramas",
-  "tests\e2e",
-  "tests\rendimiento",
-  ".github\workflows"
-)
-foreach ($dir in $placeholders) {
-  $gitkeep = "{BASE_DIR}\{PROYECTO}\$dir\.gitkeep"
-  New-Item -ItemType File -Force -Path $gitkeep | Out-Null
-}
-```
+- `README.md`
+- `INDEX.md`
+- `AGENTS.md`
+- `traceability/requirements_trace.md`
+- `traceability/end_to_end_traceability.csv`
+- `traceability/epics_to_use_cases.md`
+- `traceability/RTM.yaml`
+- `traceability/use_cases_to_openapi.md`
+- `services/registry.yaml`
+- `docs/refinement/sessions/INDEX.md`
+- `PROJECT_REPORT.html`
 
----
+Crear tambien placeholders vacios donde aplique:
 
-### Paso 4 — Generar archivos plantilla
+- `services/contracts/.gitkeep`
+- `spec/open-api/.gitkeep`
+- `src/.gitkeep`
+- `tests/.gitkeep`
+- `ops/.gitkeep`
 
-Usar la herramienta `write` de OpenCode para escribir cada archivo.
-Sustituir en todos los archivos:
-- `{nombre_proyecto}` → valor del parametro
-- `{descripcion}` → valor del parametro
-- `{equipo}` → valor del parametro
-- `{version_inicial}` → valor del parametro
-- `{fecha_actual}` → fecha de hoy en YYYY-MM-DD
+### Paso 4 - Copiar plantillas
 
-**Archivos a generar (en orden):**
+Intentar primero copiar desde rutas relativas del repo actual.
 
-```
-1.  README.md
-2.  AGENTS.md
-3.  CONTRIBUTING.md
-4.  .gitignore
-5.  docs/arquitectura/vision-general.md
-6.  docs/arquitectura/mapa-servicios.md          (placeholder)
-7.  docs/arquitectura/flujo-datos.md             (placeholder)
-8.  docs/arquitectura/decisiones/ADR-0000-plantilla.md
-9.  docs/requisitos/negocio/BRS-000-plantilla.md
-10. docs/requisitos/negocio/indice.md
-11. docs/requisitos/funcionales/FRS-000-plantilla.md
-12. docs/requisitos/funcionales/indice.md
-13. docs/requisitos/no-funcionales/NFR-rendimiento.md
-14. docs/requisitos/no-funcionales/NFR-seguridad.md
-15. docs/requisitos/no-funcionales/NFR-disponibilidad.md
-16. docs/historias-usuario/US-000-plantilla.md
-17. docs/historias-usuario/indice.md
-18. docs/trazabilidad/RTM.yaml                   (FUENTE DE VERDAD — enlaces: [])
-19. docs/trazabilidad/RTM.md
-20. docs/trazabilidad/informe-cobertura.md
-21. docs/refinamientos/REFINAMIENTO-000-plantilla.md
-22. docs/refinamientos/indice.md
-23. docs/informes-ejecutivos/INFORME-EJE-000-plantilla.md
-24. docs/informes-ejecutivos/indice.md
-25. docs/runbooks/despliegue.md                  (placeholder)
-26. docs/runbooks/rollback.md                    (placeholder)
-27. docs/runbooks/respuesta-incidentes.md        (placeholder)
-28. tests/planes-de-prueba/estrategia-pruebas.md
-29. tests/planes-de-prueba/plan-pruebas-v1.md
-30. scripts/generar-rtm.sh
-31. scripts/validar-trazabilidad.sh
-```
-
----
-
-### Paso 5 — Inicializar repositorio git
+Unix:
 
 ```bash
-git init "{BASE_DIR}/{PROYECTO}"
-git -C "{BASE_DIR}/{PROYECTO}" add .
-git -C "{BASE_DIR}/{PROYECTO}" commit -m "chore: estructura base del proyecto inicializada por AgentCreateProjectFromScratch"
+cp templates/executive-report.template.html docs/templates/executive-report.template.html
+cp templates/functional-requirement.template.md docs/templates/functional-requirement.template.md
+cp templates/functional-requirement.template.md docs/requirements/templates/functional-requirement.template.md
 ```
 
----
+Windows:
 
-### Paso 6 — Mostrar resumen final
-
-```powershell
-# Contar directorios y archivos
-$dirs  = (Get-ChildItem -Path "{BASE_DIR}\{PROYECTO}" -Recurse -Directory).Count
-$files = (Get-ChildItem -Path "{BASE_DIR}\{PROYECTO}" -Recurse -File).Count
-Write-Host "Directorios creados: $dirs"
-Write-Host "Archivos creados:    $files"
+```cmd
+copy "templates\executive-report.template.html" "docs\templates\executive-report.template.html"
+copy "templates\functional-requirement.template.md" "docs\templates\functional-requirement.template.md"
+copy "templates\functional-requirement.template.md" "docs\requirements\templates\functional-requirement.template.md"
 ```
 
-Imprimir al usuario:
+Si la ruta relativa no existe o falla la copia, usar fallback global:
 
-```
-============================================================
-  Proyecto {PROYECTO} inicializado correctamente
-============================================================
+Unix:
 
-  Directorio raiz : {BASE_DIR}/{PROYECTO}
-  Directorios     : XX
-  Archivos        : XX
-
-  Proximos pasos recomendados:
-  1. Capturar requisitos de negocio con @AgentRequirementsAnalyst
-  2. Definir arquitectura de servicios con @AgentArchitect
-  3. Crear historias de usuario con @AgentUserStoryWriter
-  4. Provisionar infraestructura con @AgentDevOps
-  5. Generar casos de prueba con @AgentTestGenerator
-
-  Trazabilidad:
-    Fuente de verdad → docs/trazabilidad/RTM.yaml
-    Vista humana     → docs/trazabilidad/RTM.md
-    Convenciones     → AGENTS.md
-============================================================
+```bash
+cp ~/.config/opencode/templates/executive-report.template.html docs/templates/executive-report.template.html
+cp ~/.config/opencode/templates/functional-requirement.template.md docs/templates/functional-requirement.template.md
+cp ~/.config/opencode/templates/functional-requirement.template.md docs/requirements/templates/functional-requirement.template.md
 ```
 
----
+Si ambos metodos fallan, leer el contenido con `read` y escribirlo con `write`.
 
-## Verificacion post-ejecucion
+### Paso 5 - Inicializar trazabilidad
 
-Confirmar que estos archivos criticos existen antes de reportar exito:
+Crear estructuras vacias y validas:
 
-- [ ] `README.md`
-- [ ] `AGENTS.md`
-- [ ] `.gitignore`
-- [ ] `docs/trazabilidad/RTM.yaml`
-- [ ] `docs/trazabilidad/RTM.md`
-- [ ] `docs/requisitos/negocio/BRS-000-plantilla.md`
-- [ ] `docs/requisitos/funcionales/FRS-000-plantilla.md`
-- [ ] `docs/historias-usuario/US-000-plantilla.md`
-- [ ] `docs/arquitectura/decisiones/ADR-0000-plantilla.md`
-- [ ] `tests/planes-de-prueba/estrategia-pruebas.md`
-- [ ] `services/.gitkeep`
-- [ ] `frontend/.gitkeep`
-- [ ] `infra/.gitkeep`
+- `traceability/requirements_trace.md`
+- `traceability/end_to_end_traceability.csv`
+- `traceability/epics_to_use_cases.md`
+- `traceability/RTM.yaml` con `enlaces: []`
+- `traceability/use_cases_to_openapi.md`
 
-## Lo que esta skill NO hace
+### Paso 6 - Inicializar registro de servicios
 
-- No crea carpetas de microservicios individuales (`services/{nombre}/`) — `AgentArchitect`
-- No crea carpetas de frontends (`frontend/{nombre}/`) — `AgentArchitect`
-- No genera ficheros de infraestructura (Terraform, K8s) — `AgentDevOps`
-- No genera pipelines CI/CD — `AgentDevOps`
-- No genera contratos OpenAPI/AsyncAPI — `AgentArchitect`
+Crear `services/registry.yaml` con estructura completa y `services: []`.
+
+No inventar servicios.
+
+### Paso 7 - Generar informe ejecutivo
+
+Usar `docs/templates/executive-report.template.html` para generar `PROJECT_REPORT.html`.
+
+- Sustituir placeholders por valores reales.
+- Copiar tambien el resultado a `docs/executive-reports/INF-EJE-001.html`.
+
+### Paso 8 - Validar coherencia final
+
+Confirmar que:
+
+- existen todos los ficheros obligatorios,
+- las plantillas fueron copiadas,
+- no hay placeholders sin sustituir en documentos instanciados,
+- `services/registry.yaml` y `traceability/RTM.yaml` tienen estructura valida,
+- el repositorio queda listo para evolucionar con agentes y equipos humanos.
+
+## Lo que esta skill no hace
+
+- No crea repositorios de microservicios
+- No implementa logica de negocio
+- No define cloud provider
+- No genera pipelines concretos de despliegue por servicio
+- No hace `git commit` ni `git push` automaticamente
+
+## Criterio de exito
+
+La skill queda bien aplicada si el repositorio generado:
+
+- es entendible para un miembro nuevo del equipo,
+- usa modelo multi-repo con repositorio central de gobernanza,
+- deja trazabilidad lista desde el inicio,
+- reutiliza plantillas versionadas desde `templates/` o su fallback global,
+- no depende exclusivamente de rutas hardcodeadas fuera del repo.

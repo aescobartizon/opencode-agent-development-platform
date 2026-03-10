@@ -251,43 +251,68 @@ Cuando se te invoque, sigue este orden:
 1. **Leer** nombre del proyecto, contexto y restricciones. Si el directorio destino ya existe con contenido, seguir el protocolo de repositorio parcial (ver sección **Protocolo para repositorios parciales**).
 2. **Crear** la estructura raíz de directorios.
 3. **Generar** `README.md`, `INDEX.md` y `AGENTS.md`.
-4. **Crear** directorios documentales y copiar **todas** las plantillas desde el directorio global de plantillas al proyecto. Ejecutar los siguientes pasos en orden para cada plantilla:
+4. **Crear** directorios documentales y copiar **todas** las plantillas al proyecto. Resolver siempre el origen con este orden de prioridad:
 
-   **Paso 4a — detectar sistema operativo y ruta base de plantillas:**
+   1. **Origen relativo al repositorio de la plataforma**: `templates/`
+   2. **Origen global del usuario**: `~/.config/opencode/templates/` (o `%USERPROFILE%\\.config\\opencode\\templates\\` en Windows)
+
+   Ejecutar los siguientes pasos en orden para cada plantilla:
+
+   **Paso 4a — detectar sistema operativo y origen de plantillas disponible:**
    ```bash
    # Detectar si estamos en Git Bash / Unix o en cmd/PowerShell Windows nativo
    uname -s 2>/dev/null || echo "WINDOWS_NATIVE"
    ```
-   - Si el resultado contiene `MINGW`, `CYGWIN`, `Linux` o `Darwin` → usar rutas Unix con `~/` y comando `cp`
-   - Si el resultado es `WINDOWS_NATIVE` → usar rutas Windows con `%USERPROFILE%` y comando `copy`
+   - Si el resultado contiene `MINGW`, `CYGWIN`, `Linux` o `Darwin` → usar rutas Unix y comando `cp`
+   - Si el resultado es `WINDOWS_NATIVE` → usar rutas Windows y comando `copy`
+   - Antes de copiar, comprobar si existe `templates/` en el repositorio actual. Si existe, usarlo como fuente preferente.
+   - Si `templates/` no existe, usar `~/.config/opencode/templates/` o `%USERPROFILE%\\.config\\opencode\\templates\\`.
 
    **Paso 4b — copiar plantilla: informe ejecutivo HTML**
 
-   Git Bash / Unix:
+   Git Bash / Unix (preferente, relativo al repo actual):
+   ```bash
+   cp templates/executive-report.template.html docs/templates/executive-report.template.html
+   ```
+   Git Bash / Unix (fallback global):
    ```bash
    cp ~/.config/opencode/templates/executive-report.template.html docs/templates/executive-report.template.html
    ```
-   Windows nativo:
+   Windows nativo (preferente, relativo al repo actual):
+   ```cmd
+   copy "templates\executive-report.template.html" "docs\templates\executive-report.template.html"
+   ```
+   Windows nativo (fallback global):
    ```cmd
    copy "%USERPROFILE%\.config\opencode\templates\executive-report.template.html" "docs\templates\executive-report.template.html"
    ```
-   Fallback si el comando falla: leer `~/.config/opencode/templates/executive-report.template.html` con el tool `read` y escribir el contenido en `docs/templates/executive-report.template.html` con el tool `write`.
+   Fallback si el comando falla: leer primero `templates/executive-report.template.html`; si no existe, leer `~/.config/opencode/templates/executive-report.template.html`; después escribir el contenido en `docs/templates/executive-report.template.html` con el tool `write`.
 
    **Paso 4c — copiar plantilla: requisito funcional**
 
-   Git Bash / Unix:
+   Git Bash / Unix (preferente, relativo al repo actual):
+   ```bash
+   cp templates/functional-requirement.template.md docs/templates/functional-requirement.template.md
+   cp templates/functional-requirement.template.md docs/requirements/templates/functional-requirement.template.md
+   ```
+   Git Bash / Unix (fallback global):
    ```bash
    cp ~/.config/opencode/templates/functional-requirement.template.md docs/templates/functional-requirement.template.md
    cp ~/.config/opencode/templates/functional-requirement.template.md docs/requirements/templates/functional-requirement.template.md
    ```
-   Windows nativo:
+   Windows nativo (preferente, relativo al repo actual):
+   ```cmd
+   copy "templates\functional-requirement.template.md" "docs\templates\functional-requirement.template.md"
+   copy "templates\functional-requirement.template.md" "docs\requirements\templates\functional-requirement.template.md"
+   ```
+   Windows nativo (fallback global):
    ```cmd
    copy "%USERPROFILE%\.config\opencode\templates\functional-requirement.template.md" "docs\templates\functional-requirement.template.md"
    copy "%USERPROFILE%\.config\opencode\templates\functional-requirement.template.md" "docs\requirements\templates\functional-requirement.template.md"
    ```
-   Fallback si el comando falla: leer `~/.config/opencode/templates/functional-requirement.template.md` con el tool `read` y escribir el contenido en ambos destinos con el tool `write`.
+   Fallback si el comando falla: leer primero `templates/functional-requirement.template.md`; si no existe, leer `~/.config/opencode/templates/functional-requirement.template.md`; después escribir el contenido en ambos destinos con el tool `write`.
 
-   **Regla general de fallback:** si cualquier comando `cp` o `copy` falla por cualquier motivo, usar siempre el tool `read` para leer el fichero de origen y el tool `write` para escribirlo en el destino. Nunca dejar una plantilla sin copiar.
+   **Regla general de fallback:** si cualquier comando `cp` o `copy` falla por cualquier motivo, usar siempre el tool `read` para leer el fichero de origen. Probar primero la ruta relativa `templates/`; si no existe, usar la ruta global del usuario. Nunca dejar una plantilla sin copiar.
 5. **Inicializar** la trazabilidad (`requirements_trace.md`, `end_to_end_traceability.csv`, `epics_to_use_cases.md`, `RTM.yaml`, `use_cases_to_openapi.md`).
 6. **Crear** el registro de servicios (`services/registry.yaml`) y la carpeta de contratos (`services/contracts/.gitkeep`). Crear también `src/`, `tests/` y `ops/` con sus `.gitkeep`. Estas carpetas están preparadas para contenido futuro: no se inventan servicios ni contratos.
 7. **Crear** zonas de soporte para agentes en `.opencode/` y `agents/`.
@@ -337,7 +362,7 @@ Al finalizar la creación del repositorio, debes generar un fichero `PROJECT_REP
 
 Usa siempre la plantilla ubicada en `docs/templates/executive-report.template.html`, copiada durante el paso 4.
 
-Si la plantilla no existe por algún motivo, créala leyendo el fichero de origen `~/.config/opencode/templates/executive-report.template.html` antes de continuar.
+Si la plantilla no existe por algún motivo, créala leyendo primero `templates/executive-report.template.html`; si no existe, usar `~/.config/opencode/templates/executive-report.template.html` antes de continuar.
 
 ### Información que debe contener el informe
 
@@ -531,19 +556,24 @@ Este fichero mantiene la trazabilidad bidireccional entre épicas (`E-NNN`) y ca
 
 ## Plantillas externas
 
-Las plantillas **no están embebidas en este fichero**. Se encuentran en `~/.config/opencode/templates/` y deben copiarse al proyecto durante el **paso 4** del flujo de trabajo.
+Las plantillas **no están embebidas en este fichero**. Deben resolverse con el siguiente orden:
+
+1. `templates/` en el repositorio actual de la plataforma
+2. `~/.config/opencode/templates/` como fallback global del usuario
 
 | Plantilla | Origen | Destinos en el proyecto |
 |-----------|--------|-------------------------|
-| Informe ejecutivo HTML | `~/.config/opencode/templates/executive-report.template.html` | `docs/templates/executive-report.template.html` |
-| Requisito funcional MD | `~/.config/opencode/templates/functional-requirement.template.md` | `docs/templates/functional-requirement.template.md`<br>`docs/requirements/templates/functional-requirement.template.md` |
+| Informe ejecutivo HTML | `templates/executive-report.template.html` o `~/.config/opencode/templates/executive-report.template.html` | `docs/templates/executive-report.template.html` |
+| Requisito funcional MD | `templates/functional-requirement.template.md` o `~/.config/opencode/templates/functional-requirement.template.md` | `docs/templates/functional-requirement.template.md`<br>`docs/requirements/templates/functional-requirement.template.md` |
 
 ### Reglas de copia
 
 1. Intentar siempre con `cp` (Git Bash / Unix) o `copy` (Windows nativo) primero.
-2. Si el comando falla, usar el tool `read` para leer el origen y el tool `write` para escribir cada destino.
-3. **Nunca omitir** la copia de una plantilla — el checklist del paso 8 verifica su existencia.
-4. **No sustituir** los placeholders `{{...}}` al copiar — las plantillas deben quedar intactas. Los placeholders solo se sustituyen al instanciar un documento real a partir de la plantilla.
+2. Resolver primero la fuente relativa `templates/` del repo actual.
+3. Si no existe o el comando falla, usar la fuente global `~/.config/opencode/templates/`.
+4. Si sigue fallando, usar el tool `read` para leer el origen disponible y el tool `write` para escribir cada destino.
+5. **Nunca omitir** la copia de una plantilla — el checklist del paso 8 verifica su existencia.
+6. **No sustituir** los placeholders `{{...}}` al copiar — las plantillas deben quedar intactas. Los placeholders solo se sustituyen al instanciar un documento real a partir de la plantilla.
 
 ### Uso de las plantillas
 
