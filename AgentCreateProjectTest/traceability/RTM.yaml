@@ -1,0 +1,16 @@
+# traceability/RTM.yaml
+# Requirements Traceability Matrix — AgentCreateProjectNoDupTrace
+project: "AgentCreateProjectNoDupTrace"
+version: "1.0.0"
+enlaces: []
+# Estructura de cada enlace:
+#   - id: LINK-001
+#     requisito: FRS-001       # FRS-NNN o BRS-NNN
+#     historia: US-001         # US-NNN
+#     openapi_files: []        # lista de rutas en spec/open-api/ si aplica
+#     test_case: TC-001        # TC-NNN
+#     servicio: SVC-001        # SVC-NNN
+#     repo_url: ""            # URL del repo del servicio
+#     pr_url: ""              # URL del PR relacionado
+#     commit_sha: ""          # SHA del commit relacionado
+#     estado: pendiente        # pendiente | en-progreso | completado | verificado
