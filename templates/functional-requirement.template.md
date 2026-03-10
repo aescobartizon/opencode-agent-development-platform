@@ -345,8 +345,7 @@
 |-----------|------------------|-------------|
 | Requisito de negocio | {{BRS-ID}} | {{BRS_TITLE}} |
 | Épica | {{EPIC-ID}} | {{EPIC_TITLE}} |
-| Caso de uso | {{UC-ID}} | {{UC_TITLE}} |
-| Historia de usuario | {{US-ID}} | {{US_TITLE}} |
+| Historias de usuario derivadas | {{US-LIST}} | Historias de usuario derivadas del requisito |
 | Servicio | {{SVC-ID}} | {{SVC_NAME}} |
 | ADR relacionado | {{ADR-ID}} | {{ADR_TITLE}} |
 | Riesgo relacionado | {{RISK-ID}} | {{RISK_TITLE}} |
