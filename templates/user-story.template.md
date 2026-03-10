@@ -227,9 +227,33 @@ Feature: {{FEATURE_NAME}}
 
 > **Estados sugeridos de test:** `pendiente` | `implementado` | `ejecutado-pass` | `ejecutado-fail` | `bloqueado`
 
+> **Regla obligatoria:** todo `AC-*` definido en la historia debe estar cubierto por al menos un `GT-*`, y todo `GT-*` debe trazar exactamente a un `AC-*`.
+
 ---
 
-## 14. Requisitos no funcionales asociados
+## 14. Trazabilidad de cobertura funcional y riesgo
+
+> Esta sección conecta explícitamente criterios de aceptación, riesgos y escenarios Gherkin.
+> Debe permitir demostrar qué comportamiento funcional y qué mitigaciones quedan realmente cubiertos.
+
+| Cobertura ID | Tipo | Referencia origen | AC relacionado | Test Gherkin | Riesgo relacionado | Control validado | Estado cobertura | Evidencia |
+|--------------|------|-------------------|----------------|--------------|--------------------|------------------|------------------|-----------|
+| COV-001 | funcional | {{FRS-ID}} | AC-001 | GT-001 | — | {{CONTROL_VALIDATED_1}} | {{COVERAGE_STATUS_1}} | {{COVERAGE_EVIDENCE_1}} |
+| COV-002 | riesgo | {{FRS-ID}} | AC-002 | GT-002 | USRSK-001 | {{CONTROL_VALIDATED_2}} | {{COVERAGE_STATUS_2}} | {{COVERAGE_EVIDENCE_2}} |
+| COV-003 | riesgo | {{FRS-ID}} | AC-003 | GT-003 | USRSK-002 | {{CONTROL_VALIDATED_3}} | {{COVERAGE_STATUS_3}} | {{COVERAGE_EVIDENCE_3}} |
+
+> **Tipos válidos:** `funcional` | `riesgo` | `cumplimiento` | `seguridad`
+>
+> **Estados sugeridos:** `cubierta` | `parcial` | `pendiente` | `no-aplica`
+>
+> **Reglas obligatorias:**
+> - todo `AC-*` debe aparecer al menos una vez en esta tabla,
+> - todo riesgo de impacto `alto` debe estar cubierto por al menos una fila de tipo `riesgo`,
+> - toda fila con `Test Gherkin` debe referenciar un `GT-*` definido en la sección 13.
+
+---
+
+## 15. Requisitos no funcionales asociados
 
 | ID | Tipo | Descripción | Criterio medible |
 |----|------|-------------|------------------|
@@ -237,7 +261,7 @@ Feature: {{FEATURE_NAME}}
 
 ---
 
-## 15. Dependencias
+## 16. Dependencias
 
 | Tipo | ID / Sistema | Relación | Descripción |
 |------|--------------|----------|-------------|
@@ -248,7 +272,7 @@ Feature: {{FEATURE_NAME}}
 
 ---
 
-## 16. Observabilidad funcional
+## 17. Observabilidad funcional
 
 ### 16.1 Eventos funcionales
 
@@ -271,15 +295,17 @@ Feature: {{FEATURE_NAME}}
 
 ---
 
-## 17. Riesgos y controles
+## 18. Riesgos y controles
 
 | Riesgo ID | Descripción | Probabilidad | Impacto | Control / mitigación |
 |-----------|-------------|--------------|---------|----------------------|
 | USRSK-001 | {{RISK_1}} | baja/media/alta | baja/media/alta | {{CONTROL_1}} |
 
+> **Regla obligatoria:** todo riesgo con impacto `alto` debe quedar trazado en la sección `14. Trazabilidad de cobertura funcional y riesgo`.
+
 ---
 
-## 18. Trazabilidad
+## 19. Trazabilidad
 
 > Esta sección es obligatoria y debe estar completa antes de dar la historia por lista o cerrada.
 
@@ -291,19 +317,24 @@ Feature: {{FEATURE_NAME}}
 | Épica asociada | {{EPIC-ID}} | {{EPIC-TITLE}} |
 | FRS principal | {{FRS-ID}} | {{FRS-TITLE}} |
 | FRS relacionados | {{FRS-RELATED-LIST}} | Requisitos relacionados si aplica |
-| Historia relacionada | {{US-RELATED-LIST}} | Otras historias relacionadas |
+| Historias relacionadas | {{US-RELATED-LIST}} | Otras historias relacionadas |
 | Criterios de aceptación | AC-001, AC-002, AC-003 | Criterios definidos en §11 |
 | Tests Gherkin | GT-001, GT-002, GT-003 | Escenarios definidos en §13 |
+| Cobertura funcional y riesgo | COV-001, COV-002, COV-003 | Cobertura definida en §14 |
 | Riesgos relacionados | {{RISK-LIST}} | Riesgos asociados |
 | ADR relacionado | {{ADR-ID}} | {{ADR-TITLE}} |
 | Enlace RTM | {{LINK-NNN}} | Entrada en `traceability/RTM.yaml` |
 
 ---
 
-## 19. Notas y decisiones abiertas
+## 20. Notas y decisiones abiertas
 
 | # | Nota / pregunta | Responsable | Estado | Fecha objetivo | Decisión tomada | Evidencia |
 |---|------------------|-------------|--------|----------------|-----------------|----------|
 | 1 | {{NOTE_1}} | {{OWNER_1}} | abierta | {{TARGET_DATE_1}} | {{DECISION_1}} | {{EVIDENCE_REF_1}} |
 
 > **Estados sugeridos:** `abierta` | `en-análisis` | `resuelta` | `descartada`
+
+---
+
+*Plantilla: `user-story.template.md` v1.1.0*

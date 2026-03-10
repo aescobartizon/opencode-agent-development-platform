@@ -283,16 +283,21 @@
 
 > Casos de prueba de alto nivel derivados de los criterios de aceptación. No son tests unitarios; cubren el comportamiento observable del sistema desde fuera.
 
-| ID | Tipo | Título | AC vinculado | Precondición del test | Datos de entrada | Resultado esperado | Resultado ejecución | Prioridad |
-|----|------|--------|--------------|------------------------|------------------|-------------------|---------------------|-----------|
-| TC-001 | funcional | {{TC_TITLE_1}} | AC-001 | {{TC_PRE_1}} | {{TC_INPUT_1}} | {{TC_EXPECTED_1}} | pendiente | alta |
-| TC-002 | funcional | {{TC_TITLE_2}} | AC-002 | {{TC_PRE_2}} | {{TC_INPUT_2}} | {{TC_EXPECTED_2}} | pendiente | media |
-| TC-003 | borde | {{TC_TITLE_3}} | AC-001 | {{TC_PRE_3}} | {{TC_INPUT_3}} | {{TC_EXPECTED_3}} | pendiente | media |
-| TC-004 | negativo | {{TC_TITLE_4}} | AC-002 | {{TC_PRE_4}} | {{TC_INPUT_4}} | {{TC_EXPECTED_4}} | pendiente | alta |
+| ID | Tipo | Título | AC vinculado | US derivada objetivo | Riesgo cubierto | Precondición del test | Datos de entrada | Resultado esperado | Resultado ejecución | Prioridad |
+|----|------|--------|--------------|----------------------|-----------------|------------------------|------------------|-------------------|---------------------|-----------|
+| TC-001 | funcional | {{TC_TITLE_1}} | AC-001 | {{US-ID-1}} | — | {{TC_PRE_1}} | {{TC_INPUT_1}} | {{TC_EXPECTED_1}} | pendiente | alta |
+| TC-002 | funcional | {{TC_TITLE_2}} | AC-002 | {{US-ID-2}} | {{RISK-ID-1}} | {{TC_PRE_2}} | {{TC_INPUT_2}} | {{TC_EXPECTED_2}} | pendiente | media |
+| TC-003 | borde | {{TC_TITLE_3}} | AC-001 | {{US-ID-1}} | {{RISK-ID-2}} | {{TC_PRE_3}} | {{TC_INPUT_3}} | {{TC_EXPECTED_3}} | pendiente | media |
+| TC-004 | negativo | {{TC_TITLE_4}} | AC-002 | {{US-ID-2}} | {{RISK-ID-1}} | {{TC_PRE_4}} | {{TC_INPUT_4}} | {{TC_EXPECTED_4}} | pendiente | alta |
 
 > **Tipos de test:** `funcional` | `negativo` | `borde` | `rendimiento` | `seguridad` | `regresión`
 >
 > **Resultado ejecución:** `pendiente` | `pass` | `fail` | `bloqueado` | `no-aplica`
+>
+> **Reglas obligatorias:**
+> - todo `AC-*` definido en el requisito debe quedar cubierto por al menos un `TC-*`,
+> - toda `US` derivada relevante debe quedar referenciada en uno o más tests cuando exista descomposición a historias,
+> - todo riesgo funcional relevante debe quedar cubierto por al menos un test de alto nivel o marcarse explícitamente como `no-aplica`.
 
 ### Notas de testing
 
@@ -311,6 +316,8 @@
 |-----------|------------------------|--------------|---------|----------------------|--------------------|
 | RSK-001 | {{RISK_1}} | baja/media/alta | baja/media/alta | {{CONTROL_1}} | {{EVIDENCE_1}} |
 | RSK-002 | {{RISK_2}} | baja/media/alta | baja/media/alta | {{CONTROL_2}} | {{EVIDENCE_2}} |
+
+> **Regla obligatoria:** todo riesgo con impacto `alto` debe quedar trazado en la sección `18. Tests de alto nivel` y posteriormente en la US derivada correspondiente mediante criterios de aceptación y tests Gherkin.
 
 ---
 
@@ -352,6 +359,7 @@
 | Control relacionado | {{CTRL-ID}} | {{CTRL_TITLE}} |
 | Sesión refinamiento | {{REF-ID}} | {{REF_TITLE}} |
 | Tests de alto nivel | TC-001, TC-002, TC-003, TC-004 | Ver §18 |
+| Cobertura funcional derivada | {{US-LIST}} + TC-001, TC-002, TC-003, TC-004 | Debe continuar en US con AC y Gherkin |
 | Enlace RTM | {{LINK-NNN}} | Entrada en `traceability/RTM.yaml` |
 
 ---
@@ -381,4 +389,4 @@
 
 ---
 
-*Plantilla: `functional-requirement.template.md` v2.2.0 — AgentProjectFromScratch v1.2.2*
+*Plantilla: `functional-requirement.template.md` v2.3.0 — AgentProjectFromScratch v1.2.2*
