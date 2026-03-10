@@ -1,6 +1,6 @@
 ---
-description: Crea desde cero la base estructural del repositorio de gobernanza para un proyecto software con arquitectura de microservicios, siguiendo el modelo multi-repo. Incluye documentación, requisitos, casos de uso, trazabilidad, contratos de servicio, operación global y soporte para agentes.
-version: 1.2.2
+description: Crea desde cero la base estructural del repositorio de gobernanza para un proyecto software con arquitectura de microservicios, siguiendo el modelo multi-repo. Incluye documentación, requisitos, épicas, historias de usuario, trazabilidad, contratos de servicio, operación global y soporte para agentes.
+version: 1.3.0
 mode: subagent
 temperature: 0.1
 tools:
@@ -110,11 +110,10 @@ Debes crear, salvo que el usuario indique otra cosa, una estructura lógica equi
 ├── traceability/
 │   ├── requirements_trace.md
 │   ├── end_to_end_traceability.csv
-│   ├── epics_to_use_cases.md
 │   └── RTM.yaml
 ├── backlog/
 │   ├── epics/
-│   └── use-cases/
+│   └── user-stories/
 ├── services/
 │   ├── registry.yaml
 │   └── contracts/
@@ -161,13 +160,14 @@ Estrategia global de pruebas, criterios de aceptación cross-servicio y evidenci
 Fuente de verdad para la trazabilidad del proyecto. Contiene:
 - `requirements_trace.md` — trazabilidad general de requisitos
 - `end_to_end_traceability.csv` — trazabilidad extremo a extremo en formato CSV
-- `epics_to_use_cases.md` — trazabilidad bidireccional entre épicas y casos de uso
 - `RTM.yaml` — Requirements Traceability Matrix con referencias a repos de servicio externos
+
+Regla de gobierno: **no duplicar matrices de trazabilidad derivadas** cuando la misma relación ya vive en plantillas fuente (`epic`, `FRS`, `user-story`) y en `RTM.yaml`.
 
 ### backlog
 Backlog operativo del proyecto. Contiene las subcarpetas:
 - **`backlog/epics/`** — Épicas del proyecto (`E-NNN`). Cada épica describe un conjunto de funcionalidad de alto nivel.
-- **`backlog/use-cases/`** — Casos de uso funcionales del sistema, vinculados a épicas mediante la matriz de trazabilidad.
+- **`backlog/user-stories/`** — Historias de usuario (`US-NNN`) derivadas de FRS. Su trazabilidad fina vive en la propia plantilla de historia y en `traceability/RTM.yaml`.
 
 ### services
 Registro central de microservicios y sus contratos de integración. **No contiene código de implementación.**
@@ -178,7 +178,7 @@ Registro central de microservicios y sus contratos de integración. **No contien
 Artefactos del flujo SDD generados por analista, desarrollador, QA y otros agentes. Cada artefacto referencia el servicio y repo de destino.
 
 ### spec/open-api
-Definiciones OpenAPI (YAML) generadas por el analista durante el proceso de análisis y especificación. La organización interna (por caso de uso, por servicio, por épica) se decide conforme avanza la descomposición DDD del proyecto. Inicialmente la carpeta está vacía. La trazabilidad entre casos de uso y ficheros YAML se mantiene en `traceability/use_cases_to_openapi.md`.
+Definiciones OpenAPI (YAML) generadas por el analista durante el proceso de análisis y especificación. La organización interna (por historia de usuario, por servicio o por dominio) se decide conforme avanza la descomposición DDD del proyecto. Inicialmente la carpeta está vacía. La trazabilidad con la API derivada debe mantenerse en la propia `user-story` y en `traceability/RTM.yaml`, sin matrices duplicadas adicionales.
 
 ### src
 Código compartido entre servicios: interfaces comunes, tipos base, SDKs internos y utilidades transversales. **No contiene implementación de microservicios** — esa vive en los repos de servicio independientes.
@@ -213,9 +213,7 @@ Debes generar como mínimo:
 - `AGENTS.md`
 - `traceability/requirements_trace.md`
 - `traceability/end_to_end_traceability.csv`
-- `traceability/epics_to_use_cases.md` — matriz de trazabilidad entre épicas y casos de uso
 - `traceability/RTM.yaml` — Requirements Traceability Matrix estructurada (con `enlaces: []`)
-- `traceability/use_cases_to_openapi.md` — trazabilidad entre casos de uso y definiciones OpenAPI YAML
 - `services/registry.yaml` — registro inicial de repos de servicio (vacío, con estructura completa)
 - `docs/refinement/sessions/INDEX.md`
 - `docs/refinement/pending-questions.md`
@@ -343,9 +341,9 @@ Cuando se te invoque, sigue este orden:
    Fallback si el comando falla: leer todos los ficheros bajo `templates/examples/`; si no existe, usar `~/.config/opencode/templates/examples/`; después escribirlos manteniendo la estructura relativa bajo `docs/templates/examples/`.
 
    **Regla general de fallback:** si cualquier comando `cp` o `copy` falla por cualquier motivo, usar siempre el tool `read` para leer el fichero de origen. Probar primero la ruta relativa `templates/`; si no existe, usar la ruta global del usuario. Nunca dejar una plantilla sin copiar.
-5. **Inicializar** la trazabilidad (`requirements_trace.md`, `end_to_end_traceability.csv`, `epics_to_use_cases.md`, `RTM.yaml`, `use_cases_to_openapi.md`).
+5. **Inicializar** la trazabilidad (`requirements_trace.md`, `end_to_end_traceability.csv`, `RTM.yaml`). No crear matrices derivadas que dupliquen relaciones ya mantenidas en `epic`, `FRS`, `user-story` o `RTM.yaml`.
 6. **Crear** contenido semilla mínimo en carpetas clave para que el repositorio sea entendible desde el primer commit: `docs/project/README.md`, `docs/project/vision.md`, `docs/project/scope.md`, `docs/project/stakeholders.md`, `docs/project/glossary.md`, `docs/requirements/technical/README.md`, `docs/refinement/pending-questions.md` y `docs/refinement/sessions/INDEX.md`.
-7. **Persistir** en Git las carpetas que puedan quedar vacías usando `.gitkeep` o un `README.md` mínimo. Como mínimo, asegurar persistencia en `services/contracts/`, `spec/open-api/`, `src/`, `tests/`, `ops/`, `docs/refinement/evidence/`, `backlog/epics/`, `backlog/use-cases/` y `docs/requirements/functional/`.
+7. **Persistir** en Git las carpetas que puedan quedar vacías usando `.gitkeep` o un `README.md` mínimo. Como mínimo, asegurar persistencia en `services/contracts/`, `spec/open-api/`, `src/`, `tests/`, `ops/`, `docs/refinement/evidence/`, `backlog/epics/`, `backlog/user-stories/` y `docs/requirements/functional/`.
 8. **Crear** el registro de servicios (`services/registry.yaml`) y la carpeta de contratos (`services/contracts/.gitkeep`). Crear también `src/`, `tests/` y `ops/` con sus `.gitkeep`. Estas carpetas están preparadas para contenido futuro: no se inventan servicios ni contratos.
 9. **Crear** zonas de soporte para agentes en `.opencode/` y `agents/`.
 10. **Validar** que la estructura es coherente y completa usando el siguiente checklist:
@@ -359,9 +357,9 @@ Cuando se te invoque, sigue este orden:
    - [ ] `PROJECT_REPORT.html` existe en la raíz
    - [ ] `docs/executive-reports/INF-EJE-001.html` existe
    - [ ] Los ficheros de trazabilidad tienen estructura válida (no están vacíos salvo `.gitkeep`)
-   - [ ] `traceability/use_cases_to_openapi.md` existe con cabecera y tabla vacía
    - [ ] `services/registry.yaml` existe con estructura completa y `services: []`
    - [ ] `traceability/RTM.yaml` existe con estructura completa y `enlaces: []`
+   - [ ] No existen ficheros de trazabilidad duplicados para relaciones ya cubiertas por plantillas fuente y `RTM.yaml`
    - [ ] Las carpetas criticas vacías siguen siendo rastreables por Git mediante `.gitkeep` o `README.md`
 11. **Generar** el informe ejecutivo `PROJECT_REPORT.html` en el directorio raíz usando la plantilla `docs/templates/executive-report.template.html` y copiarlo también a `docs/executive-reports/INF-EJE-001.html`.
 
@@ -500,8 +498,7 @@ El informe debe incluir las siguientes secciones, sustituyendo todos los valores
 |------|--------|-------------|
 | `BRS-NNN` | 3 dígitos | Business Requirement |
 | `FRS-NNN` | 3 dígitos | Functional Requirement |
-| `US-NNN` | 3 dígitos | User Story |
-| `UC-NNN` | 3 dígitos | Use Case (Caso de uso) — ubicado en `backlog/use-cases/` |
+| `US-NNN` | 3 dígitos | User Story — ubicada en `backlog/user-stories/` |
 | `E-NNN` | 3 dígitos | Épica — ubicada en `backlog/epics/` |
 | `SVC-NNN` | 3 dígitos | Servicio — registrado en `services/registry.yaml` |
 | `TC-NNN` | 3 dígitos | Test Case |
@@ -550,8 +547,8 @@ enlaces: []
 # Estructura de cada enlace:
 #   - id: LINK-001
 #     requisito: FRS-001       # FRS-NNN o BRS-NNN
-#     caso_uso: UC-001         # UC-NNN
 #     historia: US-001         # US-NNN
+#     openapi_files: []        # lista de rutas en spec/open-api/ si aplica
 #     test_case: TC-001        # TC-NNN
 #     servicio: SVC-001        # SVC-NNN (referencia a services/registry.yaml)
 #     repo_url: ""             # URL del repo del servicio (opcional)
@@ -562,37 +559,16 @@ enlaces: []
 
 ---
 
-## Contenido mínimo de `traceability/use_cases_to_openapi.md`
+## Regla de no duplicacion de trazabilidad
 
-Este fichero mantiene la trazabilidad entre casos de uso (`UC-NNN`) y las definiciones OpenAPI YAML generadas por el analista en `spec/open-api/`. Se actualiza conforme el analista crea o modifica los ficheros YAML.
+No crear ficheros derivados como `epics_to_use_cases.md`, `use_cases_to_openapi.md` o equivalentes si la misma relacion ya queda representada en:
 
-```markdown
-# Trazabilidad Casos de uso → Definiciones OpenAPI — {{PROJECT_NAME}}
+- la plantilla de `epic`,
+- la plantilla de `functional-requirement`,
+- la plantilla de `user-story`,
+- `traceability/RTM.yaml`.
 
-| ID Caso de uso | Título caso de uso | Fichero OpenAPI | Servicio (SVC-NNN) | Estado | Observaciones |
-|---|---|---|---|---|---|
-| — | — | — | — | — | — |
-```
-
-**Valores del campo Estado:**
-- `pendiente` — el caso de uso existe pero aún no tiene definición YAML
-- `en-progreso` — el analista está redactando el YAML
-- `borrador` — YAML creado, pendiente de revisión
-- `aprobado` — YAML revisado y aprobado para publicar en `services/contracts/`
-
----
-
-## Contenido mínimo de `traceability/epics_to_use_cases.md`
-
-Este fichero mantiene la trazabilidad bidireccional entre épicas (`E-NNN`) y casos de uso (`UC-NNN`):
-
-```markdown
-# Trazabilidad Épicas → Casos de uso — {{PROJECT_NAME}}
-
-| ID Épica | Título épica | ID Caso de uso | Título caso de uso | Estado | Observaciones |
-|---|---|---|---|---|---|
-| — | — | — | — | — | — |
-```
+La trazabilidad OpenAPI debe mantenerse en la `user-story` y reflejarse en `RTM.yaml` cuando corresponda. La trazabilidad jerarquica `Epica -> FRS -> US` debe mantenerse en los propios artefactos fuente y no en matrices duplicadas adicionales.
 
 ---
 

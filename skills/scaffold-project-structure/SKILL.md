@@ -63,7 +63,7 @@ El proyecto generado debe incluir, como minimo, esta estructura:
 ├── traceability/
 ├── backlog/
 │   ├── epics/
-│   └── use-cases/
+│   └── user-stories/
 ├── services/
 │   ├── registry.yaml
 │   └── contracts/
@@ -135,7 +135,7 @@ Crear las carpetas raiz y subcarpetas minimas del repositorio de gobernanza:
 - `docs/templates`
 - `traceability`
 - `backlog/epics`
-- `backlog/use-cases`
+- `backlog/user-stories`
 - `services/contracts`
 - `spec/open-api`
 - `src`
@@ -159,9 +159,7 @@ Crear como minimo:
 - `docs/requirements/technical/README.md`
 - `traceability/requirements_trace.md`
 - `traceability/end_to_end_traceability.csv`
-- `traceability/epics_to_use_cases.md`
 - `traceability/RTM.yaml`
-- `traceability/use_cases_to_openapi.md`
 - `services/registry.yaml`
 - `docs/refinement/pending-questions.md`
 - `docs/refinement/sessions/INDEX.md`
@@ -177,7 +175,7 @@ Crear tambien placeholders vacios donde aplique:
 - `ops/.gitkeep`
 - `docs/refinement/evidence/.gitkeep`
 - `backlog/epics/.gitkeep`
-- `backlog/use-cases/.gitkeep`
+- `backlog/user-stories/.gitkeep`
 - `docs/requirements/functional/.gitkeep`
 
 ### Paso 4 - Copiar plantillas
@@ -217,13 +215,11 @@ Si ambos metodos fallan, leer el contenido con `read` y escribirlo con `write`, 
 
 ### Paso 5 - Inicializar trazabilidad
 
-Crear estructuras vacias y validas:
+Crear estructuras vacias y validas sin duplicar relaciones ya trazadas en `epic`, `FRS`, `user-story` o `RTM.yaml`:
 
 - `traceability/requirements_trace.md`
 - `traceability/end_to_end_traceability.csv`
-- `traceability/epics_to_use_cases.md`
 - `traceability/RTM.yaml` con `enlaces: []`
-- `traceability/use_cases_to_openapi.md`
 
 ### Paso 6 - Inicializar registro de servicios
 
@@ -244,7 +240,7 @@ Como minimo:
 - `ops/.gitkeep`
 - `docs/refinement/evidence/.gitkeep`
 - `backlog/epics/.gitkeep`
-- `backlog/use-cases/.gitkeep`
+- `backlog/user-stories/.gitkeep`
 - `docs/requirements/functional/.gitkeep`
 
 ### Paso 8 - Generar informe ejecutivo
@@ -266,6 +262,7 @@ Confirmar que:
 - `services/registry.yaml` contiene `services: []`,
 - `traceability/RTM.yaml` contiene `enlaces: []`,
 - existen `PROJECT_REPORT.html` y `docs/executive-reports/INF-EJE-001.html`,
+- no existen matrices de trazabilidad derivadas que dupliquen relaciones ya mantenidas en plantillas fuente y `RTM.yaml`,
 - las carpetas criticas vacias siguen siendo rastreables por Git,
 - el repositorio queda listo para evolucionar con agentes y equipos humanos.
 

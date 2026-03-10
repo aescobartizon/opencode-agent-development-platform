@@ -272,7 +272,24 @@ Feature: {{FEATURE_NAME}}
 
 ---
 
-## 17. Observabilidad funcional
+## 17. Especificacion OpenAPI derivada
+
+> Cuando la historia implique interaccion API, el agente analista debe generar o actualizar la especificacion correspondiente en `spec/open-api/`.
+> Esta seccion deja trazabilidad explicita entre la historia y las definiciones API derivadas.
+
+| Artefacto API | Ruta / ID | Tipo | Operacion / evento | Estado | Observaciones |
+|---------------|-----------|------|--------------------|--------|---------------|
+| OpenAPI spec | {{OPENAPI_FILE_1}} | `openapi` | {{OPENAPI_OPERATION_1}} | {{OPENAPI_STATUS_1}} | {{OPENAPI_NOTE_1}} |
+| OpenAPI spec | {{OPENAPI_FILE_2}} | `openapi` | {{OPENAPI_OPERATION_2}} | {{OPENAPI_STATUS_2}} | {{OPENAPI_NOTE_2}} |
+
+> **Reglas obligatorias:**
+> - si la US expone, consulta o modifica comportamiento API, debe existir al menos una entrada en esta tabla,
+> - toda ruta referenciada debe vivir en `spec/open-api/`,
+> - toda especificacion OpenAPI derivada debe poder trazarse con al menos un `AC-*` y un `GT-*`.
+
+---
+
+## 18. Observabilidad funcional
 
 ### 16.1 Eventos funcionales
 
@@ -295,7 +312,7 @@ Feature: {{FEATURE_NAME}}
 
 ---
 
-## 18. Riesgos y controles
+## 19. Riesgos y controles
 
 | Riesgo ID | Descripción | Probabilidad | Impacto | Control / mitigación |
 |-----------|-------------|--------------|---------|----------------------|
@@ -305,7 +322,7 @@ Feature: {{FEATURE_NAME}}
 
 ---
 
-## 19. Trazabilidad
+## 20. Trazabilidad
 
 > Esta sección es obligatoria y debe estar completa antes de dar la historia por lista o cerrada.
 
@@ -318,6 +335,7 @@ Feature: {{FEATURE_NAME}}
 | FRS principal | {{FRS-ID}} | {{FRS-TITLE}} |
 | FRS relacionados | {{FRS-RELATED-LIST}} | Requisitos relacionados si aplica |
 | Historias relacionadas | {{US-RELATED-LIST}} | Otras historias relacionadas |
+| Especificaciones OpenAPI derivadas | {{OPENAPI-LIST}} | Ficheros o definiciones OpenAPI en `spec/open-api/` |
 | Criterios de aceptación | AC-001, AC-002, AC-003 | Criterios definidos en §11 |
 | Tests Gherkin | GT-001, GT-002, GT-003 | Escenarios definidos en §13 |
 | Cobertura funcional y riesgo | COV-001, COV-002, COV-003 | Cobertura definida en §14 |
@@ -327,7 +345,7 @@ Feature: {{FEATURE_NAME}}
 
 ---
 
-## 20. Notas y decisiones abiertas
+## 21. Notas y decisiones abiertas
 
 | # | Nota / pregunta | Responsable | Estado | Fecha objetivo | Decisión tomada | Evidencia |
 |---|------------------|-------------|--------|----------------|-----------------|----------|
@@ -337,4 +355,4 @@ Feature: {{FEATURE_NAME}}
 
 ---
 
-*Plantilla: `user-story.template.md` v1.1.0*
+*Plantilla: `user-story.template.md` v1.2.0*
