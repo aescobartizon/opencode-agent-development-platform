@@ -96,11 +96,13 @@ Plantillas obligatorias:
 
 - `templates/executive-report.template.html`
 - `templates/functional-requirement.template.md`
+- `templates/examples/` cuando exista
 
 Destinos obligatorios en el proyecto generado:
 
 - `docs/templates/executive-report.template.html`
 - `docs/templates/functional-requirement.template.md`
+- `docs/templates/examples/`
 - `docs/requirements/templates/functional-requirement.template.md`
 
 ## Procedimiento
@@ -188,6 +190,7 @@ Unix:
 cp templates/executive-report.template.html docs/templates/executive-report.template.html
 cp templates/functional-requirement.template.md docs/templates/functional-requirement.template.md
 cp templates/functional-requirement.template.md docs/requirements/templates/functional-requirement.template.md
+cp -R templates/examples docs/templates/examples
 ```
 
 Windows:
@@ -196,6 +199,7 @@ Windows:
 copy "templates\executive-report.template.html" "docs\templates\executive-report.template.html"
 copy "templates\functional-requirement.template.md" "docs\templates\functional-requirement.template.md"
 copy "templates\functional-requirement.template.md" "docs\requirements\templates\functional-requirement.template.md"
+xcopy "templates\examples" "docs\templates\examples" /E /I /Y
 ```
 
 Si la ruta relativa no existe o falla la copia, usar fallback global:
@@ -206,9 +210,10 @@ Unix:
 cp ~/.config/opencode/templates/executive-report.template.html docs/templates/executive-report.template.html
 cp ~/.config/opencode/templates/functional-requirement.template.md docs/templates/functional-requirement.template.md
 cp ~/.config/opencode/templates/functional-requirement.template.md docs/requirements/templates/functional-requirement.template.md
+cp -R ~/.config/opencode/templates/examples docs/templates/examples
 ```
 
-Si ambos metodos fallan, leer el contenido con `read` y escribirlo con `write`.
+Si ambos metodos fallan, leer el contenido con `read` y escribirlo con `write`, preservando tambien la estructura de `examples/` cuando exista.
 
 ### Paso 5 - Inicializar trazabilidad
 
@@ -256,6 +261,7 @@ Confirmar que:
 
 - existen todos los ficheros obligatorios,
 - las plantillas fueron copiadas,
+- la carpeta `docs/templates/examples/` existe cuando el origen `templates/examples/` esta disponible,
 - no hay placeholders sin sustituir en documentos instanciados fuera de `docs/templates/` y `docs/requirements/templates/`,
 - `services/registry.yaml` contiene `services: []`,
 - `traceability/RTM.yaml` contiene `enlaces: []`,

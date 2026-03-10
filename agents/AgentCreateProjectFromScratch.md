@@ -104,6 +104,7 @@ Debes crear, salvo que el usuario indique otra cosa, una estructura lógica equi
 │   ├── executive-reports/
 │   ├── qa/
 │   └── templates/
+│       ├── examples/
 │       ├── executive-report.template.html
 │       └── functional-requirement.template.md
 ├── traceability/
@@ -227,6 +228,7 @@ Debes generar como mínimo:
 - `docs/executive-reports/INF-EJE-001.html`
 - `docs/templates/executive-report.template.html` — plantilla HTML del informe ejecutivo
 - `docs/templates/functional-requirement.template.md` — plantilla de requisito funcional
+- `docs/templates/examples/` — ejemplos copiados desde la plataforma para referencia de uso de plantillas
 - `docs/requirements/templates/functional-requirement.template.md` — copia en la carpeta de requisitos
 - `PROJECT_REPORT.html` — informe ejecutivo HTML generado al finalizar (ver sección **Informe ejecutivo HTML**)
 
@@ -320,6 +322,26 @@ Cuando se te invoque, sigue este orden:
    ```
    Fallback si el comando falla: leer primero `templates/functional-requirement.template.md`; si no existe, leer `~/.config/opencode/templates/functional-requirement.template.md`; después escribir el contenido en ambos destinos con el tool `write`.
 
+   **Paso 4d — copiar carpeta de ejemplos de plantillas**
+
+   Git Bash / Unix (preferente, relativo al repo actual):
+   ```bash
+   cp -R templates/examples docs/templates/examples
+   ```
+   Git Bash / Unix (fallback global):
+   ```bash
+   cp -R ~/.config/opencode/templates/examples docs/templates/examples
+   ```
+   Windows nativo (preferente, relativo al repo actual):
+   ```cmd
+   xcopy "templates\examples" "docs\templates\examples" /E /I /Y
+   ```
+   Windows nativo (fallback global):
+   ```cmd
+   xcopy "%USERPROFILE%\.config\opencode\templates\examples" "docs\templates\examples" /E /I /Y
+   ```
+   Fallback si el comando falla: leer todos los ficheros bajo `templates/examples/`; si no existe, usar `~/.config/opencode/templates/examples/`; después escribirlos manteniendo la estructura relativa bajo `docs/templates/examples/`.
+
    **Regla general de fallback:** si cualquier comando `cp` o `copy` falla por cualquier motivo, usar siempre el tool `read` para leer el fichero de origen. Probar primero la ruta relativa `templates/`; si no existe, usar la ruta global del usuario. Nunca dejar una plantilla sin copiar.
 5. **Inicializar** la trazabilidad (`requirements_trace.md`, `end_to_end_traceability.csv`, `epics_to_use_cases.md`, `RTM.yaml`, `use_cases_to_openapi.md`).
 6. **Crear** contenido semilla mínimo en carpetas clave para que el repositorio sea entendible desde el primer commit: `docs/project/README.md`, `docs/project/vision.md`, `docs/project/scope.md`, `docs/project/stakeholders.md`, `docs/project/glossary.md`, `docs/requirements/technical/README.md`, `docs/refinement/pending-questions.md` y `docs/refinement/sessions/INDEX.md`.
@@ -332,6 +354,7 @@ Cuando se te invoque, sigue este orden:
    - [ ] Ningún documento instanciado contiene placeholders `{{...}}` o `{...}` sin sustituir (excluir `docs/templates/` y `docs/requirements/templates/`)
    - [ ] La plantilla `docs/templates/executive-report.template.html` existe
    - [ ] La plantilla `docs/templates/functional-requirement.template.md` existe
+   - [ ] La carpeta `docs/templates/examples/` existe cuando el origen `templates/examples/` está disponible
    - [ ] La plantilla `docs/requirements/templates/functional-requirement.template.md` existe
    - [ ] `PROJECT_REPORT.html` existe en la raíz
    - [ ] `docs/executive-reports/INF-EJE-001.html` existe
@@ -584,6 +607,7 @@ Las plantillas **no están embebidas en este fichero**. Deben resolverse con el 
 |-----------|--------|-------------------------|
 | Informe ejecutivo HTML | `templates/executive-report.template.html` o `~/.config/opencode/templates/executive-report.template.html` | `docs/templates/executive-report.template.html` |
 | Requisito funcional MD | `templates/functional-requirement.template.md` o `~/.config/opencode/templates/functional-requirement.template.md` | `docs/templates/functional-requirement.template.md`<br>`docs/requirements/templates/functional-requirement.template.md` |
+| Ejemplos de plantillas | `templates/examples/` o `~/.config/opencode/templates/examples/` | `docs/templates/examples/` |
 
 ### Reglas de copia
 
@@ -593,6 +617,7 @@ Las plantillas **no están embebidas en este fichero**. Deben resolverse con el 
 4. Si sigue fallando, usar el tool `read` para leer el origen disponible y el tool `write` para escribir cada destino.
 5. **Nunca omitir** la copia de una plantilla — el checklist del paso 8 verifica su existencia.
 6. **No sustituir** los placeholders `{{...}}` al copiar — las plantillas deben quedar intactas. Los placeholders solo se sustituyen al instanciar un documento real a partir de la plantilla.
+7. Copiar también la carpeta `examples/` cuando exista en el origen de plantillas, preservando la estructura relativa de sus archivos.
 
 ### Uso de las plantillas
 
