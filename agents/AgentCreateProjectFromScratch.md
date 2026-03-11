@@ -53,29 +53,6 @@ Debes crear una estructura de repositorio que soporte como mínimo:
 10. Operación global: orquestación, observabilidad y runbooks cross-servicio.
 11. Trabajo futuro de agentes IA.
 
-## Modelo de repositorios
-
-Este agente crea únicamente el **repo de gobernanza**. El ecosistema completo del proyecto sigue este modelo:
-
-```
-{PROJECT_NAME}-governance/     ← este repo (creado por este agente)
-├── docs/
-├── traceability/
-├── backlog/
-├── services/                  ← registro y contratos, NO código
-├── spec/
-├── src/                       ← contratos compartidos e interfaces, NO implementación
-├── tests/                     ← tests de contrato e integración global, NO tests unitarios
-├── ops/                       ← orquestación y runbooks globales
-└── artifacts/
-
-{PROJECT_NAME}-svc-auth/       ← repo independiente por servicio (NO creado aquí)
-{PROJECT_NAME}-svc-orders/     ← repo independiente por servicio (NO creado aquí)
-{PROJECT_NAME}-svc-*/          ← repo independiente por servicio (NO creado aquí)
-```
-
-Los repos de servicio se crean y registran en `services/registry.yaml` conforme el proyecto avanza.
-
 ## Estructura base requerida
 
 Debes crear, salvo que el usuario indique otra cosa, una estructura lógica equivalente a esta:
@@ -260,64 +237,7 @@ Cuando se te invoque, sigue este orden:
 1. **Leer** nombre del proyecto, contexto y restricciones. Si el directorio destino ya existe con contenido, seguir el protocolo de repositorio parcial (ver sección **Protocolo para repositorios parciales**).
 2. **Crear** la estructura raíz de directorios.
 3. **Generar** `README.md`, `INDEX.md` y `AGENTS.md`.
-4. **Crear** directorios documentales y copiar **todo el contenido** de `templates/` al scaffold folder del proyecto, que es `docs/templates/`. Ese destino debe quedar como espejo funcional del origen, preservando toda la estructura relativa y todos los ficheros disponibles. Resolver siempre el origen con este orden de prioridad:
-
-   1. **Origen relativo al repositorio de la plataforma**: `templates/`
-   2. **Origen global del usuario**: `~/.config/opencode/templates/` (o `%USERPROFILE%\\.config\\opencode\\templates\\` en Windows)
-
-   Ejecutar los siguientes pasos en orden, preservando la estructura relativa completa del directorio `templates/`:
-
-   **Paso 4a — detectar sistema operativo y origen de plantillas disponible:**
-   ```bash
-   # Detectar si estamos en Git Bash / Unix o en cmd/PowerShell Windows nativo
-   uname -s 2>/dev/null || echo "WINDOWS_NATIVE"
-   ```
-   - Si el resultado contiene `MINGW`, `CYGWIN`, `Linux` o `Darwin` → usar rutas Unix y comando `cp`
-   - Si el resultado es `WINDOWS_NATIVE` → usar rutas Windows y comando `copy`
-   - Antes de copiar, comprobar si existe `templates/` en el repositorio actual. Si existe, usarlo como fuente preferente.
-   - Si `templates/` no existe, usar `~/.config/opencode/templates/` o `%USERPROFILE%\\.config\\opencode\\templates\\`.
-
-   **Paso 4b — copiar todo `templates/` al scaffold folder `docs/templates/`**
-
-   Git Bash / Unix (preferente, relativo al repo actual):
-   ```bash
-   cp -R templates/. docs/templates/
-   ```
-   Git Bash / Unix (fallback global):
-   ```bash
-   cp -R ~/.config/opencode/templates/. docs/templates/
-   ```
-   Windows nativo (preferente, relativo al repo actual):
-   ```cmd
-   xcopy "templates" "docs\templates" /E /I /Y
-   ```
-   Windows nativo (fallback global):
-   ```cmd
-   xcopy "%USERPROFILE%\.config\opencode\templates" "docs\templates" /E /I /Y
-   ```
-   Fallback si el comando falla: leer recursivamente todos los ficheros bajo `templates/`; si no existe, usar `~/.config/opencode/templates/`; despues escribirlos en `docs/templates/` preservando la estructura relativa completa y sin omitir ningun fichero del origen.
-
-   **Paso 4c — copiar también la plantilla de requisito funcional a `docs/requirements/templates/`**
-
-   Git Bash / Unix (preferente, relativo al repo actual):
-   ```bash
-   cp templates/functional-requirement.template.md docs/requirements/templates/functional-requirement.template.md
-   ```
-   Git Bash / Unix (fallback global):
-   ```bash
-   cp ~/.config/opencode/templates/functional-requirement.template.md docs/requirements/templates/functional-requirement.template.md
-   ```
-   Windows nativo (preferente, relativo al repo actual):
-   ```cmd
-   copy "templates\functional-requirement.template.md" "docs\requirements\templates\functional-requirement.template.md"
-   ```
-   Windows nativo (fallback global):
-   ```cmd
-   copy "%USERPROFILE%\.config\opencode\templates\functional-requirement.template.md" "docs\requirements\templates\functional-requirement.template.md"
-   ```
-   Fallback si el comando falla: leer primero `templates/functional-requirement.template.md`; si no existe, leer `~/.config/opencode/templates/functional-requirement.template.md`; después escribir el contenido en `docs/requirements/templates/functional-requirement.template.md`.
-
-   **Regla general de fallback:** si cualquier comando de copia falla por cualquier motivo, usar siempre el tool `read` para leer el origen disponible y preservar la estructura relativa en `docs/templates/`. Probar primero la ruta relativa `templates/`; si no existe, usar la ruta global del usuario. Nunca dejar contenido de `templates/` sin copiar al scaffold folder del proyecto.
+4. **Crear** directorios documentales y copiar **todo el contenido** de `/home/vant/.opencode/templates/` al scaffold folder del proyecto, que es `./docs/templates/`.
 5. **Inicializar** la trazabilidad (`requirements_trace.md`, `end_to_end_traceability.csv`, `RTM.yaml`). No crear matrices derivadas que dupliquen relaciones ya mantenidas en `epic`, `FRS`, `user-story` o `RTM.yaml`.
 6. **Crear** contenido semilla mínimo en carpetas clave para que el repositorio sea entendible desde el primer commit: `docs/project/README.md`, `docs/project/vision.md`, `docs/project/scope.md`, `docs/project/stakeholders.md`, `docs/project/glossary.md`, `docs/requirements/technical/README.md`, `docs/refinement/pending-questions.md` y `docs/refinement/sessions/INDEX.md`.
 7. **Persistir** en Git las carpetas que puedan quedar vacías usando `.gitkeep` o un `README.md` mínimo. Como mínimo, asegurar persistencia en `services/contracts/`, `spec/open-api/`, `src/`, `tests/`, `ops/`, `docs/refinement/evidence/`, `backlog/epics/`, `backlog/user-stories/` y `docs/requirements/functional/`.

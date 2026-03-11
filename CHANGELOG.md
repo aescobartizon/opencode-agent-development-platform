@@ -5,6 +5,7 @@
 - Ajustado `AgentCreateProjectFromScratch` para pedir explicitamente nombre y descripcion del proyecto y para crear obligatoriamente el scaffold dentro de la carpeta `{PROJECT_NAME}`.
 - Reintroducido `model: gemini-2.0-flash` en `AgentCreateProjectFromScratch` y añadido alias compatible `agents/AgentProjectFromScratch.md` para invocaciones desde terminal.
 - Simplificado `AgentCreateProjectFromScratch` para que solo cree la estructura basica del proyecto y copie `templates/` en `docs/templates/`.
+- Reforzada la regla de copia completa de `./templates/` a `./docs/templates/`, incluyendo `analyst-doc-flow-output.template.md` y cualquier subdirectorio del origen.
 - Refactorizado `AgentAnalystDocFlow` para exigir la solicitud explicita del documento fuente antes de cualquier analisis.
 - Ajustado `AgentAnalystDocFlow` para escanear BRS pendientes en `/docs/requirements/functional/` y pedir al usuario que elija cual analizar.
 - Ajustado `AgentAnalystDocFlow` para pedir siempre modulo funcional y submodulo funcional antes de crear directorios y para ejecutar un chequeo interno de FRS, US y OpenAPI antes de delegar la validacion.

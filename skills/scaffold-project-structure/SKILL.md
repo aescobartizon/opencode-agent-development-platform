@@ -1,6 +1,6 @@
 ---
 name: scaffold-project-structure
-description: "Procedimiento minimo para crear la estructura basica del proyecto y copiar `templates/` a `docs/templates/`."
+description: "Procedimiento minimo para crear la estructura basica del proyecto y copiar todo `./templates/` a `./docs/templates/`."
 license: MIT
 compatibility: opencode
 ---
@@ -10,7 +10,7 @@ compatibility: opencode
 Esta skill solo cubre dos responsabilidades:
 
 1. crear la estructura basica del proyecto
-2. copiar todo `templates/` a `docs/templates/`
+2. copiar todo `./templates/` a `./docs/templates/`
 
 ## Variables requeridas
 
@@ -32,56 +32,6 @@ Esta skill solo cubre dos responsabilidades:
 
 Crear dentro de `{BASE_DIR}/{PROJECT_NAME}`:
 
-```text
-README.md
-INDEX.md
-AGENTS.md
-.opencode/agents/
-.opencode/commands/
-.opencode/skills/
-docs/project/
-docs/requirements/functional/
-docs/requirements/technical/
-docs/requirements/templates/
-docs/architecture/
-docs/adr/
-docs/refinement/sessions/
-docs/refinement/evidence/
-docs/executive-reports/
-docs/qa/
-docs/templates/
-traceability/
-backlog/epics/
-backlog/user-stories/
-services/contracts/
-spec/open-api/
-src/
-tests/
-ops/
-agents/
-artifacts/
-```
-
-## Copia de plantillas
-
-Resolver el origen en este orden:
-
-1. `templates/`
-2. `~/.config/opencode/templates/`
-
-Copiar todo el contenido disponible a:
-
-```text
-{BASE_DIR}/{PROJECT_NAME}/docs/templates/
-```
-
-Tambien copiar:
-
-```text
-functional-requirement.template.md -> {BASE_DIR}/{PROJECT_NAME}/docs/requirements/templates/functional-requirement.template.md
-```
-
-Si la copia por comandos falla, leer y escribir preservando toda la estructura relativa.
 
 ## Criterio de exito
 
@@ -89,6 +39,5 @@ La skill queda bien aplicada solo si:
 
 - existe `{BASE_DIR}/{PROJECT_NAME}`
 - la estructura basica existe dentro de esa carpeta
-- `docs/templates/` contiene todo el arbol de `templates/` o su fallback
-- `docs/requirements/templates/functional-requirement.template.md` existe
+- `docs/templates/` contiene todo el contenido de `/home/vant/.opencode/templates/`
 - no se creo nada fuera de la carpeta del proyecto

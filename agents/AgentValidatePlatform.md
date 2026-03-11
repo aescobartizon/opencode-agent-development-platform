@@ -115,7 +115,8 @@ Debes comprobar que `AgentCreateProjectFromScratch` y su alias compatible `Agent
 - solicita explicitamente nombre del proyecto y descripcion breve antes de crear nada
 - crea obligatoriamente la carpeta del proyecto y genera dentro de ella todo el scaffold
 - crea la estructura basica requerida
-- copia todo `templates/` en `docs/templates/`
+- copia todo `./templates/` en `./docs/templates/` sin omitir ningun fichero ni subdirectorio
+- copia `./templates/analyst-doc-flow-output.template.md` a `./docs/templates/analyst-doc-flow-output.template.md` cuando existe en el origen
 - crea `docs/requirements/templates/functional-requirement.template.md`
 
 ## 3. Validacion del agente analista
