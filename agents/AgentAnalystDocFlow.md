@@ -1,7 +1,6 @@
 ---
 description: Analiza documentacion inicial de negocio y crea o actualiza epicas, FRS, user stories y especificaciones OpenAPI derivadas cuando apliquen, siguiendo el flujo documental oficial y solicitando siempre al usuario el documento fuente exacto antes de empezar.
 version: 2.0.0
-model: gemini-2.0-flash
 mode: subagent
 temperature: 0.1
 tools:
