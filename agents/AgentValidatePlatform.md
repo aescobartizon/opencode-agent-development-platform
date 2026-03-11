@@ -1,7 +1,6 @@
 ---
 description: Valida end-to-end la plataforma documental completa, incluyendo agentes, skills, plantillas, flujo de creacion de proyecto, flujo de analisis documental con el caso DOC-BUS y coherencia global de trazabilidad.
 version: 1.1.0
-model: gemini-2.0-flash
 mode: subagent
 temperature: 0.1
 tools:
