@@ -110,15 +110,13 @@ Debes comprobar:
 
 ## 2. Validacion del agente fundacional
 
-Debes comprobar que `AgentCreateProjectFromScratch`:
+Debes comprobar que `AgentCreateProjectFromScratch` y su alias compatible `AgentProjectFromScratch`:
 
 - solicita explicitamente nombre del proyecto y descripcion breve antes de crear nada
 - crea obligatoriamente la carpeta del proyecto y genera dentro de ella todo el scaffold
-- crea la estructura requerida
+- crea la estructura basica requerida
 - copia todo `templates/` en `docs/templates/`
 - crea `docs/requirements/templates/functional-requirement.template.md`
-- no crea matrices duplicadas de trazabilidad
-- inicializa `traceability/RTM.yaml`
 
 ## 3. Validacion del agente analista
 

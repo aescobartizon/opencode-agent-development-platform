@@ -13,12 +13,13 @@ Repositorio base para desarrollar y versionar capacidades de OpenCode orientadas
 
 ### Agente incluido
 
-- `agents/AgentCreateProjectFromScratch.md`: agente fundacional para crear desde cero un repositorio de gobernanza para proyectos multi-repo basados en microservicios.
+- `agents/AgentCreateProjectFromScratch.md`: agente fundacional simplificado para crear la estructura basica del proyecto y copiar `templates/` en `docs/templates/`.
   - Configurado para preferir el modelo gratuito `gemini-2.0-flash` cuando el entorno soporte fijar modelo.
+- `agents/AgentProjectFromScratch.md`: alias compatible del agente fundacional para invocaciones historicas desde terminal.
 
 ### Skill incluida
 
-- `skills/scaffold-project-structure/SKILL.md`: procedimiento paso a paso para crear la estructura inicial de un proyecto en momento cero.
+- `skills/scaffold-project-structure/SKILL.md`: procedimiento minimo para crear la estructura basica del proyecto y copiar `templates/` en `docs/templates/`.
 - `skills/analyst-doc-flow/SKILL.md`: procedimiento operativo detallado para analizar un documento de negocio confirmado por el usuario y derivar Epica, FRS, US, OpenAPI y RTM.
 - `skills/functional-traceability-rules/SKILL.md`: reglas compartidas de trazabilidad funcional y no duplicacion usadas por analisis y validacion documental.
 - `skills/validate-doc-flow/SKILL.md`: procedimiento detallado para validar y remediar trazabilidad funcional sin sobrecargar el agente validador.
