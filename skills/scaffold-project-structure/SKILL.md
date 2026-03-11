@@ -7,6 +7,8 @@ compatibility: opencode
 
 ## Que hace esta skill
 
+Esta skill debe ejecutarse preferentemente con el modelo gratuito `gpt-5-nano` cuando la plataforma permita fijar modelo para el agente o subagente que la consume.
+
 Esta skill describe como crear, desde cero, un **repositorio de gobernanza** para un proyecto con arquitectura de microservicios bajo modelo **multi-repo**.
 
 El resultado esperado es un repositorio central de gobierno que contiene:
@@ -98,7 +100,7 @@ Contenido obligatorio a copiar desde `templates/`:
 
 Destinos obligatorios en el proyecto generado:
 
-- `docs/templates/` con el contenido completo de `templates/` preservando estructura relativa
+- `docs/templates/` con el contenido completo de `templates/` preservando estructura relativa; este directorio es el scaffold folder oficial de plantillas del proyecto generado
 - `docs/requirements/templates/functional-requirement.template.md`
 
 ## Procedimiento
@@ -176,7 +178,7 @@ Crear tambien placeholders vacios donde aplique:
 
 ### Paso 4 - Copiar plantillas
 
-Intentar primero copiar todo `templates/` desde rutas relativas del repo actual a `docs/templates/`, preservando su estructura completa.
+Intentar primero copiar todo `templates/` desde rutas relativas del repo actual al scaffold folder `docs/templates/`, preservando su estructura completa y todos los archivos disponibles.
 
 Unix:
 
@@ -201,7 +203,7 @@ cp -R ~/.config/opencode/templates/. docs/templates/
 cp ~/.config/opencode/templates/functional-requirement.template.md docs/requirements/templates/functional-requirement.template.md
 ```
 
-Si ambos metodos fallan, leer el contenido con `read` y escribirlo con `write`, preservando toda la estructura relativa de `templates/` dentro de `docs/templates/`.
+Si ambos metodos fallan, leer el contenido con `read` y escribirlo con `write`, preservando toda la estructura relativa de `templates/` dentro de `docs/templates/` y sin omitir ningun archivo del origen.
 
 ### Paso 5 - Inicializar trazabilidad
 
@@ -248,6 +250,7 @@ Confirmar que:
 - existen todos los ficheros obligatorios,
 - las plantillas fueron copiadas,
 - todo el contenido disponible en `templates/` fue copiado a `docs/templates/`,
+- `docs/templates/` contiene el arbol completo del origen de plantillas disponible,
 - la carpeta `docs/templates/examples/` existe cuando el origen `templates/examples/` esta disponible,
 - no hay placeholders sin sustituir en documentos instanciados fuera de `docs/templates/` y `docs/requirements/templates/`,
 - `services/registry.yaml` contiene `services: []`,
