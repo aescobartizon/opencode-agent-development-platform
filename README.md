@@ -14,6 +14,7 @@ Repositorio base para desarrollar y versionar capacidades de OpenCode orientadas
 ### Agente incluido
 
 - `agents/AgentCreateProjectFromScratch.md`: agente fundacional para crear desde cero un repositorio de gobernanza para proyectos multi-repo basados en microservicios.
+  - Configurado para preferir el modelo gratuito `gpt-5-nano` cuando el entorno soporte fijar modelo.
 
 ### Skill incluida
 
@@ -61,6 +62,7 @@ Los proyectos generados por el agente pueden incluir una zona `.opencode/` propi
 El agente `agents/AgentCreateProjectFromScratch.md` esta endurecido para:
 
 - resolver plantillas primero desde `templates/` y despues desde `~/.config/opencode/templates/`,
+- copiar todo el contenido disponible de `templates/` al scaffold folder del proyecto `docs/templates/`,
 - conservar placeholders solo en archivos plantilla y no en documentos instanciados,
 - generar contenido semilla minimo en areas clave del repositorio,
 - persistir carpetas vacias importantes con `.gitkeep` o `README.md`,
