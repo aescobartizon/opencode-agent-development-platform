@@ -85,6 +85,21 @@ El proyecto generado debe incluir, como minimo, esta estructura:
 | `PROJECT_DESCRIPTION` | descripcion breve del proyecto |
 | `DATE` | fecha actual en formato `YYYY-MM-DD` |
 
+## Activacion obligatoria
+
+Antes de crear el proyecto, el agente debe solicitar explicitamente al usuario:
+
+- `PROJECT_NAME`
+- `PROJECT_DESCRIPTION`
+
+Reglas:
+
+1. No crear nada si falta `PROJECT_NAME`.
+2. No crear nada si falta `PROJECT_DESCRIPTION`.
+3. No generar el scaffold en la raiz actual.
+4. Crear obligatoriamente la carpeta `{BASE_DIR}/{PROJECT_NAME}` y usarla como raiz del proyecto generado.
+5. Todo directorio y fichero descrito por esta skill se crea dentro de `{BASE_DIR}/{PROJECT_NAME}`.
+
 ## Resolucion de plantillas
 
 Resolver siempre las plantillas con este orden:
@@ -122,7 +137,7 @@ Comprobar si `{BASE_DIR}/{PROJECT_NAME}` ya existe.
 
 ### Paso 2 - Crear la estructura base
 
-Crear las carpetas raiz y subcarpetas minimas del repositorio de gobernanza:
+Crear las carpetas raiz y subcarpetas minimas del repositorio de gobernanza dentro de `{BASE_DIR}/{PROJECT_NAME}`:
 
 - `.opencode/agents`
 - `.opencode/commands`
@@ -151,7 +166,7 @@ Crear las carpetas raiz y subcarpetas minimas del repositorio de gobernanza:
 
 ### Paso 3 - Crear ficheros base obligatorios
 
-Crear como minimo:
+Crear como minimo dentro de `{BASE_DIR}/{PROJECT_NAME}`:
 
 - `README.md`
 - `INDEX.md`
@@ -185,7 +200,7 @@ Crear tambien placeholders vacios donde aplique:
 
 ### Paso 4 - Copiar plantillas
 
-Intentar primero copiar todo `templates/` desde rutas relativas del repo actual al scaffold folder `docs/templates/`, preservando su estructura completa y todos los archivos disponibles.
+Intentar primero copiar todo `templates/` desde rutas relativas del repo actual al scaffold folder `{BASE_DIR}/{PROJECT_NAME}/docs/templates/`, preservando su estructura completa y todos los archivos disponibles.
 
 Unix:
 
@@ -284,4 +299,5 @@ La skill queda bien aplicada si el repositorio generado:
 - deja trazabilidad lista desde el inicio,
 - reutiliza plantillas versionadas desde `templates/` o su fallback global,
 - persiste en Git las carpetas criticas aunque esten vacias,
-- no depende exclusivamente de rutas hardcodeadas fuera del repo.
+- no depende exclusivamente de rutas hardcodeadas fuera del repo,
+- crea obligatoriamente el scaffold dentro de `{BASE_DIR}/{PROJECT_NAME}` y no en la raiz actual.

@@ -72,7 +72,7 @@ Reglas del flujo:
 
 1. Una Epica puede derivar en una o varias FRS.
 2. Una FRS puede derivar en una o varias US.
-3. Si una US implica interaccion API, debe crearse o actualizarse un fichero de especificacion OpenAPI real en `spec/open-api/`.
+3. Si una US implica interaccion API, debe crearse o actualizarse un fichero de especificacion OpenAPI real en `spec/open-api/{modulo}/{submodulo}/`.
 4. Cada US debe contener `AC-*`, `GT-*` y `COV-*`.
 5. La trazabilidad estructurada principal vive en `traceability/RTM.yaml`.
 6. No crear matrices auxiliares redundantes si la misma relacion ya existe en Epica, FRS, US o `RTM.yaml`.
@@ -95,6 +95,11 @@ Reglas:
 - si falta informacion suficiente, usar `pendiente de refinamiento`
 - nunca dejar placeholders `{{...}}` en documentos reales
 - mantener la estructura y trazabilidad propia de cada plantilla
+- para FRS es obligatorio usar `docs/templates/functional-requirement.template.md`
+- para User Story es obligatorio usar `docs/templates/user-story.template.md`
+- no se permite crear FRS ni US desde cero sin partir de esas plantillas
+- no se permite inventar datos no presentes en el BRS o documento fuente para rellenar secciones de FRS o US
+- cualquier seccion sin evidencia suficiente debe quedar como `pendiente de refinamiento`
 
 La respuesta final del agente debe seguir `docs/templates/analyst-doc-flow-output.template.md`. Si no existe en el proyecto, usar `templates/analyst-doc-flow-output.template.md` como fallback.
 
@@ -103,7 +108,7 @@ La respuesta final del agente debe seguir `docs/templates/analyst-doc-flow-outpu
 - epicas: `docs/requirements/functional/{modulo}/{submodulo}/epics/`
 - FRS: `docs/requirements/functional/{modulo}/{submodulo}/frs/`
 - user stories: `docs/requirements/functional/{modulo}/{submodulo}/us/`
-- OpenAPI derivada: `spec/open-api/`
+- OpenAPI derivada: `spec/open-api/{modulo}/{submodulo}/`
 - trazabilidad estructurada: `traceability/RTM.yaml`
 
 No usar `use-cases/`, `epics_to_use_cases.md` ni `use_cases_to_openapi.md`.
@@ -177,15 +182,30 @@ No modificar automaticamente artefactos aprobados o cerrados sin instruccion exp
 
 Ademas, durante la seleccion inicial del documento, debes usar este mismo inventario para evitar ofrecer como pendientes documentos ya procesados.
 
-### Paso 3 - Determinar modulo y submodulo funcional
+### Paso 3 - Solicitar modulo funcional y submodulo funcional
 
-Proponer modulo y submodulo funcional con base en el documento y en artefactos existentes.
+Debes preguntar explicitamente al usuario el modulo funcional y el submodulo funcional antes de crear directorios o guardar artefactos.
 
-Usar la mejor coincidencia semantica disponible.
+Puedes proponer una opcion recomendada basada en el documento y en artefactos existentes, pero no debes crear la estructura sin confirmacion explicita.
 
-Solo preguntar al usuario si la clasificacion es realmente ambigua y cambia materialmente la organizacion del repositorio.
+La pregunta debe pedir ambos valores en el mismo turno y dejar claro que se usaran para crear:
 
-### Paso 4 - Crear o actualizar Epica
+```text
+docs/requirements/functional/{modulo}/{submodulo}/
+```
+
+### Paso 4 - Crear estructura funcional
+
+Una vez confirmados modulo y submodulo, asegurar que existen:
+
+```text
+docs/requirements/functional/{modulo}/{submodulo}/epics/
+docs/requirements/functional/{modulo}/{submodulo}/frs/
+docs/requirements/functional/{modulo}/{submodulo}/us/
+spec/open-api/{modulo}/{submodulo}/
+```
+
+### Paso 5 - Crear o actualizar Epica
 
 Usar `docs/templates/epic.template.md`.
 
@@ -209,11 +229,13 @@ Completar como minimo:
 
 La epica debe trazar a FRS y US agregadas. No debe bajar a detalle de Gherkin individual.
 
-### Paso 5 - Crear o actualizar FRS derivadas
+### Paso 6 - Crear o actualizar FRS derivadas
 
 Cada bloque funcional coherente del documento debe convertirse en una FRS.
 
 Usar `docs/templates/functional-requirement.template.md`.
+
+Esto es obligatorio. No se permite crear una FRS desde cero sin partir de esa plantilla.
 
 Antes de guardar, asegurar que existe:
 
@@ -237,11 +259,15 @@ Completar como minimo:
 
 Si no hay informacion suficiente en una seccion, usar `pendiente de refinamiento`.
 
-### Paso 6 - Crear o actualizar User Stories derivadas
+No inventar informacion que no este explicitamente respaldada por el BRS o documento fuente confirmado.
+
+### Paso 7 - Crear o actualizar User Stories derivadas
 
 Cada FRS debe derivar una o varias US cuando el documento permita descomponer comportamiento verificable.
 
 Usar `docs/templates/user-story.template.md`.
+
+Esto es obligatorio. No se permite crear una US desde cero sin partir de esa plantilla.
 
 Antes de guardar, asegurar que existe:
 
@@ -261,20 +287,41 @@ Cada US debe contener como minimo:
 - riesgos y controles
 - `LINK-NNN`
 
-### Paso 7 - Generar o actualizar OpenAPI cuando aplique
+Si falta informacion para cualquier apartado de la US, usar `pendiente de refinamiento` y no inventar contenido no respaldado por el BRS.
 
-Si una US describe comportamiento API observable, crear o actualizar especificacion en `spec/open-api/`.
+### Paso 8 - Generar o actualizar OpenAPI cuando aplique
+
+Si una US describe comportamiento API observable, crear o actualizar especificacion en `spec/open-api/{modulo}/{submodulo}/`.
 
 Reglas:
 
-- debe existir un fichero real en `spec/open-api/`; no basta con mencionar OpenAPI en la US o en `RTM.yaml`
+- debe existir un fichero real en `spec/open-api/{modulo}/{submodulo}/`; no basta con mencionar OpenAPI en la US o en `RTM.yaml`
+- la ruta del fichero debe reflejar el mismo `modulo` y `submodulo` confirmado para los artefactos funcionales
 - la especificacion debe trazarse desde la US
 - debe poder relacionarse con uno o mas `AC-*`
 - debe poder verificarse con uno o mas `GT-*` cuando aplique
 - no inventar endpoints o payloads no respaldados por el documento fuente
 - usar `pendiente de refinamiento` cuando falte precision
 
-### Paso 8 - Actualizar trazabilidad estructurada
+### Paso 9 - Chequeo interno obligatorio de FRS, US y OpenAPI
+
+Antes de actualizar `RTM.yaml` y antes de invocar `AgentValidateDocFlow`, debes comprobar como minimo:
+
+- toda FRS nueva o modificada referencia la epica correcta
+- toda FRS nueva o modificada fue instanciada desde `docs/templates/functional-requirement.template.md`
+- toda seccion de FRS sin evidencia suficiente quedo como `pendiente de refinamiento`
+- toda US nueva o modificada referencia su FRS y su epica
+- toda US nueva o modificada fue instanciada desde `docs/templates/user-story.template.md`
+- toda seccion de US sin evidencia suficiente quedo como `pendiente de refinamiento`
+- toda US contiene `AC-*`, `GT-*` y `COV-*`
+- toda OpenAPI generada existe como fichero real bajo `spec/open-api/{modulo}/{submodulo}/`
+- toda OpenAPI generada esta referenciada desde la US correspondiente
+- no hay OpenAPI generada sin historia fuente que la respalde
+- no hay OpenAPI generada fuera del `modulo` y `submodulo` confirmados para esa ejecucion
+
+Si detectas inconsistencias basicas y puedes corregirlas con evidencia documental directa, debes corregirlas antes de continuar.
+
+### Paso 10 - Actualizar trazabilidad estructurada
 
 Actualizar `traceability/RTM.yaml` para reflejar relaciones nuevas o modificadas, incluyendo los `openapi_files` realmente generados o actualizados.
 
@@ -292,11 +339,11 @@ Cada enlace puede incluir:
 
 No crear matrices auxiliares duplicadas.
 
-### Paso 9 - Registrar procesamiento
+### Paso 11 - Registrar procesamiento
 
 Actualizar `docs/requirements/functional/.processed_documents.log` con el formato oficial.
 
-### Paso 10 - Invocar validacion final
+### Paso 12 - Invocar validacion final
 
 Invocar `AgentValidateDocFlow` sobre el repositorio actual en modo remediacion.
 
@@ -341,12 +388,18 @@ El resultado es correcto solo si:
 - el documento fue confirmado explicitamente antes del analisis
 - el agente escaneo `/docs/requirements/functional/` cuando no se recibio una ruta exacta
 - el usuario eligio explicitamente un BRS pendiente o un documento concreto antes del analisis
+- el usuario confirmo explicitamente modulo funcional y submodulo funcional antes de crear directorios
 - el documento no fue reprocesado sin autorizacion
 - existe al menos una epica valida o actualizada
+- las FRS fueron instanciadas desde `docs/templates/functional-requirement.template.md`
+- las US fueron instanciadas desde `docs/templates/user-story.template.md`
 - existen FRS derivadas coherentes con la epica
 - existen US derivadas coherentes con cada FRS
+- cualquier apartado sin evidencia suficiente en FRS o US quedo marcado como `pendiente de refinamiento`
+- no se invento informacion no respaldada por el BRS o documento fuente
 - las US contienen `AC-*`, `GT-*` y `COV-*`
-- la OpenAPI fue creada o actualizada como fichero real bajo `spec/open-api/` cuando la historia la requiere
+- la OpenAPI fue creada o actualizada como fichero real bajo `spec/open-api/{modulo}/{submodulo}/` cuando la historia la requiere
+- se ejecuto un chequeo interno satisfactorio de FRS, US y OpenAPI antes de delegar la validacion final
 - `traceability/RTM.yaml` refleja las relaciones nuevas
 - no se crearon matrices duplicadas de trazabilidad
 - todas las plantillas fueron usadas correctamente

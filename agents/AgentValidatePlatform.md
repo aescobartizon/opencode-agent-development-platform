@@ -112,6 +112,8 @@ Debes comprobar:
 
 Debes comprobar que `AgentCreateProjectFromScratch`:
 
+- solicita explicitamente nombre del proyecto y descripcion breve antes de crear nada
+- crea obligatoriamente la carpeta del proyecto y genera dentro de ella todo el scaffold
 - crea la estructura requerida
 - copia todo `templates/` en `docs/templates/`
 - crea `docs/requirements/templates/functional-requirement.template.md`
@@ -127,8 +129,13 @@ Debes comprobar que `AgentAnalystDocFlow`:
 - escanea `/docs/requirements/functional/` para detectar BRS pendientes cuando no recibe una ruta exacta
 - aplica patrones explicitos de deteccion de BRS y excluye `epics/`, `frs/`, `us/` y carpetas de plantillas del escaneo de pendientes
 - ofrece al usuario la eleccion explicita del BRS a analizar antes de procesarlo
+- pregunta explicitamente modulo funcional y submodulo funcional antes de crear `docs/requirements/functional/{modulo}/{submodulo}/`
+- crea FRS obligatoriamente desde `docs/templates/functional-requirement.template.md`
+- crea US obligatoriamente desde `docs/templates/user-story.template.md`
+- usa `pendiente de refinamiento` en FRS y US cuando faltan datos y no inventa informacion no respaldada por el BRS
 - crea Epica, FRS y US segun flujo oficial
-- genera ficheros OpenAPI reales en `spec/open-api/` cuando la US lo requiere
+- genera ficheros OpenAPI reales en `spec/open-api/{modulo}/{submodulo}/` cuando la US lo requiere
+- ejecuta un chequeo interno de consistencia sobre FRS, US y OpenAPI antes de delegar la validacion final
 - actualiza `RTM.yaml`
 - delega la validacion final invocando `AgentValidateDocFlow` al final
 

@@ -100,6 +100,7 @@ Esa skill define:
 - las rutas oficiales de artefactos
 - el control de reprocesado mediante `.processed_documents.log`
 - la generacion y actualizacion de Epica, FRS, US y OpenAPI
+- la confirmacion explicita del modulo funcional y submodulo funcional antes de crear directorios
 - la actualizacion de `traceability/RTM.yaml`
 - la invocacion final de `AgentValidateDocFlow` en modo remediacion
 
@@ -112,6 +113,7 @@ skills/functional-traceability-rules/SKILL.md
 Si detectas conflicto entre esta especificacion y la skill, prevalece la regla mas restrictiva respecto a:
 
 - eleccion explicita del BRS o documento fuente
+- eleccion explicita de modulo funcional y submodulo funcional
 - no invencion de requisitos
 - no duplicacion de trazabilidad
 - no modificacion automatica de artefactos aprobados o cerrados
@@ -121,13 +123,17 @@ Si detectas conflicto entre esta especificacion y la skill, prevalece la regla m
 # Reglas de trabajo no negociables
 
 1. Usar siempre plantillas oficiales desde `docs/templates/`.
-2. Sustituir placeholders en artefactos reales y no dejar `{{...}}` en documentos instanciados.
-3. Usar `pendiente de refinamiento` cuando falte informacion documental suficiente.
-4. Trabajar solo en las rutas oficiales bajo `docs/requirements/functional/`, `spec/open-api/` y `traceability/RTM.yaml`.
-5. No crear estructuras legacy como `use-cases/`, `epics_to_use_cases.md` o `use_cases_to_openapi.md`.
-6. No modificar automaticamente artefactos aprobados o cerrados sin instruccion explicita.
-7. Generar siempre el fichero OpenAPI derivado en `spec/open-api/` cuando la historia tenga impacto API; no basta con dejar solo la referencia documental.
-8. Delegar siempre la validacion final al agente `AgentValidateDocFlow` al terminar la generacion documental.
+2. Crear obligatoriamente los documentos FRS a partir de `docs/templates/functional-requirement.template.md` y las US a partir de `docs/templates/user-story.template.md`.
+3. Sustituir placeholders en artefactos reales y no dejar `{{...}}` en documentos instanciados.
+4. Usar `pendiente de refinamiento` en cualquier apartado de FRS o US cuando falte informacion documental suficiente.
+5. Trabajar solo en las rutas oficiales bajo `docs/requirements/functional/`, `spec/open-api/{modulo}/{submodulo}/` y `traceability/RTM.yaml`.
+6. No crear estructuras legacy como `use-cases/`, `epics_to_use_cases.md` o `use_cases_to_openapi.md`.
+7. No modificar automaticamente artefactos aprobados o cerrados sin instruccion explicita.
+8. Generar siempre el fichero OpenAPI derivado en `spec/open-api/{modulo}/{submodulo}/` cuando la historia tenga impacto API; no basta con dejar solo la referencia documental.
+9. Preguntar siempre explicitamente al usuario el modulo funcional y el submodulo funcional antes de crear la estructura `docs/requirements/functional/{modulo}/{submodulo}/`.
+10. Ejecutar un chequeo interno obligatorio de consistencia de FRS, US y OpenAPI antes de delegar la validacion final.
+11. No inventar ni completar informacion en FRS, US u OpenAPI que no este respaldada explicitamente por el BRS o documento fuente confirmado.
+12. Delegar siempre la validacion final al agente `AgentValidateDocFlow` al terminar la generacion documental.
 
 ---
 
@@ -138,14 +144,16 @@ Cuando el documento ya este confirmado, debes completar este flujo:
 1. Escanear `/docs/requirements/functional/` y detectar BRS pendientes si el usuario no proporciono ruta exacta al inicio.
 2. Verificar reprocesado en `docs/requirements/functional/.processed_documents.log`.
 3. Inventariar artefactos reutilizables en `docs/requirements/functional/`, `spec/open-api/` y `traceability/RTM.yaml`.
-4. Determinar modulo y submodulo funcional.
-5. Crear o actualizar Epica.
-6. Crear o actualizar FRS.
-7. Crear o actualizar US.
-8. Crear o actualizar el fichero OpenAPI en `spec/open-api/` cuando aplique.
-9. Actualizar `traceability/RTM.yaml` incluyendo las rutas OpenAPI generadas o actualizadas.
-10. Registrar el procesamiento en `.processed_documents.log`.
-11. Delegar la validacion final invocando `AgentValidateDocFlow` en modo remediacion.
+4. Preguntar explicitamente al usuario el modulo funcional y el submodulo funcional a usar.
+5. Crear la estructura `docs/requirements/functional/{modulo}/{submodulo}/` correctamente.
+6. Crear o actualizar Epica.
+7. Crear o actualizar FRS obligatoriamente a partir de `docs/templates/functional-requirement.template.md`.
+8. Crear o actualizar US obligatoriamente a partir de `docs/templates/user-story.template.md`.
+9. Crear o actualizar el fichero OpenAPI en `spec/open-api/{modulo}/{submodulo}/` cuando aplique.
+10. Ejecutar un chequeo interno de consistencia sobre FRS, US y OpenAPI generadas.
+11. Actualizar `traceability/RTM.yaml` incluyendo las rutas OpenAPI generadas o actualizadas.
+12. Registrar el procesamiento en `.processed_documents.log`.
+13. Delegar la validacion final invocando `AgentValidateDocFlow` en modo remediacion.
 
 ---
 
@@ -156,10 +164,16 @@ El resultado es correcto solo si:
 - el agente escaneo `/docs/requirements/functional/` para detectar BRS pendientes cuando no venia identificado un documento exacto
 - el usuario eligio explicitamente el BRS o documento a analizar antes del analisis
 - el documento fue confirmado explicitamente antes del analisis
+- el usuario confirmo explicitamente el modulo funcional y el submodulo funcional antes de crear directorios
 - existe al menos una epica valida o actualizada
-- existen FRS y US coherentes con el documento fuente
+- las FRS fueron instanciadas obligatoriamente desde `docs/templates/functional-requirement.template.md`
+- las US fueron instanciadas obligatoriamente desde `docs/templates/user-story.template.md`
+- existen FRS y US coherentes con el documento fuente y con la estructura de directorios elegida
+- cualquier apartado sin evidencia suficiente en FRS o US quedo marcado como `pendiente de refinamiento`
+- no se invento informacion no respaldada por el BRS o documento fuente
 - las US contienen `AC-*`, `GT-*` y `COV-*`
-- la OpenAPI fue creada o actualizada como fichero real bajo `spec/open-api/` cuando la historia la requiere
+- la OpenAPI fue creada o actualizada como fichero real bajo `spec/open-api/{modulo}/{submodulo}/` cuando la historia la requiere
+- el chequeo interno previo detecto o corrigio inconsistencias basicas entre FRS, US y OpenAPI antes de delegar la validacion final
 - `traceability/RTM.yaml` refleja las relaciones nuevas o modificadas
 - no se crearon matrices duplicadas de trazabilidad
 - las lagunas de informacion quedaron marcadas como `pendiente de refinamiento`

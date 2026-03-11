@@ -2,8 +2,13 @@
 
 ## Unreleased
 
+- Ajustado `AgentCreateProjectFromScratch` para pedir explicitamente nombre y descripcion del proyecto y para crear obligatoriamente el scaffold dentro de la carpeta `{PROJECT_NAME}`.
 - Refactorizado `AgentAnalystDocFlow` para exigir la solicitud explicita del documento fuente antes de cualquier analisis.
 - Ajustado `AgentAnalystDocFlow` para escanear BRS pendientes en `/docs/requirements/functional/` y pedir al usuario que elija cual analizar.
+- Ajustado `AgentAnalystDocFlow` para pedir siempre modulo funcional y submodulo funcional antes de crear directorios y para ejecutar un chequeo interno de FRS, US y OpenAPI antes de delegar la validacion.
+- Ajustada la generacion y validacion de OpenAPI para que siga la misma estructura `modulo/submodulo` bajo `spec/open-api/`.
+- Reforzada la obligacion de crear FRS y US a partir de las plantillas de `docs/templates/`.
+- Reforzada la regla de dejar `pendiente de refinamiento` en FRS y US cuando falte informacion y de no inventar datos fuera del BRS.
 - Reforzado `AgentAnalystDocFlow` para exigir generacion de ficheros OpenAPI reales y delegar siempre la validacion final en `AgentValidateDocFlow`.
 - Extraida la salida final de `AgentAnalystDocFlow` a `templates/analyst-doc-flow-output.template.md`.
 - Extraida la logica procedimental detallada a `skills/analyst-doc-flow/SKILL.md` para mejorar mantenibilidad.

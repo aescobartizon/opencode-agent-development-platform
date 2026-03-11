@@ -274,7 +274,7 @@ Feature: {{FEATURE_NAME}}
 
 ## 17. Especificacion OpenAPI derivada
 
-> Cuando la historia implique interaccion API, el agente analista debe generar o actualizar la especificacion correspondiente en `spec/open-api/`.
+> Cuando la historia implique interaccion API, el agente analista debe generar o actualizar la especificacion correspondiente en `spec/open-api/{modulo}/{submodulo}/`.
 > Esta seccion deja trazabilidad explicita entre la historia y las definiciones API derivadas.
 
 | Artefacto API | Ruta / ID | Tipo | Operacion / evento | Estado | Observaciones |
@@ -284,7 +284,7 @@ Feature: {{FEATURE_NAME}}
 
 > **Reglas obligatorias:**
 > - si la US expone, consulta o modifica comportamiento API, debe existir al menos una entrada en esta tabla,
-> - toda ruta referenciada debe vivir en `spec/open-api/`,
+> - toda ruta referenciada debe vivir en `spec/open-api/{modulo}/{submodulo}/`,
 > - toda especificacion OpenAPI derivada debe poder trazarse con al menos un `AC-*` y un `GT-*`.
 
 ---
@@ -335,7 +335,7 @@ Feature: {{FEATURE_NAME}}
 | FRS principal | {{FRS-ID}} | {{FRS-TITLE}} |
 | FRS relacionados | {{FRS-RELATED-LIST}} | Requisitos relacionados si aplica |
 | Historias relacionadas | {{US-RELATED-LIST}} | Otras historias relacionadas |
-| Especificaciones OpenAPI derivadas | {{OPENAPI-LIST}} | Ficheros o definiciones OpenAPI en `spec/open-api/` |
+| Especificaciones OpenAPI derivadas | {{OPENAPI-LIST}} | Ficheros o definiciones OpenAPI en `spec/open-api/{modulo}/{submodulo}/` |
 | Criterios de aceptación | AC-001, AC-002, AC-003 | Criterios definidos en §11 |
 | Tests Gherkin | GT-001, GT-002, GT-003 | Escenarios definidos en §13 |
 | Cobertura funcional y riesgo | COV-001, COV-002, COV-003 | Cobertura definida en §14 |

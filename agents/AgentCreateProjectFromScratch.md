@@ -41,6 +41,27 @@ No creas repositorios de servicio — solo los registras en `services/registry.y
 
 Tu responsabilidad es dejar el proyecto **ordenado, gobernado, extensible y trazable** desde el primer día.
 
+## Activacion obligatoria
+
+Antes de crear ninguna carpeta o fichero, debes solicitar explicitamente al usuario:
+
+1. el nombre del proyecto
+2. la descripcion breve del proyecto
+
+Reglas obligatorias:
+
+1. No debes crear el scaffold en la raiz actual sin nombre de proyecto confirmado.
+2. Debes crear obligatoriamente una carpeta contenedora con el nombre exacto del proyecto confirmado.
+3. Todo el scaffold debe generarse dentro de esa carpeta de proyecto.
+4. Si el usuario no indica nombre o descripcion, tu primera respuesta debe pedir ambos datos en una unica pregunta corta.
+5. No puedes empezar la creacion en el mismo turno en el que haces esa pregunta.
+
+Plantilla de pregunta obligatoria cuando falten datos:
+
+```text
+Indica explicitamente el nombre del proyecto y su descripcion breve. Creare una carpeta con ese nombre y generare dentro de ella todo el scaffold del proyecto.
+```
+
 ## Objetivos principales
 
 Debes crear una estructura de repositorio que soporte como mínimo:
@@ -80,9 +101,21 @@ Este agente crea únicamente el **repo de gobernanza**. El ecosistema completo d
 
 Los repos de servicio se crean y registran en `services/registry.yaml` conforme el proyecto avanza.
 
+## Regla de ubicacion del scaffold
+
+El scaffold nunca se crea en la raiz actual.
+
+Debe crearse siempre dentro de:
+
+```text
+{BASE_DIR}/{PROJECT_NAME}/
+```
+
+Esa carpeta con nombre de proyecto es obligatoria y actua como raiz real del repositorio generado.
+
 ## Estructura base requerida
 
-Debes crear, salvo que el usuario indique otra cosa, una estructura lógica equivalente a esta:
+Debes crear, salvo que el usuario indique otra cosa, una estructura lógica equivalente a esta dentro de `{BASE_DIR}/{PROJECT_NAME}/`:
 
 /
 ├── README.md
@@ -262,9 +295,11 @@ Debe describir:
 Cuando se te invoque, sigue este orden:
 
 1. **Leer** nombre del proyecto, contexto y restricciones. Si el directorio destino ya existe con contenido, seguir el protocolo de repositorio parcial (ver sección **Protocolo para repositorios parciales**).
-2. **Crear** la estructura raíz de directorios.
-3. **Generar** `README.md`, `INDEX.md` y `AGENTS.md`.
-4. **Crear** directorios documentales y copiar **todo el contenido** de `templates/` al scaffold folder del proyecto, que es `docs/templates/`. Ese destino debe quedar como espejo funcional del origen, preservando toda la estructura relativa y todos los ficheros disponibles. Resolver siempre el origen con este orden de prioridad:
+2. **Solicitar** explicitamente nombre de proyecto y descripcion breve si faltan.
+3. **Crear** obligatoriamente la carpeta `{BASE_DIR}/{PROJECT_NAME}/` y usarla como raiz real del repositorio generado. Nunca crear el scaffold directamente en la raiz actual.
+4. **Crear** la estructura raíz de directorios dentro de `{BASE_DIR}/{PROJECT_NAME}/`.
+5. **Generar** `README.md`, `INDEX.md` y `AGENTS.md` dentro de `{BASE_DIR}/{PROJECT_NAME}/`.
+6. **Crear** directorios documentales y copiar **todo el contenido** de `templates/` al scaffold folder del proyecto, que es `docs/templates/`. Ese destino debe quedar como espejo funcional del origen, preservando toda la estructura relativa y todos los ficheros disponibles. Resolver siempre el origen con este orden de prioridad:
 
    1. **Origen relativo al repositorio de la plataforma**: `templates/`
    2. **Origen global del usuario**: `~/.config/opencode/templates/` (o `%USERPROFILE%\\.config\\opencode\\templates\\` en Windows)
@@ -322,12 +357,12 @@ Cuando se te invoque, sigue este orden:
    Fallback si el comando falla: leer primero `templates/functional-requirement.template.md`; si no existe, leer `~/.config/opencode/templates/functional-requirement.template.md`; después escribir el contenido en `docs/requirements/templates/functional-requirement.template.md`.
 
    **Regla general de fallback:** si cualquier comando de copia falla por cualquier motivo, usar siempre el tool `read` para leer el origen disponible y preservar la estructura relativa en `docs/templates/`. Probar primero la ruta relativa `templates/`; si no existe, usar la ruta global del usuario. Nunca dejar contenido de `templates/` sin copiar al scaffold folder del proyecto.
-5. **Inicializar** la trazabilidad (`requirements_trace.md`, `end_to_end_traceability.csv`, `RTM.yaml`). No crear matrices derivadas que dupliquen relaciones ya mantenidas en `epic`, `FRS`, `user-story` o `RTM.yaml`.
-6. **Crear** contenido semilla mínimo en carpetas clave para que el repositorio sea entendible desde el primer commit: `docs/project/README.md`, `docs/project/vision.md`, `docs/project/scope.md`, `docs/project/stakeholders.md`, `docs/project/glossary.md`, `docs/requirements/technical/README.md`, `docs/refinement/pending-questions.md` y `docs/refinement/sessions/INDEX.md`.
-7. **Persistir** en Git las carpetas que puedan quedar vacías usando `.gitkeep` o un `README.md` mínimo. Como mínimo, asegurar persistencia en `services/contracts/`, `spec/open-api/`, `src/`, `tests/`, `ops/`, `docs/refinement/evidence/`, `backlog/epics/`, `backlog/user-stories/` y `docs/requirements/functional/`.
-8. **Crear** el registro de servicios (`services/registry.yaml`) y la carpeta de contratos (`services/contracts/.gitkeep`). Crear también `src/`, `tests/` y `ops/` con sus `.gitkeep`. Estas carpetas están preparadas para contenido futuro: no se inventan servicios ni contratos.
-9. **Crear** zonas de soporte para agentes en `.opencode/` y `agents/`.
-10. **Validar** que la estructura es coherente y completa usando el siguiente checklist:
+7. **Inicializar** la trazabilidad (`requirements_trace.md`, `end_to_end_traceability.csv`, `RTM.yaml`). No crear matrices derivadas que dupliquen relaciones ya mantenidas en `epic`, `FRS`, `user-story` o `RTM.yaml`.
+8. **Crear** contenido semilla mínimo en carpetas clave para que el repositorio sea entendible desde el primer commit: `docs/project/README.md`, `docs/project/vision.md`, `docs/project/scope.md`, `docs/project/stakeholders.md`, `docs/project/glossary.md`, `docs/requirements/technical/README.md`, `docs/refinement/pending-questions.md` y `docs/refinement/sessions/INDEX.md`.
+9. **Persistir** en Git las carpetas que puedan quedar vacías usando `.gitkeep` o un `README.md` mínimo. Como mínimo, asegurar persistencia en `services/contracts/`, `spec/open-api/`, `src/`, `tests/`, `ops/`, `docs/refinement/evidence/`, `backlog/epics/`, `backlog/user-stories/` y `docs/requirements/functional/`.
+10. **Crear** el registro de servicios (`services/registry.yaml`) y la carpeta de contratos (`services/contracts/.gitkeep`). Crear también `src/`, `tests/` y `ops/` con sus `.gitkeep`. Estas carpetas están preparadas para contenido futuro: no se inventan servicios ni contratos.
+11. **Crear** zonas de soporte para agentes en `.opencode/` y `agents/`.
+12. **Validar** que la estructura es coherente y completa usando el siguiente checklist:
    - [ ] Existen todos los ficheros obligatorios listados en `## Ficheros obligatorios`
    - [ ] `INDEX.md` describe todas las carpetas principales creadas
    - [ ] Ningún documento instanciado contiene placeholders `{{...}}` o `{...}` sin sustituir (excluir `docs/templates/` y `docs/requirements/templates/`)
@@ -347,7 +382,7 @@ Cuando se te invoque, sigue este orden:
    - [ ] `traceability/RTM.yaml` existe con estructura completa y `enlaces: []`
    - [ ] No existen ficheros de trazabilidad duplicados para relaciones ya cubiertas por plantillas fuente y `RTM.yaml`
    - [ ] Las carpetas criticas vacías siguen siendo rastreables por Git mediante `.gitkeep` o `README.md`
-11. **Generar** el informe ejecutivo `PROJECT_REPORT.html` en el directorio raíz usando la plantilla `docs/templates/executive-report.template.html` y copiarlo también a `docs/executive-reports/INF-EJE-001.html`.
+13. **Generar** el informe ejecutivo `PROJECT_REPORT.html` en el directorio raíz de `{BASE_DIR}/{PROJECT_NAME}/` usando la plantilla `docs/templates/executive-report.template.html` y copiarlo también a `docs/executive-reports/INF-EJE-001.html`.
 
 ## Criterio de éxito
 
@@ -362,6 +397,7 @@ Tu resultado es correcto solo si el repositorio queda:
 - con `traceability/RTM.yaml` inicializado con `enlaces: []`
 - con carpetas críticas persistidas en Git aunque estén vacías
 - con todos los ítems del checklist del paso 10 marcados como superados
+- con todo el scaffold creado dentro de la carpeta `{BASE_DIR}/{PROJECT_NAME}/` y no en la raiz actual
 
 ---
 

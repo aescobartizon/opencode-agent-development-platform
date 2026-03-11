@@ -58,7 +58,7 @@ Comprobar reciprocidad entre documentos:
 - si una US referencia una FRS, la FRS debe listar esa US
 - si una FRS referencia una epica, la epica debe listar esa FRS
 - si una epica lista una US, esa US debe pertenecer a esa epica
-- si una US declara OpenAPI derivada, la ruta debe existir bajo `spec/open-api/` o quedar justificada como pendiente
+- si una US declara OpenAPI derivada, la ruta debe existir bajo `spec/open-api/{modulo}/{submodulo}/` o quedar justificada como pendiente
 
 ### Paso 4 - Validar cobertura funcional
 
@@ -68,6 +68,7 @@ Comprobar:
 - todo `AC-*` en US aparece al menos en un `GT-*`
 - todo `GT-*` referencia exactamente un `AC-*`
 - toda OpenAPI derivada queda asociada a `AC-*` y `GT-*` cuando aplica comportamiento observable
+- toda OpenAPI derivada sigue la estructura `spec/open-api/{modulo}/{submodulo}/`
 
 ### Paso 5 - Validar cobertura de riesgos
 
@@ -155,7 +156,7 @@ Si una remediacion requiere criterio del usuario:
 | VAL-011 | US | existe `EPIC-ID` |
 | VAL-012 | US | existe `FRS-ID` |
 | VAL-013 | US | existe `LINK-NNN` |
-| VAL-014 | US | si hay impacto API, existe referencia OpenAPI en `spec/open-api/` |
+| VAL-014 | US | si hay impacto API, existe referencia OpenAPI en `spec/open-api/{modulo}/{submodulo}/` |
 | VAL-015 | US | existe al menos un `AC-*` |
 | VAL-016 | US | todo `AC-*` aparece en `GT-*` |
 | VAL-017 | US | todo `GT-*` referencia exactamente un `AC-*` |
@@ -175,7 +176,7 @@ Clasificar hallazgos asi:
 
 Ejemplos de severidad alta:
 
-- OpenAPI referenciada en US pero inexistente en `spec/open-api/`
+- OpenAPI referenciada en US pero inexistente en `spec/open-api/{modulo}/{submodulo}/`
 - FRS sin epica de origen
 - US sin FRS principal
 - `AC-*` sin cobertura `GT-*`
