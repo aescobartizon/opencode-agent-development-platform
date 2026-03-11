@@ -1,0 +1,56 @@
+# traceability/RTM.yaml
+# Requirements Traceability Matrix — test-proyect-e
+project: "test-proyect-e"
+version: "1.0.0"
+enlaces:
+  - id: LINK-001
+    requisito: FRS-UBUS-001
+    historia: US-UBUS-001
+    openapi_files:
+      - spec/open-api/urban-bus-operational-info.openapi.yaml
+    test_case:
+      - US-UBUS-001#GT-001
+      - US-UBUS-001#GT-002
+      - US-UBUS-001#GT-003
+    estado: borrador
+  - id: LINK-002
+    requisito: FRS-UBUS-001
+    historia: US-UBUS-002
+    openapi_files:
+      - spec/open-api/urban-bus-operational-info.openapi.yaml
+    test_case:
+      - US-UBUS-002#GT-001
+      - US-UBUS-002#GT-002
+      - US-UBUS-002#GT-003
+    estado: borrador
+  - id: LINK-003
+    requisito: FRS-UBUS-002
+    historia: US-UBUS-003
+    openapi_files:
+      - spec/open-api/urban-bus-digital-ticket.openapi.yaml
+    test_case:
+      - US-UBUS-003#GT-001
+      - US-UBUS-003#GT-002
+      - US-UBUS-003#GT-003
+    estado: borrador
+  - id: LINK-004
+    requisito: FRS-UBUS-002
+    historia: US-UBUS-004
+    openapi_files:
+      - spec/open-api/urban-bus-digital-ticket.openapi.yaml
+    test_case:
+      - US-UBUS-004#GT-001
+      - US-UBUS-004#GT-002
+      - US-UBUS-004#GT-003
+    estado: borrador
+# Estructura de cada enlace:
+#   - id: LINK-001
+#     requisito: FRS-001
+#     historia: US-001
+#     openapi_files: []
+#     test_case: TC-001
+#     servicio: SVC-001
+#     repo_url: ""
+#     pr_url: ""
+#     commit_sha: ""
+#     estado: pendiente

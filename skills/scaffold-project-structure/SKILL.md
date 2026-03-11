@@ -7,8 +7,6 @@ compatibility: opencode
 
 ## Que hace esta skill
 
-Esta skill debe ejecutarse preferentemente con el modelo gratuito `gemini-3-flash` cuando la plataforma permita fijar modelo para el agente o subagente que la consume.
-
 Esta skill describe como crear, desde cero, un **repositorio de gobernanza** para un proyecto con arquitectura de microservicios bajo modelo **multi-repo**.
 
 El resultado esperado es un repositorio central de gobierno que contiene:
@@ -91,14 +89,15 @@ El proyecto generado debe incluir, como minimo, esta estructura:
 
 Resolver siempre las plantillas con este orden:
 
-1. `templates/` del repositorio actual
-2. `~/.config/opencode/templates/` como fallback global
+1. `./templates/` del repositorio actual
+2. `~/.opencode/templates/` como fallback global
 
-Contenido obligatorio a copiar desde `templates/`:
+Contenido obligatorio a copiar desde `./templates/`:
 
 - `functional-requirement.template.md`
 - `user-story.template.md`
 - `epic.template.md`
+- `analyst-doc-flow-output.template.md`
 - `executive-report.template.html`
 - `examples/DOC-BUS/analysis/Documento inicial de analisis.txt`
 - `examples/DOC-BUS/doc/epics/EPIC-UBUS-01 — Autoservicio digital para información operativa y ticketing básico en autobús urbano.md`
@@ -109,8 +108,7 @@ Contenido obligatorio a copiar desde `templates/`:
 
 Destinos obligatorios en el proyecto generado:
 
-- `docs/templates/` con el contenido completo de `templates/` preservando estructura relativa; este directorio es el scaffold folder oficial de plantillas del proyecto generado
-- `docs/requirements/templates/functional-requirement.template.md`
+- `docs/templates/` con el contenido completo de `./templates/` preservando estructura relativa; este directorio es el scaffold folder oficial de plantillas del proyecto generado.
 
 ## Procedimiento
 

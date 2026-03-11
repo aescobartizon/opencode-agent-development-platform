@@ -1,0 +1,146 @@
+openapi: 3.1.0
+info:
+  title: Urban Bus Digital Ticket API
+  version: 0.1.0
+  summary: API derivada para ticketing digital basico
+  description: >
+    Especificacion OpenAPI derivada del documento ANA-UBUS-001 para compra,
+    consulta y activacion de billete sencillo digital. Reglas exactas de pago,
+    validez temporal y activacion permanecen parcialmente pendientes de refinamiento.
+
+paths:
+  /digital-tickets/simple/purchase:
+    post:
+      operationId: purchaseSimpleDigitalTicket
+      summary: Comprar billete sencillo digital
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PurchaseRequest'
+      responses:
+        '200':
+          description: Resultado de compra procesado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseResult'
+  /digital-tickets/{ticketId}:
+    get:
+      operationId: getDigitalTicket
+      summary: Consultar billete digital adquirido
+      parameters:
+        - name: ticketId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Billete digital consultado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DigitalTicket'
+        '404':
+          description: Billete no encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /digital-tickets/{ticketId}/activation:
+    post:
+      operationId: activateDigitalTicket
+      summary: Activar billete digital cuando proceda
+      parameters:
+        - name: ticketId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Resultado de activacion procesado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivationResult'
+        '409':
+          description: El billete no puede activarse segun reglas funcionales.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    PurchaseRequest:
+      type: object
+      properties:
+        productType:
+          type: string
+          enum:
+            - simple
+    PurchaseResult:
+      type: object
+      required:
+        - purchaseStatus
+        - message
+      properties:
+        purchaseStatus:
+          type: string
+          enum:
+            - success
+            - failed
+        message:
+          type: string
+        ticketId:
+          type: string
+        ticketEvidence:
+          type: string
+          description: Evidencia clara del billete adquirido.
+    DigitalTicket:
+      type: object
+      required:
+        - ticketId
+        - status
+      properties:
+        ticketId:
+          type: string
+        status:
+          type: string
+          description: Estado funcional comprensible del billete.
+          enum:
+            - purchased
+            - ready_for_activation
+            - active
+            - not_activable
+            - pending_refinement
+        activationRequired:
+          type: boolean
+        usageMessage:
+          type: string
+    ActivationResult:
+      type: object
+      required:
+        - activationStatus
+        - message
+      properties:
+        activationStatus:
+          type: string
+          enum:
+            - activated
+            - rejected
+        message:
+          type: string
+    ErrorResponse:
+      type: object
+      required:
+        - message
+      properties:
+        code:
+          type: string
+          description: Codigo funcional pendiente de refinamiento.
+        message:
+          type: string

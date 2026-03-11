@@ -1,7 +1,7 @@
 ---
 description: Valida end-to-end la plataforma documental completa, incluyendo agentes, skills, plantillas, flujo de creacion de proyecto, flujo de analisis documental con el caso DOC-BUS y coherencia global de trazabilidad.
 version: 1.1.0
-model: gemini-3-flash
+model: gemini-2.0-flash
 mode: subagent
 temperature: 0.1
 tools:
@@ -73,13 +73,15 @@ Demostrar que la plataforma puede ejecutar un flujo E2E correcto:
 8. emitir un veredicto global sobre la plataforma,
 9. generar un informe ejecutivo HTML con el resultado de la validacion.
 
-La prueba documental de referencia para `AgentAnalystDocFlow` debe usar por defecto este documento:
+La prueba documental de referencia para `AgentAnalystDocFlow` debe proponer como candidato recomendado este documento:
 
 ```text
 templates/examples/DOC-BUS/analysis/Documento inicial de analisis.txt
 ```
 
-Este documento se considera el caso E2E canónico de validación funcional de la plataforma salvo que el usuario indique otro distinto.
+Este documento se considera el caso E2E canonico de validacion funcional de la plataforma salvo que el usuario indique otro distinto.
+
+Importante: `AgentAnalystDocFlow` no puede usarlo automaticamente. Durante la validacion E2E debes confirmar explicitamente ese documento al agente cuando este lo solicite.
 
 Debe copiarse dentro del proyecto de prueba antes de ejecutar el analisis documental, para que la validacion E2E sea autocontenida.
 
@@ -102,6 +104,7 @@ Debes comprobar:
 - existencia de agentes requeridos
 - existencia de skill requerida
 - existencia de plantillas oficiales
+- existencia de `skills/validate-doc-flow/SKILL.md` y `skills/functional-traceability-rules/SKILL.md` cuando el flujo documental las referencia
 - alineacion semantica entre agentes, skill y `documentation-platform-sdd.md`
 - ausencia de referencias activas al modelo legacy basado en `use-cases`
 
@@ -120,10 +123,14 @@ Debes comprobar que `AgentCreateProjectFromScratch`:
 Debes comprobar que `AgentAnalystDocFlow`:
 
 - usa plantillas oficiales
+- usa la plantilla de salida `docs/templates/analyst-doc-flow-output.template.md` o su fallback equivalente
+- escanea `/docs/requirements/functional/` para detectar BRS pendientes cuando no recibe una ruta exacta
+- aplica patrones explicitos de deteccion de BRS y excluye `epics/`, `frs/`, `us/` y carpetas de plantillas del escaneo de pendientes
+- ofrece al usuario la eleccion explicita del BRS a analizar antes de procesarlo
 - crea Epica, FRS y US segun flujo oficial
-- genera OpenAPI cuando la US lo requiere
+- genera ficheros OpenAPI reales en `spec/open-api/` cuando la US lo requiere
 - actualiza `RTM.yaml`
-- invoca `AgentValidateDocFlow` al final
+- delega la validacion final invocando `AgentValidateDocFlow` al final
 
 ## 4. Validacion del agente documental
 
@@ -148,7 +155,7 @@ Debes ejecutar una prueba real sobre un proyecto de prueba y documentar:
 - estado final conforme/no conforme
 - informe ejecutivo HTML generado
 
-Para la prueba E2E de `AgentAnalystDocFlow`, debes usar por defecto:
+Para la prueba E2E de `AgentAnalystDocFlow`, debes confirmar explicitamente como documento fuente recomendado:
 
 ```text
 templates/examples/DOC-BUS/analysis/Documento inicial de analisis.txt
@@ -196,7 +203,7 @@ La prueba E2E debe ejecutarse sobre esa copia interna.
 
 ## Paso 5 - Ejecutar analisis documental
 
-Procesar con `AgentAnalystDocFlow` el documento de negocio de referencia:
+Procesar con `AgentAnalystDocFlow` la copia interna del documento de negocio de referencia, respondiendo explicitamente a la pregunta inicial del agente con la ruta confirmada:
 
 ```text
 templates/examples/DOC-BUS/analysis/Documento inicial de analisis.txt

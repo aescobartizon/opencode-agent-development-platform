@@ -14,16 +14,24 @@ Repositorio base para desarrollar y versionar capacidades de OpenCode orientadas
 ### Agente incluido
 
 - `agents/AgentCreateProjectFromScratch.md`: agente fundacional para crear desde cero un repositorio de gobernanza para proyectos multi-repo basados en microservicios.
-  - Configurado para preferir el modelo gratuito `gemini-3-flash` cuando el entorno soporte fijar modelo.
+  - Configurado para preferir el modelo gratuito `gemini-2.0-flash` cuando el entorno soporte fijar modelo.
 
 ### Skill incluida
 
 - `skills/scaffold-project-structure/SKILL.md`: procedimiento paso a paso para crear la estructura inicial de un proyecto en momento cero.
+- `skills/analyst-doc-flow/SKILL.md`: procedimiento operativo detallado para analizar un documento de negocio confirmado por el usuario y derivar Epica, FRS, US, OpenAPI y RTM.
+- `skills/functional-traceability-rules/SKILL.md`: reglas compartidas de trazabilidad funcional y no duplicacion usadas por analisis y validacion documental.
+- `skills/validate-doc-flow/SKILL.md`: procedimiento detallado para validar y remediar trazabilidad funcional sin sobrecargar el agente validador.
+
+### Comando incluido
+
+- `.opencode/commands/analyze-doc.md`: comando recomendado para lanzar `AgentAnalystDocFlow` con ruta explicita de documento.
 
 ### Plantillas incluidas
 
 - `templates/executive-report.template.html`: plantilla HTML para informes ejecutivos.
 - `templates/functional-requirement.template.md`: plantilla Markdown para requisitos funcionales con trazabilidad y criterios de aceptacion.
+- `templates/analyst-doc-flow-output.template.md`: plantilla Markdown para estructurar la salida final de `AgentAnalystDocFlow`.
 
 ## Objetivo
 
@@ -75,5 +83,6 @@ Este repositorio esta pensado como base de desarrollo y mantenimiento para evolu
 
 - nuevos agentes,
 - nuevas skills,
+- nuevos comandos operativos,
 - nuevas plantillas,
 - automatizaciones de soporte para equipos de analisis, arquitectura, QA y operacion.

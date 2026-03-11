@@ -1,0 +1,328 @@
+openapi: 3.1.0
+info:
+  title: Urban Bus Arrivals API
+  version: 1.0.0
+  summary: API para consultar próximas llegadas, incidencias y accesibilidad básica por parada urbana
+  description: >
+    Esta API permite consultar una parada concreta del servicio urbano de autobuses
+    y obtener las próximas llegadas previstas, junto con incidencias activas y
+    datos básicos de accesibilidad cuando estén disponibles.
+
+servers:
+  - url: https://api.transportes-urbanos.example.com
+    description: Entorno productivo
+  - url: https://sandbox.transportes-urbanos.example.com
+    description: Entorno sandbox
+
+tags:
+  - name: Stops
+    description: Operaciones de consulta sobre paradas urbanas
+
+paths:
+  /stops/{stopId}/arrivals:
+    get:
+      tags:
+        - Stops
+      operationId: getStopArrivals
+      summary: Consultar próximas llegadas por parada
+      description: >
+        Devuelve las próximas llegadas previstas para una parada urbana, junto con
+        incidencias activas y datos básicos de accesibilidad cuando se soliciten
+        y estén disponibles.
+      parameters:
+        - name: stopId
+          in: path
+          required: true
+          description: Identificador único de la parada urbana
+          schema:
+            type: string
+            minLength: 1
+          example: "STOP-1024"
+
+        - name: lineId
+          in: query
+          required: false
+          description: >
+            Identificador de línea para filtrar las próximas llegadas de una línea concreta.
+          schema:
+            type: string
+            minLength: 1
+          example: "LINE-27"
+
+        - name: includeAlerts
+          in: query
+          required: false
+          description: Indica si deben incluirse incidencias activas en la respuesta
+          schema:
+            type: boolean
+            default: true
+
+        - name: includeAccessibility
+          in: query
+          required: false
+          description: Indica si deben incluirse datos básicos de accesibilidad
+          schema:
+            type: boolean
+            default: true
+
+      responses:
+        "200":
+          description: Consulta realizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StopArrivalsResponse"
+              examples:
+                stopArrivalsExample:
+                  summary: Respuesta válida con llegadas, alertas y accesibilidad
+                  value:
+                    stopId: "STOP-1024"
+                    stopName: "Avenida Central - Biblioteca"
+                    queryTimestamp: "2026-03-10T08:15:20Z"
+                    queryStatus: "ok"
+                    arrivals:
+                      - lineId: "LINE-27"
+                        lineName: "27"
+                        destination: "Estación Central"
+                        estimatedArrivalMinutes: 3
+                        estimatedArrivalAt: "2026-03-10T08:18:20Z"
+                        vehicleOccupancy: "medium"
+                      - lineId: "LINE-14"
+                        lineName: "14"
+                        destination: "Hospital Norte"
+                        estimatedArrivalMinutes: 7
+                        estimatedArrivalAt: "2026-03-10T08:22:20Z"
+                        vehicleOccupancy: "low"
+                    alerts:
+                      - alertId: "ALT-9001"
+                        severity: "medium"
+                        category: "detour"
+                        title: "Desvío temporal de línea"
+                        description: "La línea 27 realiza desvío entre Plaza Mayor y Mercado."
+                        affectedLineIds:
+                          - "LINE-27"
+                        active: true
+                    accessibility:
+                      wheelchairAccessible: true
+                      tactilePaving: true
+                      audioAnnouncements: false
+                      notes: "Acceso adaptado disponible en el lateral derecho."
+
+        "404":
+          description: La parada no existe o no es válida
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                stopNotFound:
+                  summary: Parada inexistente
+                  value:
+                    errorCode: "UBUS-ARR-404"
+                    errorType: "not_found"
+                    message: "La parada consultada no existe."
+                    details:
+                      stopId: "STOP-9999"
+
+        "503":
+          description: Servicio operativo temporalmente no disponible
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                serviceUnavailable:
+                  summary: Backend operativo no disponible
+                  value:
+                    errorCode: "UBUS-ARR-503"
+                    errorType: "service_unavailable"
+                    message: "La información operativa no está disponible temporalmente."
+                    details:
+                      retryable: true
+
+components:
+  schemas:
+    StopArrivalsResponse:
+      type: object
+      required:
+        - stopId
+        - stopName
+        - queryTimestamp
+        - queryStatus
+        - arrivals
+      properties:
+        stopId:
+          type: string
+          description: Identificador único de la parada
+          example: "STOP-1024"
+        stopName:
+          type: string
+          description: Nombre visible de la parada
+          example: "Avenida Central - Biblioteca"
+        queryTimestamp:
+          type: string
+          format: date-time
+          description: Fecha y hora de generación de la respuesta
+          example: "2026-03-10T08:15:20Z"
+        queryStatus:
+          type: string
+          description: Estado funcional de la consulta
+          enum:
+            - ok
+            - partial
+          example: "ok"
+        arrivals:
+          type: array
+          description: Próximas llegadas previstas para la parada
+          items:
+            $ref: "#/components/schemas/Arrival"
+        alerts:
+          type: array
+          description: Incidencias activas relevantes para la parada o líneas asociadas
+          items:
+            $ref: "#/components/schemas/Alert"
+          default: []
+        accessibility:
+          allOf:
+            - $ref: "#/components/schemas/AccessibilityInfo"
+          nullable: true
+
+    Arrival:
+      type: object
+      required:
+        - lineId
+        - lineName
+        - destination
+        - estimatedArrivalMinutes
+        - estimatedArrivalAt
+      properties:
+        lineId:
+          type: string
+          description: Identificador interno de la línea
+          example: "LINE-27"
+        lineName:
+          type: string
+          description: Nombre visible o número de línea
+          example: "27"
+        destination:
+          type: string
+          description: Destino del autobús
+          example: "Estación Central"
+        estimatedArrivalMinutes:
+          type: integer
+          minimum: 0
+          description: Minutos estimados hasta la llegada
+          example: 3
+        estimatedArrivalAt:
+          type: string
+          format: date-time
+          description: Fecha y hora estimada de llegada
+          example: "2026-03-10T08:18:20Z"
+        vehicleOccupancy:
+          type: string
+          description: Nivel orientativo de ocupación si está disponible
+          enum:
+            - low
+            - medium
+            - high
+          example: "medium"
+
+    Alert:
+      type: object
+      required:
+        - alertId
+        - severity
+        - category
+        - title
+        - active
+      properties:
+        alertId:
+          type: string
+          description: Identificador único de la incidencia
+          example: "ALT-9001"
+        severity:
+          type: string
+          description: Severidad funcional de la incidencia
+          enum:
+            - low
+            - medium
+            - high
+          example: "medium"
+        category:
+          type: string
+          description: Categoría funcional de la incidencia
+          enum:
+            - delay
+            - detour
+            - stop_closed
+            - accessibility_issue
+            - service_disruption
+          example: "detour"
+        title:
+          type: string
+          description: Título corto de la incidencia
+          example: "Desvío temporal de línea"
+        description:
+          type: string
+          description: Descripción ampliada de la incidencia
+          example: "La línea 27 realiza desvío entre Plaza Mayor y Mercado."
+        affectedLineIds:
+          type: array
+          description: Líneas afectadas por la incidencia
+          items:
+            type: string
+          example:
+            - "LINE-27"
+        active:
+          type: boolean
+          description: Indica si la incidencia sigue activa
+          example: true
+
+    AccessibilityInfo:
+      type: object
+      properties:
+        wheelchairAccessible:
+          type: boolean
+          description: Indica si la parada dispone de accesibilidad básica para silla de ruedas
+          example: true
+        tactilePaving:
+          type: boolean
+          description: Indica si existe pavimento táctil
+          example: true
+        audioAnnouncements:
+          type: boolean
+          description: Indica si la parada o el sistema asociado disponen de soporte de avisos acústicos
+          example: false
+        notes:
+          type: string
+          description: Observaciones adicionales de accesibilidad
+          example: "Acceso adaptado disponible en el lateral derecho."
+
+    ErrorResponse:
+      type: object
+      required:
+        - errorCode
+        - errorType
+        - message
+      properties:
+        errorCode:
+          type: string
+          description: Código funcional de error
+          example: "UBUS-ARR-404"
+        errorType:
+          type: string
+          description: Tipo general de error
+          enum:
+            - validation_error
+            - not_found
+            - service_unavailable
+            - business_error
+          example: "not_found"
+        message:
+          type: string
+          description: Mensaje funcional comprensible
+          example: "La parada consultada no existe."
+        details:
+          type: object
+          description: Información adicional del error
+          additionalProperties: true

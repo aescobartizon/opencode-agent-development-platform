@@ -1,0 +1,121 @@
+openapi: 3.1.0
+info:
+  title: Urban Bus Operational Information API
+  version: 0.1.0
+  summary: API derivada para consulta operativa por parada urbana
+  description: >
+    Especificacion OpenAPI derivada del documento ANA-UBUS-001 para exponer
+    consulta de informacion operativa por parada. La taxonomia detallada de
+    incidencias y accesibilidad permanece parcialmente pendiente de refinamiento.
+
+paths:
+  /stops/{stopId}/operational-info:
+    get:
+      operationId: getStopOperationalInfo
+      summary: Consultar informacion operativa de una parada urbana
+      description: >
+        Devuelve proximas llegadas previstas y, cuando aplique, incidencias
+        relevantes y accesibilidad basica validada para una parada.
+      parameters:
+        - name: stopId
+          in: path
+          required: true
+          description: Identificador estable de parada urbana.
+          schema:
+            type: string
+        - name: lineId
+          in: query
+          required: false
+          description: Linea relacionada para filtrado cuando aplique.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Consulta operativa resuelta.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationalInfoResponse'
+        '404':
+          description: Parada no identificada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '503':
+          description: Informacion operativa no disponible temporalmente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    OperationalInfoResponse:
+      type: object
+      required:
+        - stopId
+        - status
+        - arrivals
+      properties:
+        stopId:
+          type: string
+        status:
+          type: string
+          description: Estado funcional de la consulta.
+          enum:
+            - ok
+            - no_incidents
+            - unavailable
+        arrivals:
+          type: array
+          items:
+            $ref: '#/components/schemas/Arrival'
+        alerts:
+          type: array
+          description: Incidencias relevantes publicables.
+          items:
+            $ref: '#/components/schemas/OperationalAlert'
+        accessibility:
+          oneOf:
+            - $ref: '#/components/schemas/AccessibilityInfo'
+            - type: 'null'
+    Arrival:
+      type: object
+      required:
+        - line
+        - estimatedTime
+      properties:
+        line:
+          type: string
+        destination:
+          type: string
+        estimatedTime:
+          type: string
+          description: Representacion comprensible del tiempo de llegada.
+    OperationalAlert:
+      type: object
+      properties:
+        category:
+          type: string
+          description: Categoria funcional de incidencia pendiente de refinamiento.
+        message:
+          type: string
+        affectedLine:
+          type: string
+    AccessibilityInfo:
+      type: object
+      properties:
+        summary:
+          type: string
+          description: Informacion basica de accesibilidad validada por el cliente.
+    ErrorResponse:
+      type: object
+      required:
+        - message
+      properties:
+        code:
+          type: string
+          description: Codigo funcional pendiente de refinamiento.
+        message:
+          type: string

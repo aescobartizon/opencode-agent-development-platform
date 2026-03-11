@@ -1,0 +1,231 @@
+Documento inicial de analisis
+ID: ANA-UBUS-001
+Version: 1.0.0
+Fecha: 2026-03-10
+Autor: Oficina de Analisis Funcional
+
+TITULO
+Autoservicio digital para transporte urbano en red de autobuses municipales
+
+1. CONTEXTO DEL CLIENTE
+
+El cliente es un operador o autoridad de transporte urbano que presta servicio de autobuses municipales a ciudadanos que realizan desplazamientos diarios por motivos de trabajo, estudio, gestiones personales y ocio.
+
+En la situacion actual, los usuarios necesitan consultar informacion operativa del servicio y acceder al autobus de forma rapida y sencilla, pero la experiencia digital disponible no resuelve de manera integrada las necesidades mas frecuentes del viajero. En especial, existen dificultades para:
+- conocer con claridad cuando llegara el proximo autobus a una parada concreta,
+- entender si existen incidencias que afecten al servicio,
+- disponer de un mecanismo simple para comprar y utilizar un billete digital desde el movil.
+
+El cliente quiere mejorar la experiencia del usuario final, aumentar el uso del canal digital y reducir la dependencia de interacciones presenciales o consultas repetitivas al servicio de atencion.
+
+2. OBJETIVO DE NEGOCIO
+
+El objetivo principal es mejorar el autoservicio digital del viajero urbano mediante una experiencia movil sencilla que permita:
+- consultar informacion operativa relevante del servicio de autobuses,
+- reducir la incertidumbre antes del viaje,
+- facilitar la compra de un billete digital sencillo,
+- agilizar el acceso al autobus,
+- mejorar la percepcion del servicio urbano por parte del ciudadano.
+
+3. NECESIDADES DEL CLIENTE
+
+El cliente necesita una solucion que permita cubrir, como minimo, las siguientes necesidades de negocio:
+
+1. Ofrecer informacion operativa util y comprensible sobre el servicio urbano de autobuses.
+2. Permitir que el usuario consulte proximas llegadas en una parada concreta.
+3. Informar de incidencias relevantes del servicio que puedan afectar a la decision del viajero.
+4. Mostrar, cuando sea posible, informacion basica relacionada con la accesibilidad del servicio o de la parada.
+5. Permitir la compra de un billete sencillo digital desde la aplicacion movil.
+6. Permitir que el usuario disponga de una evidencia clara del billete adquirido.
+7. Permitir la activacion del billete antes de subir al autobus, siempre que el modelo operativo del cliente lo requiera.
+8. Reducir friccion en el proceso de acceso al servicio.
+9. Mejorar la confianza del usuario en la informacion publicada por el canal digital.
+10. Disponer de una base funcional clara para seguir evolucionando el producto digital en fases posteriores.
+
+4. PROBLEMAS OBSERVADOS
+
+Se han identificado los siguientes problemas o puntos de dolor en el escenario actual:
+
+1. El usuario no siempre dispone de informacion clara y centralizada sobre llegadas de autobus en una parada.
+2. La informacion de incidencias puede ser incompleta, dispersa o dificil de interpretar.
+3. La experiencia digital relacionada con el billete puede resultar poco directa para usuarios no expertos.
+4. Puede existir incertidumbre sobre el estado del billete y sobre el momento correcto para utilizarlo.
+5. La falta de simplicidad en la experiencia digital incrementa consultas al personal de soporte o genera frustracion en el usuario.
+6. La experiencia actual no esta suficientemente preparada para escalar de forma ordenada a nuevas funcionalidades.
+
+5. ALCANCE INICIAL DEL ANALISIS
+
+Este documento cubre un alcance inicial centrado en dos grandes capacidades de negocio:
+
+A. Informacion operativa para el viajero
+- consulta de proximas llegadas por parada,
+- consulta de incidencias del servicio,
+- consulta de informacion basica de accesibilidad cuando exista.
+
+B. Ticketing digital basico
+- compra de billete sencillo digital,
+- disponibilidad del billete para su uso,
+- activacion del billete antes del embarque, cuando proceda.
+
+Quedan fuera de este alcance inicial:
+- planificacion avanzada de rutas,
+- gestion de flota,
+- mantenimiento de vehiculos,
+- optimizacion de horarios,
+- gestion completa de abonos complejos,
+- integraciones multimodales avanzadas,
+- funcionalidades de fidelizacion.
+
+6. PERFIL DE USUARIOS
+
+Los principales perfiles de usuario considerados en este analisis son:
+
+1. Viajero urbano habitual
+Persona que usa el autobus con frecuencia y necesita rapidez, simplicidad y fiabilidad.
+
+2. Viajero ocasional
+Persona que usa el servicio de forma puntual y necesita una experiencia especialmente clara y guiada.
+
+3. Usuario con necesidades de accesibilidad
+Persona que necesita conocer de antemano si la parada o el servicio presentan limitaciones relevantes para su desplazamiento.
+
+4. Personal de soporte o atencion
+Perfil interno que puede necesitar entender el funcionamiento funcional del producto para ayudar al usuario, aunque no sea el usuario principal del proceso digital.
+
+7. REQUISITOS FUNCIONALES DE NEGOCIO
+
+A continuacion se detallan los requisitos funcionales iniciales expresados desde una perspectiva de cliente y negocio.
+
+7.1 Informacion operativa
+
+RFN-001
+La solucion debe permitir al usuario consultar una parada concreta del servicio urbano.
+
+RFN-002
+La solucion debe mostrar las proximas llegadas previstas para la parada consultada.
+
+RFN-003
+La informacion de llegadas debe ser comprensible para un usuario no tecnico.
+
+RFN-004
+La solucion debe informar al usuario cuando existan incidencias activas que afecten a la parada o a una linea relacionada.
+
+RFN-005
+La solucion debe diferenciar entre una situacion sin incidencias y una situacion en la que la informacion no este disponible.
+
+RFN-006
+La solucion debe mostrar informacion basica de accesibilidad cuando esta exista y haya sido validada por el cliente.
+
+RFN-007
+La solucion debe evitar mostrar informacion ambigua o no confirmada como si fuera definitiva.
+
+7.2 Compra y uso de billete digital
+
+RFN-008
+La solucion debe permitir la compra de un billete sencillo digital desde la aplicacion movil.
+
+RFN-009
+La solucion debe mostrar al usuario una confirmacion clara del resultado de la compra.
+
+RFN-010
+La solucion debe poner el billete adquirido a disposicion del usuario para su consulta posterior.
+
+RFN-011
+La solucion debe mostrar el estado funcional del billete de manera comprensible.
+
+RFN-012
+La solucion debe permitir la activacion del billete antes del uso, cuando el modelo del cliente lo requiera.
+
+RFN-013
+La solucion debe informar claramente al usuario cuando un billete no pueda activarse.
+
+RFN-014
+La solucion debe evitar que el usuario interprete incorrectamente que dispone de un billete valido cuando todavia no cumple las condiciones de uso.
+
+7.3 Experiencia de usuario y comunicacion
+
+RFN-015
+La solucion debe utilizar mensajes claros, directos y comprensibles para ciudadanos no expertos.
+
+RFN-016
+La solucion debe minimizar el numero de pasos necesarios en los procesos mas frecuentes.
+
+RFN-017
+La solucion debe ayudar al usuario a distinguir entre informacion operativa, incidencias y estado del billete.
+
+RFN-018
+La solucion debe contemplar escenarios de error y comunicar al usuario lo que ocurre sin tecnicismos innecesarios.
+
+8. EXPECTATIVAS NO FUNCIONALES DE NEGOCIO
+
+Aunque este documento no entra en diseño tecnico detallado, el cliente expresa las siguientes expectativas:
+
+RNF-001
+La solucion debe ofrecer una experiencia suficientemente rapida para uso cotidiano.
+
+RNF-002
+La solucion debe estar disponible de forma continua durante el servicio urbano y en los periodos de mayor uso.
+
+RNF-003
+La interfaz debe ser sencilla y apta para usuarios con distinto nivel de familiaridad digital.
+
+RNF-004
+La informacion mostrada debe inspirar confianza y coherencia.
+
+RNF-005
+El producto debe ser ampliable en fases posteriores sin rehacer completamente el modelo funcional.
+
+RNF-006
+La gestion de datos del usuario y del billete debe respetar las obligaciones regulatorias y organizativas aplicables.
+
+9. SUPUESTOS INICIALES
+
+Para este analisis se consideran validos, de momento, los siguientes supuestos:
+
+1. El cliente dispone de una red urbana con identificadores estables de parada y linea.
+2. Existe algun origen de informacion operativa sobre proximas llegadas e incidencias.
+3. El canal movil es prioritario para la primera fase del producto.
+4. El cliente acepta comenzar con un alcance reducido y evolutivo.
+5. El billete sencillo digital es el producto de ticketing mas adecuado para iniciar la experiencia digital.
+6. La semantica detallada de accesibilidad puede requerir refinamientos posteriores.
+
+10. RESTRICCIONES INICIALES
+
+Se identifican las siguientes restricciones de negocio y de contexto:
+
+1. La primera fase debe centrarse en capacidades de alto valor y baja ambiguedad.
+2. No se debe intentar cubrir todo el ciclo de movilidad urbana en un unico paso.
+3. La informacion de accesibilidad solo debe mostrarse cuando el cliente pueda sostener su calidad minima.
+4. La experiencia de billete digital debe ser simple y entendible desde el primer uso.
+5. La solucion debe ser coherente con la operacion real del servicio urbano.
+
+11. RIESGOS DE NEGOCIO IDENTIFICADOS
+
+1. Que la informacion operativa no tenga la calidad suficiente para generar confianza en el usuario.
+2. Que las incidencias se publiquen con criterios poco homogeneos.
+3. Que el usuario no entienda correctamente el estado de su billete digital.
+4. Que existan dudas sobre el momento correcto de activacion del billete.
+5. Que se intente introducir demasiado alcance en una primera fase y se degrade la claridad funcional.
+
+12. PREGUNTAS ABIERTAS DEL CLIENTE
+
+1. Que categorias de incidencias deben mostrarse al viajero desde la primera version.
+2. Que informacion de accesibilidad puede publicarse con suficiente fiabilidad.
+3. Si la activacion del billete debe ser obligatoria o automatica en algun escenario.
+4. Cuanto tiempo puede transcurrir entre compra y activacion sin afectar a la validez del titulo.
+5. Que informacion minima debe ver el usuario para considerar que el billete esta listo para uso.
+
+13. RESULTADO ESPERADO DEL ANALISIS
+
+A partir de este documento inicial se espera disponer de una definicion funcional progresiva que permita:
+- estructurar correctamente el problema de negocio,
+- ordenar el alcance inicial del producto,
+- separar claramente informacion operativa y ticketing digital,
+- priorizar funcionalidades de mayor valor para el cliente,
+- continuar el refinamiento con base comun entre negocio, producto y analisis funcional.
+
+14. CONCLUSION
+
+El cliente necesita una experiencia digital simple, fiable y orientada a autoservicio para el uso cotidiano del autobus urbano. El mayor valor inicial se concentra en dos capacidades: informar mejor al viajero antes del desplazamiento y facilitar el uso de un billete digital sencillo desde el movil.
+
+El analisis posterior debera profundizar estas capacidades, reducir ambiguedades funcionales y transformar estas necesidades del cliente en artefactos funcionales mas detallados, manteniendo siempre el foco en claridad, utilidad y experiencia real del viajero.
