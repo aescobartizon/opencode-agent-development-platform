@@ -1,6 +1,7 @@
 ---
 description: Valida y puede actualizar la coherencia del flujo documental funcional, la trazabilidad entre Epica, FRS, US y OpenAPI, y el cumplimiento de las reglas `VAL-*` del modelo documental de la plataforma.
 version: 1.1.0
+model: gemini-3-flash
 mode: subagent
 temperature: 0.1
 tools:

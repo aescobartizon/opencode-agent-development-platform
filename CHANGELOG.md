@@ -2,7 +2,8 @@
 
 ## Unreleased
 
-- AgentCreateProjectFromScratch actualizado a v1.3.1 con preferencia explicita por `gpt-5-nano`.
+- Agentes y skills actualizados para preferir el modelo `gemini-3-flash`.
+- AgentCreateProjectFromScratch actualizado a v1.3.1 con preferencia explicita por `gemini-3-flash`.
 - Reforzada la instruccion de copiar todo `templates/` al scaffold folder `docs/templates/` del proyecto generado.
 - Alineado `AgentCreateProjectFromScratch` con los assets reales del repositorio (`agents/`, `skills/`, `templates/`).
 - Corregida la resolución de plantillas para usar primero `templates/` del repo y `~/.config/opencode/templates/` solo como fallback.

@@ -14,7 +14,7 @@ Repositorio base para desarrollar y versionar capacidades de OpenCode orientadas
 ### Agente incluido
 
 - `agents/AgentCreateProjectFromScratch.md`: agente fundacional para crear desde cero un repositorio de gobernanza para proyectos multi-repo basados en microservicios.
-  - Configurado para preferir el modelo gratuito `gpt-5-nano` cuando el entorno soporte fijar modelo.
+  - Configurado para preferir el modelo gratuito `gemini-3-flash` cuando el entorno soporte fijar modelo.
 
 ### Skill incluida
 

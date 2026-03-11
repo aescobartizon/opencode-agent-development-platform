@@ -7,7 +7,7 @@ compatibility: opencode
 
 ## Que hace esta skill
 
-Esta skill debe ejecutarse preferentemente con el modelo gratuito `gpt-5-nano` cuando la plataforma permita fijar modelo para el agente o subagente que la consume.
+Esta skill debe ejecutarse preferentemente con el modelo gratuito `gemini-3-flash` cuando la plataforma permita fijar modelo para el agente o subagente que la consume.
 
 Esta skill describe como crear, desde cero, un **repositorio de gobernanza** para un proyecto con arquitectura de microservicios bajo modelo **multi-repo**.
 
@@ -96,7 +96,16 @@ Resolver siempre las plantillas con este orden:
 
 Contenido obligatorio a copiar desde `templates/`:
 
-- todo el contenido disponible en `templates/`
+- `functional-requirement.template.md`
+- `user-story.template.md`
+- `epic.template.md`
+- `executive-report.template.html`
+- `examples/DOC-BUS/analysis/Documento inicial de analisis.txt`
+- `examples/DOC-BUS/doc/epics/EPIC-UBUS-01 — Autoservicio digital para información operativa y ticketing básico en autobús urbano.md`
+- `examples/DOC-BUS/doc/requirements/FRS-UBUS-001 — Consulta de próximas llegadas e incidencias por parada urbana.md`
+- `examples/DOC-BUS/doc/user-stories/US-UBUS-001 — Como viajero quiero consultar próximas llegadas por parada para decidir si espero o cambio de ruta.md`
+- `examples/DOC-BUS/spec/open-api/urban-bus-arrivals.openapi.yaml`
+- y cualquier otro fichero o carpeta adicional bajo `templates/` que esté disponible en el origen.
 
 Destinos obligatorios en el proyecto generado:
 
